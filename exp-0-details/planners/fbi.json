@@ -1,0 +1,21 @@
+{
+    "tag": "fbi-new-implementation",
+    "planner": "fbi",
+    "planner-parameters": {
+        "base-planner-cfg": {
+            "base-planner": "PlanningType.SYMK",
+            "solver-timeout-ms": 600000,
+            "solver-memorylimit-mb": 16000
+          },
+          "bspace-cfg": {
+            "dims": [
+              ["GoalPredicatesOrdering", "None"],
+              ["MakespanOptimalCostBound", {"disable_action_check": false}],
+              ["ResourceCount", "TODO"]
+            ],
+            "upper-bound": 100,
+            "disable-action-check": false,
+            "run-plan-validation": true
+          }
+    }
+}

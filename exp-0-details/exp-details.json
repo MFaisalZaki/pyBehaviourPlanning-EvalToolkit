@@ -1,0 +1,5 @@
+{
+    "k": [5,10,100,1000],
+    "q": [1.0, 1.5, 2.0],
+    "resources-file-dir": "${currentdir}/classical-domains-ru-info"
+}
