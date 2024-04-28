@@ -10,9 +10,10 @@ def generate(args):
     planners_run_dir   = os.path.join(args.sandbox_dir, 'planners_run')
     dump_results_dir   = os.path.join(args.sandbox_dir, 'dump_results')
     slurm_scripts_dir  = os.path.join(args.sandbox_dir, 'slurm_scripts')
+    slurm_dump_logs    = os.path.join(args.sandbox_dir, 'slurm_logs')
     resources_dump_dir = os.path.join(args.sandbox_dir, 'resources_dump')
     error_dir          = os.path.join(args.sandbox_dir, 'run_errors')
-    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_scripts_dir, resources_dump_dir, error_dir]:
+    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_scripts_dir, resources_dump_dir, error_dir, slurm_dump_logs]:
         os.makedirs(dir_, exist_ok=True)
     # Read the experiment details.
     expdetails = parse_experiment_details(args.exp_details_dir)
@@ -59,6 +60,6 @@ def generate(args):
             f.write(f'{cmd}\n')
     # No split the commands in to strum batch script files.
     for i, cmd in enumerate(generated_cmds):
-        slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_scripts_dir, args.partition)
+        slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
         with open(os.path.join(slurm_scripts_dir, f'slurm_batch_task_{i}.txt'), 'w') as f:
             f.write(slurmcmd)
