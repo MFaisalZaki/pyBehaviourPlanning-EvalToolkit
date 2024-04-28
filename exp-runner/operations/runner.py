@@ -1,5 +1,6 @@
 from unified_planning.shortcuts import OneshotPlanner
 from unified_planning.io import PDDLReader
+import up_symk
 from fbi.shortcuts import *
 
 from .utilities import experiment_reader, getkeyvalue, read_planner_cfg, update_fbi_parameters
@@ -22,6 +23,9 @@ def solve(args):
             case 'fbi':
                 # Update the behaviour space with the resources file if exists.
                 planner_params = update_fbi_parameters(planner_params, expdetails)
+
+                fbi = ForbidBehaviourIterative(task, planner_params['bspace-cfg'], planner_params['base-planner-cfg'])
+                fbi.plan(getkeyvalue(expdetails, 'k'))
 
 
 
