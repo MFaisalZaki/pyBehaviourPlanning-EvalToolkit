@@ -1,8 +1,8 @@
 import os
 from copy import deepcopy
-import json 
+import json
 
-from .utilities import parse_planning_tasks, parse_experiment_details, construct_run_cmd, warpCommand, getkeyvalue, createVEnv
+from .utilities import parse_planning_tasks, parse_experiment_details, construct_run_cmd, warpCommand, getkeyvalue, createVEnv, install_bplanning
 
 def generate(args):
     # create the experiment folders.
@@ -20,6 +20,10 @@ def generate(args):
     planning_tasks = parse_planning_tasks(args.planning_tasks_dir, getkeyvalue(expdetails, 'resources-file-dir'), resources_dump_dir, selected_planning_tasks)
     # Create a venv for to install the required packages.
     venv_dir = createVEnv(args.sandbox_dir, os.path.join(os.path.dirname(__file__), 'exts', 'requirements.txt'))
+    # Install behaviour space and forbid behaviour iterative packages.
+    external_packages_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs')
+    pkgs_dir = [os.path.join(external_packages_dir, pkg) for pkg in ['pyBehaviourSortsSuite', 'pyForbidBehaviourIterative']]
+    install_bplanning(os.path.join(os.path.dirname(__file__), '..', '..'), pkgs_dir, venv_dir)
     generated_cmds = set()
     qlist = getkeyvalue(expdetails, 'q')
     klist = getkeyvalue(expdetails, 'k')

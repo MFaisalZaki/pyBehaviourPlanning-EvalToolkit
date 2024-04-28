@@ -152,3 +152,10 @@ def createVEnv(basedir, requirements_file):
     os.system(f'python3 -m venv {venv_dir}')
     os.system(f'{venv_dir}/bin/python3 -m pip install -r {requirements_file}')
     return venv_dir
+
+def install_bplanning(currentdir, pkgsdir, venvdir):
+    for pkg in pkgsdir:
+        os.chdir(pkg)
+        os.system(f'{venvdir}/bin/python3 setup.py install')
+    os.chdir(currentdir)
+    pass
