@@ -1,7 +1,16 @@
 from unified_planning.shortcuts import OneshotPlanner
 from unified_planning.io import PDDLReader
 import up_symk
-from fbi.shortcuts import *
+# from fbi.shortcuts import *
+
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs', 'pyForbidBehaviourIterative'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs', 'pyForbidBehaviourIterative', 'fbi'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs', 'pyBehaviourSortsSuite'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs', 'pyBehaviourSortsSuite', 'bss'))
+from fbi.shortcuts import ForbidBehaviourIterative
 
 from .utilities import experiment_reader, getkeyvalue, read_planner_cfg, update_fbi_parameters
 

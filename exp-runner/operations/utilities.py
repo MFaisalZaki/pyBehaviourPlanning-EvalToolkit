@@ -4,6 +4,8 @@ import os
 import json
 import importlib.util
 
+from bss.shortcuts import *
+
 def parse_experiment_details(expdetailsdir:str):
     """
     Parse the experiment details json file.
@@ -195,9 +197,9 @@ def update_fbi_parameters(planner_params, expdetails):
         if 'Resource' in dimname:
             resourcesfile = getkeyvalue(expdetails, 'resources')
             if resourcesfile is not None:
-                updated_dims.append([dimname, resourcesfile])
+                updated_dims.append([eval(dimname), resourcesfile])
         else:
-            updated_dims.append([dimname, details])
+            updated_dims.append([eval(dimname), details])
 
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
