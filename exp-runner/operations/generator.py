@@ -16,14 +16,21 @@ def generate(args):
     # Read the experiment details.
     expdetails = parse_experiment_details(args.exp_details_dir)
     # Parse the planning tasks dir.
-    planning_tasks = parse_planning_tasks(args.planning_tasks_dir, expdetails['exp-details']['resources-file-dir'], resources_dump_dir)
+    selected_planning_tasks = getkeyvalue(expdetails, 'selected-planning-instances')
+    planning_tasks = parse_planning_tasks(args.planning_tasks_dir, getkeyvalue(expdetails, 'resources-file-dir'), resources_dump_dir, selected_planning_tasks)
     # Create a venv for to install the required packages.
     venv_dir = createVEnv(args.sandbox_dir, os.path.join(os.path.dirname(__file__), 'exts', 'requirements.txt'))
     generated_cmds = set()
+    qlist = getkeyvalue(expdetails, 'q')
+    klist = getkeyvalue(expdetails, 'k')
+    plannerslist = getkeyvalue(expdetails, 'planners')
+    skip_cfgs = getkeyvalue(expdetails, 'skip-cfgs')
     for taskidx, planning_task in enumerate(planning_tasks):
-        for q in expdetails['exp-details']['q']:
-            for k in expdetails['exp-details']['k']:
-                for plannername, plannercfg in expdetails['planners'].items():
+        for q in qlist:
+            for k in klist:
+                for plannername, plannercfg in plannerslist.items():
+                    if (q, k , plannername) in skip_cfgs: 
+                        continue
                     print(f"Generating tasks for q={q}, k={k}, planner={plannername}: {taskidx}/{len(planning_tasks)}")
                     task = deepcopy(planning_task)
                     task['k'] = k

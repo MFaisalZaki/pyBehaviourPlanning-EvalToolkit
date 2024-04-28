@@ -23,9 +23,12 @@ def parse_experiment_details(expdetailsdir:str):
         plannerjson = os.path.join(plannersdir, planner)
         assert os.path.exists(plannerjson), f"Planner json file not found: {plannerjson}"
         expdetails['planners'][planner.replace('.json', '')] = plannerjson
+    # convert the skip configurations into a set of tuples.
+    expdetails['exp-details']['skip-cfgs'] = set([tuple(cfg) for cfg in expdetails['exp-details']['skip-cfgs']])
+    expdetails['exp-details']['selected-planning-instances'] = set(expdetails['exp-details']['selected-planning-instances'])
     return expdetails
 
-def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdumpdir:str):
+def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdumpdir:str, selected_instances:set):
     # First collect the resoruces information requried.
     resources = _get_resources_details(resourcesfiledir)
 
@@ -61,18 +64,23 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
                 planning_problem['domainfile']  = os.path.join(os.path.dirname(domainsroot), problem[0])
                 planning_problem['problemfile'] = os.path.join(os.path.dirname(domainsroot), problem[1])
 
+                # If selected instances are not empty, then filter the instances.
+                if len(selected_instances) > 0 and f"({str(_ipc_year)}, {_domainname}, {_instanceno})" not in selected_instances: 
+                    continue
+
                 # check if the domain and problem instance has resources.
                 if _ipc_year in resources and _domainname in resources[_ipc_year]:
                     if str(_instanceno) in resources[_ipc_year][_domainname]:
-                        planning_problem['resources'] = resources[_ipc_year][_domainname][str(_instanceno)]
                         # maybe I'll consider this later.
                         # dump the resources to a file. 
                         resourcesfile = os.path.join(resourcesdumpdir, f'{_domainname}_{_instanceno}_resources.txt')
                         with open(resourcesfile, 'w') as f:
-                            f.write(planning_problem['resources'])
-
+                            f.write(resources[_ipc_year][_domainname][str(_instanceno)])
+                        planning_problem['resources'] = resourcesfile
+                
                 # Ignore if the domain or problem file does not exist.
-                if not (os.path.exists(planning_problem['domainfile']) and os.path.exists(planning_problem['problemfile'])): continue
+                if not (os.path.exists(planning_problem['domainfile']) and os.path.exists(planning_problem['problemfile'])): 
+                    continue
                 planning_problems.append(planning_problem)
                 covered_domains.add(os.path.basename(domainsroot))
     return planning_problems
