@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 import json
 
-from .utilities import parse_planning_tasks, parse_experiment_details, construct_run_cmd, warpCommand, getkeyvalue, createVEnv, install_bplanning
+from .utilities import parse_planning_tasks, parse_experiment_details, construct_run_cmd, warpCommand, getkeyvalue
 
 def generate(args):
     # create the experiment folders.
@@ -19,13 +19,8 @@ def generate(args):
     # Parse the planning tasks dir.
     selected_planning_tasks = getkeyvalue(expdetails, 'selected-planning-instances')
     planning_tasks = parse_planning_tasks(args.planning_tasks_dir, getkeyvalue(expdetails, 'resources-file-dir'), resources_dump_dir, selected_planning_tasks)
-    # Create a venv for to install the required packages.
-    venv_dir = createVEnv(args.sandbox_dir, os.path.join(os.path.dirname(__file__), 'exts', 'requirements.txt'))
-    # Install behaviour space and forbid behaviour iterative packages.
-    external_packages_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'external-pkgs')
-    pkgs_dir = [os.path.join(external_packages_dir, pkg) for pkg in ['pyBehaviourSortsSuite', 'pyForbidBehaviourIterative']]
-    install_bplanning(os.path.join(os.path.dirname(__file__), '..', '..'), pkgs_dir, venv_dir)
     generated_cmds = set()
+    venv_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'v-env')
     qlist = getkeyvalue(expdetails, 'q')
     klist = getkeyvalue(expdetails, 'k')
     plannerslist = getkeyvalue(expdetails, 'planners')
@@ -37,15 +32,15 @@ def generate(args):
                     if (q, k , plannername) in skip_cfgs: 
                         continue
                     print(f"Generating tasks for q={q}, k={k}, planner={plannername}: {taskidx}/{len(planning_tasks)}")
-                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
                     task = deepcopy(planning_task)
                     task['k'] = k
                     task['q'] = q
                     task['planner']          = plannername
                     task['planner-cfg']      = plannercfg
                     task['dump-results-dir'] = dump_results_dir
+                    
+                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
                     task['error-file']       = os.path.join(error_dir, filename)
-
                     # generate a unique task run directory.
                     rundir = os.path.join(planners_run_dir, filename)
                     os.makedirs(rundir, exist_ok=True)
