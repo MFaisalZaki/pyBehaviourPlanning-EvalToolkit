@@ -4,6 +4,7 @@ import os
 import json
 import importlib.util
 
+from unified_planning.io import PDDLWriter
 from bss.shortcuts import *
 
 def parse_experiment_details(expdetailsdir:str):
@@ -159,20 +160,6 @@ def warpCommand(cmd, timelimt, memorylimit, slurmdumpdir, parition):
 {cmd}
 """
 
-def createVEnv(basedir, requirements_file):
-    venv_dir = os.path.join(basedir, 'v-env')
-    os.makedirs(venv_dir, exist_ok=True)
-    ## start a venv and install the required packages.
-    os.system(f'python3 -m venv {venv_dir}')
-    os.system(f'{venv_dir}/bin/python3 -m pip install -r {requirements_file}')
-    return venv_dir
-
-def install_bplanning(currentdir, pkgsdir, venvdir):
-    for pkg in pkgsdir:
-        os.chdir(pkg)
-        os.system(f'{venvdir}/bin/python3 setup.py install')
-    os.chdir(currentdir)
-
 def experiment_reader(expfile):
     with open(expfile, 'r') as f:
         expdetails = json.load(f)
@@ -188,6 +175,26 @@ def read_planner_cfg(expfile):
     planner_params = getkeyvalue(planner_cfg, 'planner-parameters')
     assert planner_params is not None, "Planner parameters are not provided."
     return planner_params
+
+def generate_summary_file(task, expdetails, name, planner_params, domain, problem, planlist, logmsgs):
+    results = defaultdict(dict)
+    results['info'] = defaultdict(dict)
+    results['info']['planner'] = name
+    results['info']['planner-params'] = planner_params
+    results['info']['task'] = {
+        'domain': f'{os.path.basename(os.path.dirname(domain))}/{os.path.basename(domain)}', 
+        'problem': os.path.basename(problem),
+        'k': getkeyvalue(expdetails, 'k'),
+        'q': getkeyvalue(expdetails, 'q')
+    }
+    results['plans'] = []
+    for plan in planlist:
+        actions = PDDLWriter(task).get_plan(plan).split() 
+        cost    = len(actions)
+        results['plans'] += [actions + [f'; {cost} cost (unit)']]
+    
+    results['logmsgs'] = logmsgs
+    return results
 
 def update_fbi_parameters(planner_params, expdetails):
     updated_parameters = deepcopy(planner_params)

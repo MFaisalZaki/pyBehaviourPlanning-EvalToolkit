@@ -37,16 +37,16 @@ def generate(args):
                     task['q'] = q
                     task['planner']          = plannername
                     task['planner-cfg']      = plannercfg
-                    task['dump-results-dir'] = dump_results_dir
-                    
+
                     filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
-                    task['error-file']       = os.path.join(error_dir, filename)
+                    task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')
+                    task['error-file']       = os.path.join(error_dir, f'{filename}.error')
                     # generate a unique task run directory.
                     rundir = os.path.join(planners_run_dir, filename)
                     os.makedirs(rundir, exist_ok=True)
 
                     # Save task json file to the dump directory.
-                    task_jsonfile = os.path.join(generated_cmds_dir, f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}.json")
+                    task_jsonfile = os.path.join(generated_cmds_dir, f"{filename}.json")
                     with open(task_jsonfile, 'w') as f:
                         json.dump(task, f, indent=4)
 
