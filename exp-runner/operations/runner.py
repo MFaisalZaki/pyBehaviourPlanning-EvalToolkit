@@ -18,6 +18,7 @@ def solve(args):
     try:
         result_file = getkeyvalue(expdetails, 'dump-result-file')
         assert result_file is not None, "Result file is not provided."
+        assert not os.path.exists(result_file), "Result file already exists."
         
         domain = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
