@@ -34,8 +34,7 @@ def generate(args):
 
                     # generate a unique task run directory.
                     rundir = os.path.join(planners_run_dir, f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}")
-                    # os.makedirs(rundir, exist_ok=True)
-                    task['task-run-dir'] = rundir
+                    os.makedirs(rundir, exist_ok=True)
 
                     # Save task json file to the dump directory.
                     task_jsonfile = os.path.join(generated_cmds_dir, f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}.json")
@@ -43,9 +42,7 @@ def generate(args):
                         json.dump(task, f, indent=4)
 
                     cmd = construct_run_cmd(task_jsonfile)
-                    # get the script running script.
-                    main_entry = os.path.join(os.path.dirname(__file__), '..', 'main.py')
-                    generated_cmds.add(f'source {venv_dir}/bin/activate && {main_entry} {cmd} && deactivate')
+                    generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
 
     # dump those commands to a file.
     with open(os.path.join(generated_cmds_dir, 'generated_cmds.sh'), 'w') as f:
@@ -53,6 +50,6 @@ def generate(args):
             f.write(f'{cmd}\n')
     # No split the commands in to strum batch script files.
     for i, cmd in enumerate(generated_cmds):
-        slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_scripts_dir)
+        slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_scripts_dir, args.partition)
         with open(os.path.join(slurm_scripts_dir, f'slurm_batch_task_{i}.txt'), 'w') as f:
             f.write(slurmcmd)

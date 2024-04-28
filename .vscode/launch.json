@@ -13,7 +13,8 @@
             "args": ["generate", 
             "--exp-details-dir", "${workspaceFolder}/exp-0-details", 
             "--sandbox-dir", "${workspaceFolder}/sandbox", 
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains"]
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            "--partition", "sturm-part"]
         }
     ]
 }

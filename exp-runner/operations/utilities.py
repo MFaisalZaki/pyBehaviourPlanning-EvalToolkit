@@ -103,18 +103,10 @@ def _get_resources_details(resourcesfiledir:str):
     return all_resources
 
 def construct_run_cmd(experiment_file):
-    cmd = "solve "
-    cmd += f" --experiment-file {experiment_file}"
-
-    # cmd += f"--domainname {planningtask['domainname']} "
-    # cmd += f"--instanceno {planningtask['instanceno']} "
-    # cmd += f"--ipc-year {planningtask['ipc_year']} "
-    # cmd += f"--planner-cfg-file {plannercfg} "
-    # cmd += f"--exp-details-dir {expdetailsfile} "
-    # cmd += f"--run-dir {rundir} "
-    # cmd += f"--domain {planningtask['domainfile']} "
-    # cmd += f"--problem {planningtask['problemfile']} "
-    # cmd += f"--results-dump-dir {dump_results_dir} "
+    main_entry = os.path.join(os.path.dirname(__file__), '..', 'main.py')
+    cmd  = f"python3 {main_entry} "
+    cmd += "solve "
+    cmd += f"--experiment-file {experiment_file}"
     return cmd
 
 def getkeyvalue(data, target_key):
