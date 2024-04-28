@@ -4,3 +4,6 @@
 [submodule "external-pkgs/pyBehaviourSortsSuite"]
 	path = external-pkgs/pyBehaviourSortsSuite
 	url = https://github.com/MFaisalZaki/pyBehaviourSortsSuite.git
+[submodule "external-pkgs/pyForbidBehaviourIterative"]
+	path = external-pkgs/pyForbidBehaviourIterative
+	url = https://github.com/MFaisalZaki/pyForbidBehaviourIterative.git
