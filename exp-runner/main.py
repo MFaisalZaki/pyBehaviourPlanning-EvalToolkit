@@ -44,20 +44,8 @@ def _create_arg_parser():
         subparser[cmd].set_defaults(func=cmd_attributes["fn"])
 
     for cmd in ["solve"]:
-        # TODO: We will need to think about this. The best way is to pass a json file containing all the experiment details.
-        pass
-        # subparser[cmd].add_argument( "--planner-cfg-file", type=str, help="Planner configuration file.")
-        # subparser[cmd].add_argument( "--exp-details-dir", type=str, help="Path to the directory containing all results.")
-
-        # subparser[cmd].add_argument( "--domain",      type=str, help="Path to a domain file.")
-        # subparser[cmd].add_argument( "--problem",     type=str, help="Path to a problem file.")
-        
-        # subparser[cmd].add_argument( "--domainname",  type=str, help="Domain name ")
-        # subparser[cmd].add_argument( "--instanceno",  type=int, help="Instance number ")
-        # subparser[cmd].add_argument( "--ipc-year",    type=str, help="Path to the directory containing all results.")
-
-        # subparser[cmd].add_argument( "--run-dir")
-        # subparser[cmd].add_argument( "--results-dump-dir", type=str, help="Path to a directory to dump the results.")
+        subparser[cmd].add_argument( "--experiment-file", type=str, help="Experiment file.")
+        subparser[cmd].add_argument( "--profile", action="store_true", help="Profile the code.")
     
     for cmd in ["generate"]:
         subparser[cmd].add_argument( "--exp-details-dir", type=str, help="Path to the directory containing all results.")
@@ -73,6 +61,10 @@ _COMMANDS = {
         "fn": generator.generate,
         "desc": "Generate the experiments files."
     },
+    "solve": {
+        "fn": runner.solve,
+        "desc": "Run the experiments."
+    }
 }
 
 if __name__ == "__main__":

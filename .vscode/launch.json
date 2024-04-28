@@ -15,6 +15,16 @@
             "--sandbox-dir", "${workspaceFolder}/sandbox", 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part"]
+        },
+        {
+            "name": "Run experiment command",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-runner/main.py",
+            "console": "integratedTerminal",
+            "args": ["solve", 
+            "--experiment-file", "${workspaceFolder}/sandbox/experiment_tasks/2006-rovers-3-1.0-10-fbi.json"],
+            "justMyCode": false
         }
     ]
 }

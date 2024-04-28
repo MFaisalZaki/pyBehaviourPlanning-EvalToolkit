@@ -11,7 +11,8 @@ def generate(args):
     dump_results_dir   = os.path.join(args.sandbox_dir, 'dump_results')
     slurm_scripts_dir  = os.path.join(args.sandbox_dir, 'slurm_scripts')
     resources_dump_dir = os.path.join(args.sandbox_dir, 'resources_dump')
-    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_scripts_dir, resources_dump_dir]:
+    error_dir          = os.path.join(args.sandbox_dir, 'run_errors')
+    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_scripts_dir, resources_dump_dir, error_dir]:
         os.makedirs(dir_, exist_ok=True)
     # Read the experiment details.
     expdetails = parse_experiment_details(args.exp_details_dir)
@@ -36,15 +37,17 @@ def generate(args):
                     if (q, k , plannername) in skip_cfgs: 
                         continue
                     print(f"Generating tasks for q={q}, k={k}, planner={plannername}: {taskidx}/{len(planning_tasks)}")
+                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
                     task = deepcopy(planning_task)
                     task['k'] = k
                     task['q'] = q
-                    task['planner'] = plannername
-                    task['planner-cfg'] = plannercfg
+                    task['planner']          = plannername
+                    task['planner-cfg']      = plannercfg
                     task['dump-results-dir'] = dump_results_dir
+                    task['error-file']       = os.path.join(error_dir, filename)
 
                     # generate a unique task run directory.
-                    rundir = os.path.join(planners_run_dir, f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}")
+                    rundir = os.path.join(planners_run_dir, filename)
                     os.makedirs(rundir, exist_ok=True)
 
                     # Save task json file to the dump directory.

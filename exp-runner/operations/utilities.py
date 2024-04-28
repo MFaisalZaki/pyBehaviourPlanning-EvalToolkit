@@ -132,6 +132,18 @@ def getkeyvalue(data, target_key):
                 return result
     return None
 
+def updatekeyvalue(data, target_key, newvalue):
+    if isinstance(data, dict):
+        if target_key in data:
+            data[target_key] = newvalue
+            return True
+        for value in data.values():
+            result = updatekeyvalue(value, target_key, newvalue)
+    elif isinstance(data, list):
+        for item in data:
+            result = updatekeyvalue(item, target_key, newvalue)
+    return False
+
 def warpCommand(cmd, timelimt, memorylimit, slurmdumpdir, parition):
     return f"""#!/bin/bash
 #SBATCH --job-name=task-%x-%j
@@ -158,4 +170,36 @@ def install_bplanning(currentdir, pkgsdir, venvdir):
         os.chdir(pkg)
         os.system(f'{venvdir}/bin/python3 setup.py install')
     os.chdir(currentdir)
-    pass
+
+def experiment_reader(expfile):
+    with open(expfile, 'r') as f:
+        expdetails = json.load(f)
+    return expdetails
+
+def read_planner_cfg(expfile):
+    with open(expfile, 'r') as f:
+        expdetails = json.load(f)
+    planner_cfgfile = getkeyvalue(expdetails, 'planner-cfg')
+    assert planner_cfgfile is not None, "Planner configuration is not provided."
+    with open(planner_cfgfile, 'r') as f:
+        planner_cfg = json.load(f)
+    planner_params = getkeyvalue(planner_cfg, 'planner-parameters')
+    assert planner_params is not None, "Planner parameters are not provided."
+    return planner_params
+
+def update_fbi_parameters(planner_params, expdetails):
+    updated_parameters = deepcopy(planner_params)
+    # Check if we have a resource dimension.
+    updated_dims = []
+    for idx, (dimname, details) in enumerate(getkeyvalue(planner_params, 'dims')):
+        if 'Resource' in dimname:
+            resourcesfile = getkeyvalue(expdetails, 'resources')
+            if resourcesfile is not None:
+                updated_dims.append([dimname, resourcesfile])
+        else:
+            updated_dims.append([dimname, details])
+
+    updatekeyvalue(updated_parameters, 'dims', updated_dims)
+    updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
+    updated_parameters['bspace-cfg']['quality-bound-factor'] = getkeyvalue(expdetails, 'q')
+    return updated_parameters
