@@ -25,6 +25,18 @@
             "args": ["solve", 
             "--experiment-file", "${workspaceFolder}/sandbox/experiment_tasks/2006-rovers-3-1.0-10-fbi.json"],
             "justMyCode": false
+        },
+        {
+            "name": "Summarise experiment errors",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/summaries-errors.py",
+            "console": "integratedTerminal",
+            "args": [
+            "--error-dir", "${workspaceFolder}/sandbox-fbi-baseline/run_errors",
+            "--bspace-results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results",
+            ],
+            "justMyCode": false
         }
     ]
 }
