@@ -197,3 +197,5 @@ sandbox*
 *.cProfile
 
 v-env/
+
+dev.py
