@@ -184,6 +184,8 @@ def generate_summary_file(task, expdetails, name, planner_params, domain, proble
     results['info']['task'] = {
         'domain': f'{os.path.basename(os.path.dirname(domain))}/{os.path.basename(domain)}', 
         'problem': os.path.basename(problem),
+        'domainfile': domain,
+        'problemfile': problem,
         'k': getkeyvalue(expdetails, 'k'),
         'q': getkeyvalue(expdetails, 'q')
     }

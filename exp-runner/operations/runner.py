@@ -2,7 +2,7 @@ from collections import defaultdict
 import json
 import os
 
-from unified_planning.shortcuts import OneshotPlanner
+from unified_planning.shortcuts import OneshotPlanner, get_environment
 from unified_planning.io import PDDLReader, PDDLWriter
 import up_symk
 from fbi.shortcuts import *
@@ -13,6 +13,9 @@ def solve(args):
 #     # I guess the best way to do so is by using the UPWrapper.
 #     # But note that now we don't have a unified wrapper since the the fbi one returns
 #     # a list of two stuff. So this one will be a little bit messy.
+    get_environment().credits_stream  = None
+    get_environment().error_used_name = False
+    
     results = {}
     expdetails = experiment_reader(args.experiment_file)
     try:
