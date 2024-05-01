@@ -37,6 +37,17 @@
             "--bspace-results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results",
             ],
             "justMyCode": false
+        },
+        {
+            "name": "Summarise experiment run results",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/summaries-results.py",
+            "console": "integratedTerminal",
+            "args": [
+            "--results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results"
+            ],
+            "justMyCode": false
         }
     ]
 }
