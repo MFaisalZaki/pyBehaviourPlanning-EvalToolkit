@@ -2,12 +2,19 @@ from collections import defaultdict
 import json
 import os
 
+import os, sys
+sys.path.append('/home/ma342/developer/pyBehaviourPlanningEvalToolkit/external-pkgs/pyBehaviourSortsSuite')
+sys.path.append('/home/ma342/developer/pyBehaviourPlanningEvalToolkit/external-pkgs/pyBehaviourSortsSuite/bss')
+
 from unified_planning.shortcuts import OneshotPlanner, get_environment
 from unified_planning.io import PDDLReader, PDDLWriter
 import up_symk
-from fbi.shortcuts import *
 
-from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, read_planner_cfg, update_fbi_parameters, generate_summary_file
+from fbi.shortcuts import *
+from bss.shortcuts import *
+
+from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, read_planner_cfg, update_fbi_parameters, generate_summary_file
+from .constants import *
 
 def solve(args):
 #     # I guess the best way to do so is by using the UPWrapper.
@@ -21,6 +28,12 @@ def solve(args):
     try:
         result_file = getkeyvalue(expdetails, 'dump-result-file')
         assert result_file is not None, "Result file is not provided."
+        if os.path.exists(result_file):
+            # move this to another directory.
+            repeated_results_dir = os.path.join(os.path.dirname(result_file), 'repeated-results')
+            os.makedirs(repeated_results_dir, exist_ok=True)
+            os.rename(result_file, os.path.join(repeated_results_dir, os.path.basename(result_file)))
+            pass
         assert not os.path.exists(result_file), "Result file already exists."
         
         domain = getkeyvalue(expdetails, 'domainfile')
@@ -58,6 +71,51 @@ def solve(args):
             with open(result_file, 'w') as f:
                 json.dump(results, f, indent=4)
 
+
+def score(args):
+    diversity_scores_results = defaultdict(dict)
+    expdetails = experiment_reader(args.experiment_file)
+    
+    results_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', SCORES_RESULTS)
+    os.makedirs(results_dump_dir, exist_ok=True)
+
+    result_file = os.path.basename(args.experiment_file).replace('.json', f'-{args.k}-scores.json')
+    result_file = os.path.join(results_dump_dir, result_file)
+    try:
+
+        planlist = getkeyvalue(expdetails, 'plans')[:args.k]
+        diversity_scores_results['plans'] = planlist
+
+        # Now we need to construct the behaviour space for the diversity scores.
+        domain = getkeyvalue(expdetails, 'domainfile')
+        problem = getkeyvalue(expdetails, 'problemfile')
+
+        # It is better to construct the behaviour space from those dimensions.
+        bspace_cfg = getkeyvalue(expdetails, 'bspace-cfg')
+        updatekeyvalue(bspace_cfg, 'k', args.k)
+        updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'dims')))
+
+        bspace = BehaviourCount(domain, problem, bspace_cfg, planlist)
+
+        diversity_scores_results['info'] = {
+            'domain': domain,
+            'problem': problem,
+            'k': args.k
+        }
+
+        diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
+        
+    except Exception as e:
+        # Dump error to file.
+        error_file = getkeyvalue(expdetails, 'error-file') + '-score.json'
+        assert error_file is not None, "Error file is not provided."
+        with open(error_file, 'w') as f:
+            f.write(str(e))
+    finally:
+        
+        # Dump results to json file.
+        with open(result_file, 'w') as f:
+            json.dump(diversity_scores_results, f, indent=4)
     pass
 
 

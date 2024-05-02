@@ -5,5 +5,10 @@
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
     "skip-cfgs":[],
-    "selected-planning-instances": []
+    "selected-planning-instances": [],
+    "eval-behaviour-space": [
+        ["GoalPredicatesOrdering", "None"],
+        ["MakespanOptimalCostBound", {"disable_action_check": false}],
+        ["ResourceCount", "TODO"]
+    ]
 }

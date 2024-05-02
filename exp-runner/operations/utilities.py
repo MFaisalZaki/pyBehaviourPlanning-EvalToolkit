@@ -113,10 +113,18 @@ def _get_resources_details(resourcesfiledir:str):
                 all_resources[year][domain] = domain_resources['instances']
     return all_resources
 
-def construct_run_cmd(experiment_file):
+def construct_solve_cmd(experiment_file):
     main_entry = os.path.join(os.path.dirname(__file__), '..', 'main.py')
     cmd  = f"python3 {main_entry} "
     cmd += "solve "
+    cmd += f"--experiment-file {experiment_file}"
+    return cmd
+
+def construct_score_cmd(k, experiment_file):
+    main_entry = os.path.join(os.path.dirname(__file__), '..', 'main.py')
+    cmd  = f"python3 {main_entry} "
+    cmd += "score "
+    cmd += f"--k {k} "
     cmd += f"--experiment-file {experiment_file}"
     return cmd
 
@@ -191,9 +199,9 @@ def generate_summary_file(task, expdetails, name, planner_params, domain, proble
     }
     results['plans'] = []
     for plan in planlist:
-        actions = PDDLWriter(task).get_plan(plan).split('\n')
-        cost    = len(actions)
-        results['plans'] += [actions + [f'; {cost} cost (unit)']]
+        actions = PDDLWriter(task).get_plan(plan)
+        cost    = len(actions.split('\n'))
+        results['plans'] += [actions + f'; {cost} cost (unit)']
 
     results['logmsgs'] = logmsgs
     return results
@@ -209,8 +217,19 @@ def update_fbi_parameters(planner_params, expdetails):
                 updated_dims.append([eval(dimname), resourcesfile])
         else:
             updated_dims.append([eval(dimname), details])
-
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
     updated_parameters['bspace-cfg']['quality-bound-factor'] = getkeyvalue(expdetails, 'q')
     return updated_parameters
+
+
+def construct_behaviour_space(dims):
+    updated_dims = []
+    for idx, (dimname, details) in enumerate(dims):
+        if 'Resource' in dimname:
+            resourcesfile = details
+            assert os.path.exists(resourcesfile), f"Resource file does not exist: {resourcesfile}"
+            updated_dims.append([eval(dimname), resourcesfile])
+        else:
+            updated_dims.append([eval(dimname), details])
+    return updated_dims

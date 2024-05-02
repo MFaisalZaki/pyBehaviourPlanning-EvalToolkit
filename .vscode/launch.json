@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Generate experiment commands",
+            "name": "Generate solve experiment commands",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/exp-runner/main.py",
@@ -17,13 +17,40 @@
             "--partition", "sturm-part"]
         },
         {
-            "name": "Run experiment command",
+            "name": "Generate score experiment commands",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-runner/main.py",
+            "console": "integratedTerminal",
+            "args": ["generate", 
+            "--exp-details-dir", "${workspaceFolder}/exp-baseline-fbi", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox", 
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            "--partition", "sturm-part",
+            "--for-score-exp",
+            "--score-for-k", "5", "10", "100", "1000"]
+        },
+        {
+            "name": "Run solve experiment command",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["solve", 
-            "--experiment-file", "${workspaceFolder}/sandbox/experiment_tasks/1998-movie-17-2.0-1000-fbi.json"],
+            "--experiment-file", "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Run score experiment command",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-runner/main.py",
+            "console": "integratedTerminal",
+            "args": ["score", 
+            "--experiment-file", "${workspaceFolder}/sandbox/dump-results/2006-rovers-2-1.0-1000-fbi.json",
+            "--k", "10"
+            ],
             "justMyCode": false
         },
         {

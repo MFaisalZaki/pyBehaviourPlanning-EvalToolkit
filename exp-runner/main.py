@@ -43,15 +43,21 @@ def _create_arg_parser():
         subparser[cmd] = subparsers.add_parser(cmd, description=cmd_attributes["desc"])
         subparser[cmd].set_defaults(func=cmd_attributes["fn"])
 
-    for cmd in ["solve"]:
+    for cmd in ["solve", "score"]:
         subparser[cmd].add_argument( "--experiment-file", type=str, help="Experiment file.")
         subparser[cmd].add_argument( "--profile", action="store_true", help="Profile the code.")
     
+    for cmd in ["score"]:
+        subparser[cmd].add_argument( "--k", type=int, help="k value to score.", default=5)
+
     for cmd in ["generate"]:
-        subparser[cmd].add_argument( "--exp-details-dir", type=str, help="Path to the directory containing all results.")
+        subparser[cmd].add_argument( "--for-score-exp", action="store_true", help="Generate the experiments for the score experiment.")
+        subparser[cmd].add_argument( "--exp-details-dir", type=str, help="Path to the directory defining the experiments configuration.")
         subparser[cmd].add_argument( "--partition", type=str, help="Sturm partition to use.")
         subparser[cmd].add_argument( "--sandbox-dir", type=str, help="Path to a sandbox directory to contain all processed files and generated plans.")
         subparser[cmd].add_argument( "--planning-tasks-dir", type=str, help="Path to the directory containing all planning tasks.")
+        
+        subparser[cmd].add_argument( "--score-for-k", nargs='+', type=int, help="List of k values to score.", default=[5,10,100,1000])
     return parser
 
 _COMMANDS = {
@@ -61,7 +67,11 @@ _COMMANDS = {
     },
     "solve": {
         "fn": runner.solve,
-        "desc": "Run the experiments."
+        "desc": "solve the diverse planning problem."
+    }, 
+    "score": {
+        "fn": runner.score,
+        "desc": "score the generated set of plans."
     }
 }
 
