@@ -2,10 +2,6 @@ from collections import defaultdict
 import json
 import os
 
-import os, sys
-sys.path.append('/home/ma342/developer/pyBehaviourPlanningEvalToolkit/external-pkgs/pyBehaviourSortsSuite')
-sys.path.append('/home/ma342/developer/pyBehaviourPlanningEvalToolkit/external-pkgs/pyBehaviourSortsSuite/bss')
-
 from unified_planning.shortcuts import OneshotPlanner, get_environment
 from unified_planning.io import PDDLReader, PDDLWriter
 import up_symk
