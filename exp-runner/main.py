@@ -52,8 +52,6 @@ def _create_arg_parser():
         subparser[cmd].add_argument( "--partition", type=str, help="Sturm partition to use.")
         subparser[cmd].add_argument( "--sandbox-dir", type=str, help="Path to a sandbox directory to contain all processed files and generated plans.")
         subparser[cmd].add_argument( "--planning-tasks-dir", type=str, help="Path to the directory containing all planning tasks.")
-
-
     return parser
 
 _COMMANDS = {

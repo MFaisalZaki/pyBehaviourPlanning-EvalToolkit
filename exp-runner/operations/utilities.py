@@ -191,10 +191,10 @@ def generate_summary_file(task, expdetails, name, planner_params, domain, proble
     }
     results['plans'] = []
     for plan in planlist:
-        actions = PDDLWriter(task).get_plan(plan).split() 
+        actions = PDDLWriter(task).get_plan(plan).split('\n')
         cost    = len(actions)
         results['plans'] += [actions + [f'; {cost} cost (unit)']]
-    
+
     results['logmsgs'] = logmsgs
     return results
 
