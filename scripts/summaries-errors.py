@@ -2,6 +2,7 @@ import os
 import json
 from argparse import ArgumentParser
 
+from .utilities import getkeyvalue
 
 common_msgs_commonkey_map_error = {
     'The seed plan ': 'symk-timeouted',
@@ -30,24 +31,6 @@ common_msgs_commonkey_map_bspace = {
     'Plan 0 has been added to the behaviour space.': 'Plan 0 has been added to the behaviour space',
 }
 
-
-
-
-def getkeyvalue(data, target_key):
-    if isinstance(data, dict):
-        if target_key in data:
-            return data[target_key]
-        for value in data.values():
-            result = getkeyvalue(value, target_key)
-            if result is not None:
-                return result
-    elif isinstance(data, list):
-        for item in data:
-            result = getkeyvalue(item, target_key)
-            if result is not None:
-                return result
-    return None
-
 def construct_parser():
     parser = ArgumentParser()
     parser.add_argument("--error-dir", dest="error_dir", required=True, help="directory containing error json files")
@@ -64,8 +47,6 @@ def read_error_files_from_directory(directory):
                 lines = file.readlines()
                 read_files_list.append((filepath, lines))
     return read_files_list
-
-
 
 def group_by_error(errors_msgs, common_msgs_commonkey_map):
     error_dict = {}
