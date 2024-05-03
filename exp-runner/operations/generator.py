@@ -36,6 +36,7 @@ def generate_score_cmds(args, venv_dir):
                 if k > no_plans: break
                 cmd = construct_score_cmd(k, results_file)
                 rundir = os.path.join(run_score_dir, f'score-{os.path.basename(results_file)}-k-{k}')
+                os.makedirs(rundir, exist_ok=True)
                 generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
 
     # dump those commands to a file.
