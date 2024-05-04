@@ -188,6 +188,7 @@ def generate_summary_file(task, expdetails, name, planner_params, domain, proble
     results = defaultdict(dict)
     results['info'] = defaultdict(dict)
     results['info']['planner'] = name
+    results['info']['tag'] = getkeyvalue(expdetails, 'tag')
     results['info']['planner-params'] = planner_params
     results['info']['task'] = {
         'domain': f'{os.path.basename(os.path.dirname(domain))}/{os.path.basename(domain)}', 

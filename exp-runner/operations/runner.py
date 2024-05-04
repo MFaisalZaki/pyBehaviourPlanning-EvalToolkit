@@ -13,9 +13,7 @@ from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct
 from .constants import *
 
 def solve(args):
-#     # I guess the best way to do so is by using the UPWrapper.
-#     # But note that now we don't have a unified wrapper since the the fbi one returns
-#     # a list of two stuff. So this one will be a little bit messy.
+    
     get_environment().credits_stream  = None
     get_environment().error_used_name = False
     
@@ -32,7 +30,7 @@ def solve(args):
             pass
         assert not os.path.exists(result_file), "Result file already exists."
         
-        domain = getkeyvalue(expdetails, 'domainfile')
+        domain  = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
         assert domain is not None and problem is not None, "Domain or problem file is not provided."
         task = PDDLReader().parse_problem(domain, problem)
@@ -79,9 +77,6 @@ def score(args):
     result_file = os.path.join(results_dump_dir, result_file)
     try:
 
-        planlist = getkeyvalue(expdetails, 'plans')[:args.k]
-        diversity_scores_results['plans'] = planlist
-
         # Now we need to construct the behaviour space for the diversity scores.
         domain = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
@@ -91,20 +86,26 @@ def score(args):
         updatekeyvalue(bspace_cfg, 'k', args.k)
         updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'dims')))
 
+        # Based on the planner we need may want to apply a different selection strategy.
+        planlist = getkeyvalue(expdetails, 'plans')[:args.k]
+        diversity_scores_results['plans'] = planlist
+
         bspace = BehaviourCount(domain, problem, bspace_cfg, planlist)
 
         diversity_scores_results['info'] = {
-            'domain': domain,
-            'problem': problem,
-            'planner': None,
-            'k': args.k
+            'domain':  getkeyvalue(expdetails, 'domain'),
+            'problem': getkeyvalue(expdetails, 'problem'),
+            'planner': getkeyvalue(expdetails, 'planner'),
+            'tag': getkeyvalue(expdetails, 'tag'),
+            'k': args.k,
+            'q': getkeyvalue(expdetails, 'q')
         }
 
         diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
         
     except Exception as e:
         # Dump error to file.
-        error_file = getkeyvalue(expdetails, 'error-file') + '-score.json'
+        error_file = os.path.basename(args.experiment_file).replace('.json', f'-{args.k}-scores.error')
         assert error_file is not None, "Error file is not provided."
         with open(error_file, 'w') as f:
             f.write(str(e))

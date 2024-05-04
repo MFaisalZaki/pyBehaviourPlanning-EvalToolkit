@@ -73,23 +73,28 @@ def generate_solve_cmds(args, venv_dir):
     selected_planning_tasks = getkeyvalue(expdetails, 'selected-planning-instances')
     planning_tasks = parse_planning_tasks(args.planning_tasks_dir, getkeyvalue(expdetails, 'resources-file-dir'), resources_dump_dir, selected_planning_tasks)
     generated_cmds = set()
-    
+    # Read the planners list.
+    plannerslist = []
+    for plannername, plannercfg in getkeyvalue(expdetails, 'planners').items():
+        with open(plannercfg, 'r') as f:
+            data = json.load(f)
+            plannerslist.append((plannername, getkeyvalue(data, 'tag'), plannercfg))
     qlist = getkeyvalue(expdetails, 'q')
     klist = getkeyvalue(expdetails, 'k')
-    plannerslist = getkeyvalue(expdetails, 'planners')
     skip_cfgs = getkeyvalue(expdetails, 'skip-cfgs')
     for taskidx, planning_task in enumerate(planning_tasks):
         for q in qlist:
             for k in klist:
-                for plannername, plannercfg in plannerslist.items():
+                for plannername, tag, plannercfg in plannerslist:
                     if (q, k , plannername) in skip_cfgs: 
                         continue
                     print(f"Generating tasks for q={q}, k={k}, planner={plannername}: {taskidx}/{len(planning_tasks)}")
                     task = deepcopy(planning_task)
                     task['k'] = k
                     task['q'] = q
-                    task['planner']          = plannername
-                    task['planner-cfg']      = plannercfg
+                    task['planner']     = plannername
+                    task['planner-cfg'] = plannercfg
+                    task['tag']         = tag
 
                     filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')
