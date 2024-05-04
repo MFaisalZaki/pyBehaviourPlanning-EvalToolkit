@@ -1,15 +1,18 @@
 from collections import defaultdict
 import json
 import os
+from datetime import datetime
 
-from unified_planning.shortcuts import OneshotPlanner, get_environment
-from unified_planning.io import PDDLReader, PDDLWriter
+from unified_planning.shortcuts import get_environment
+from unified_planning.io import PDDLReader
 import up_symk
 
 from fbi.shortcuts import *
 from bss.shortcuts import *
 
-from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, read_planner_cfg, update_fbi_parameters, generate_summary_file
+from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
+
+from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space
 from .constants import *
 
 def solve(args):
@@ -24,9 +27,11 @@ def solve(args):
         assert result_file is not None, "Result file is not provided."
         if os.path.exists(result_file):
             # move this to another directory.
-            repeated_results_dir = os.path.join(os.path.dirname(result_file), 'repeated-results')
+            repeated_results_dir = os.path.join(os.path.dirname(result_file), '..', 'repeated-results')
             os.makedirs(repeated_results_dir, exist_ok=True)
-            os.rename(result_file, os.path.join(repeated_results_dir, os.path.basename(result_file)))
+            # get current time and date.
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            os.rename(result_file, os.path.join(repeated_results_dir, f'{os.path.basename(result_file)}-{timestamp}'))
             pass
         assert not os.path.exists(result_file), "Result file already exists."
         
@@ -35,20 +40,9 @@ def solve(args):
         assert domain is not None and problem is not None, "Domain or problem file is not provided."
         task = PDDLReader().parse_problem(domain, problem)
 
-        planner_params = read_planner_cfg(args.experiment_file)
-
         match expdetails['planner']:
             case 'fbi':
-                # Update the behaviour space with the resources file if exists.
-                planner_params = update_fbi_parameters(planner_params, expdetails)
-                with OneshotPlanner(name='FBIPlanner',  params=planner_params) as planner:
-                    result = planner.solve(task)
-                planlist = [r.plan for r in result[0]]
-                logmsgs  = result[1]
-                # This is hacky by I have no time to properly fix this shit.
-                updatekeyvalue(planner_params, 'dims', [[d.__name__, af] for d, af in getkeyvalue(planner_params, 'dims')])
-                # this should be moved to a function
-                results = generate_summary_file(task, expdetails, 'FBIPlanner', planner_params, domain, problem, planlist, logmsgs)
+                results = FBIPlannerWrapper(args, task, expdetails)
             case 'fi':
                 pass
             case 'symk':
