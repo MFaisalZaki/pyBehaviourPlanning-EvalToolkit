@@ -65,7 +65,8 @@ def generate_solve_cmds(args, venv_dir):
     slurm_dump_logs    = os.path.join(args.sandbox_dir, SLURM_SOLVE_LOGS)
     resources_dump_dir = os.path.join(args.sandbox_dir, RESOURCES_DUMP)
     error_dir          = os.path.join(args.sandbox_dir, ERRORS_SOLVE)
-    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_solve_scripts_dir, resources_dump_dir, error_dir, slurm_dump_logs]:
+    tmp_dir            = os.path.join(args.sandbox_dir, TMP_DIR)
+    for dir_ in  [args.sandbox_dir, planners_run_dir, dump_results_dir, generated_cmds_dir, slurm_solve_scripts_dir, resources_dump_dir, error_dir, slurm_dump_logs, tmp_dir]:
         os.makedirs(dir_, exist_ok=True)
     # Read the experiment details.
     expdetails = parse_experiment_details(args.exp_details_dir)
@@ -99,9 +100,11 @@ def generate_solve_cmds(args, venv_dir):
                     filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')
                     task['error-file']       = os.path.join(error_dir, f'{filename}.error')
+                    task['tmp-dir']          = os.path.join(tmp_dir, filename)
                     # generate a unique task run directory.
                     rundir = os.path.join(planners_run_dir, filename)
                     os.makedirs(rundir, exist_ok=True)
+                    os.makedirs(task['tmp-dir'], exist_ok=True)
 
                     # Save task json file to the dump directory.
                     task_jsonfile = os.path.join(generated_cmds_dir, f"{filename}.json")

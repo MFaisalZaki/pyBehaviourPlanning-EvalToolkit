@@ -46,7 +46,7 @@ def solve(args):
             case 'fi':
                 pass
             case 'symk':
-                pass
+                results = SymKPlannerWrapper(args, task, expdetails)
     except Exception as e:
         # Dump error to file.
         error_file = getkeyvalue(expdetails, 'error-file')

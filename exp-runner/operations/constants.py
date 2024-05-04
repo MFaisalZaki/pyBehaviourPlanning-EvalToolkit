@@ -17,3 +17,5 @@ ERRORS_SOLVE = 'solve-run-errors'
 SCORES_RESULTS = 'score-results'
 SCORES_RESULTS_RUN = 'score-results-run'
 SCORES_RESULTS_CMD = 'score-results-cmd'
+
+TMP_DIR = 'tmp-dir'

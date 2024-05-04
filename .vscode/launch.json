@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", 
-            "--exp-details-dir", "${workspaceFolder}/exp-baseline-fbi", 
+            "--exp-details-dir", "${workspaceFolder}/exp-1-details", 
             "--sandbox-dir", "${workspaceFolder}/sandbox", 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part"]
@@ -37,7 +37,9 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["solve", 
-            "--experiment-file", "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
+            "--experiment-file", 
+            // "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
+            "${workspaceFolder}/sandbox/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
             ],
             "justMyCode": false
         },

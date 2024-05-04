@@ -184,7 +184,11 @@ def read_planner_cfg(expfile):
     assert planner_params is not None, "Planner parameters are not provided."
     return planner_params
 
-def generate_summary_file(task, expdetails, name, planner_params, domain, problem, planlist, logmsgs):
+def generate_summary_file(task, expdetails, name, planner_params, planlist, logmsgs):
+    
+    domain  = getkeyvalue(expdetails, 'domainfile')
+    problem = getkeyvalue(expdetails, 'problemfile')
+    
     results = defaultdict(dict)
     results['info'] = defaultdict(dict)
     results['info']['planner'] = name
