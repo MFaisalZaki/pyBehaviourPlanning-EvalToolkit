@@ -96,6 +96,7 @@ def score(args):
         diversity_scores_results['info'] = {
             'domain': domain,
             'problem': problem,
+            'planner': None,
             'k': args.k
         }
 

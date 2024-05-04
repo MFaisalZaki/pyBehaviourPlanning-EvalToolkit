@@ -75,6 +75,17 @@
             "--results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results"
             ],
             "justMyCode": false
+        },
+        {
+            "name": "Analyze experiment run results",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/analyze-results.py",
+            "console": "integratedTerminal",
+            "args": [
+            "--scores-dir", "${workspaceFolder}/sandbox/score-results"
+            ],
+            "justMyCode": false
         }
     ]
 }
