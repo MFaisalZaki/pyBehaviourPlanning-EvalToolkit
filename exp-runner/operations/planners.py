@@ -45,7 +45,12 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += [str(getkeyvalue(expdetails, 'q'))]
 
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
-    output = subprocess.check_output(cmd, cwd=tmpdir)
+    tmprun = os.path.join(tmpdir, 'tmp-run-dir')
+    os.makedirs(tmprun, exist_ok=True)
+
+    fienv = os.environ.copy()
+    fienv['FI_PLANNER_RUNS'] = tmprun
+    output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
     planlist = []
     found_plans = os.path.join(tmpdir, 'found_plans')
     for plan in os.listdir(found_plans):
