@@ -44,7 +44,7 @@ def solve(args):
             case 'fbi':
                 results = FBIPlannerWrapper(args, task, expdetails)
             case 'fi':
-                pass
+                results = FIPlannerWrapper(args, task, expdetails)
             case 'symk':
                 results = SymKPlannerWrapper(args, task, expdetails)
     except Exception as e:

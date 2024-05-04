@@ -39,7 +39,8 @@
             "args": ["solve", 
             "--experiment-file", 
             // "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
-            "${workspaceFolder}/sandbox/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
+            //"${workspaceFolder}/sandbox/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
+            "${workspaceFolder}/sandbox/experiment-tasks/1998-assembly-1-1.0-5-fi.json"
             ],
             "justMyCode": false
         },

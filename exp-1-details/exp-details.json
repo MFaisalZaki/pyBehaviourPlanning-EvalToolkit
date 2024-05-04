@@ -1,6 +1,6 @@
 {
-    "k": [5, 10],
-    "q": [1.0, 2.0],
+    "k": [5],
+    "q": [1.0],
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
     "timelimit": "00:30::00",
     "memorylimit": "16GB",

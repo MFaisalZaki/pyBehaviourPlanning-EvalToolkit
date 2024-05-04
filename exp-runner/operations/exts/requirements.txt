@@ -4,3 +4,4 @@ up-symk
 up-pyperplan
 networkx
 pytest
+git+https://github.com/IBM/forbiditerative.git

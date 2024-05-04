@@ -204,9 +204,12 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
     }
     results['plans'] = []
     for plan in planlist:
-        actions = PDDLWriter(task).get_plan(plan)
-        cost    = len(actions.split('\n'))
-        results['plans'] += [actions + f'; {cost} cost (unit)']
+        if isinstance(plan, str):
+            results['plans'] += [plan]
+        else:
+            actions = PDDLWriter(task).get_plan(plan)
+            cost    = len(actions.split('\n'))
+            results['plans'] += [actions + f'; {cost} cost (unit)']
 
     results['logmsgs'] = logmsgs
     return results

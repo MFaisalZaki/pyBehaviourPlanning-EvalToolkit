@@ -1,5 +1,10 @@
 import tempfile
-from collections import defaultdict
+import os
+
+import sys
+import subprocess
+import logging
+from subprocess import SubprocessError
 
 from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
@@ -20,8 +25,36 @@ def FBIPlannerWrapper(args, task, expdetails):
     results = generate_summary_file(task, expdetails, 'fbi', planner_params, planlist, logmsgs)
     return results
 
-def FIPlannerWrapper(args):
-    pass
+def FIPlannerWrapper(args, task, expdetails):
+    cmd  = [sys.executable]
+    cmd += ["-m"]
+    cmd += ["forbiditerative.plan"]
+    cmd += ["--planner"]
+    cmd += ["diverse"]
+    cmd += ["--domain"]
+    cmd += [getkeyvalue(expdetails, 'domainfile')]
+    cmd += ["--problem"]
+    cmd += [getkeyvalue(expdetails, 'problemfile')]
+    cmd += ["--number-of-plans"]
+    cmd += [str(getkeyvalue(expdetails, 'k'))]
+    cmd += ["--symmetries"]
+    cmd += ["--use-local-folder"]
+    cmd += ["--clean-local-folder"]
+    cmd += ["--suppress-planners-output"]
+    cmd += ["--quality-bound"]
+    cmd += [str(getkeyvalue(expdetails, 'q'))]
+
+    tmpdir = getkeyvalue(expdetails, 'tmp-dir')
+    output = subprocess.check_output(cmd, cwd=tmpdir)
+    planlist = []
+    found_plans = os.path.join(tmpdir, 'found_plans')
+    for plan in os.listdir(found_plans):
+        with open(os.path.join(found_plans, plan), 'r') as f:
+            planlist.append(f.read())
+
+    planner_params = read_planner_cfg(args.experiment_file)
+    results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
+    return results
 
 def SymKPlannerWrapper(args, task, expdetails):
     planlist = []

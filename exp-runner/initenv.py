@@ -4,14 +4,17 @@ def createVEnv(basedir, requirements_file):
     venv_dir = os.path.join(basedir, 'v-env')
     os.makedirs(venv_dir, exist_ok=True)
     ## start a venv and install the required packages.
-    os.system(f'python3 -m venv {venv_dir}')
-    os.system(f'{venv_dir}/bin/python3 -m pip install -r {requirements_file}')
+    os.system(f'python3.11 -m venv {venv_dir}')
+    os.system(f'{venv_dir}/bin/python3.11 -m pip install -r {requirements_file}')
     return venv_dir
 
 def install_bplanning(currentdir, pkgsdir, venvdir):
     for pkg in pkgsdir:
         os.chdir(pkg)
-        os.system(f'{venvdir}/bin/python3 setup.py install')
+        if os.path.exists('setup.py'):
+            os.system(f'{venvdir}/bin/python3.11 setup.py install')
+        else:
+            os.system(f'{venvdir}/bin/python3.11 -m pip install .')
     os.chdir(currentdir)
 
 # This script should be run before evaluating any plans.
