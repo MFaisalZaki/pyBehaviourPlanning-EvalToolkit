@@ -26,23 +26,25 @@ def FBIPlannerWrapper(args, task, expdetails):
     return results
 
 def FIPlannerWrapper(args, task, expdetails):
+
     cmd  = [sys.executable]
     cmd += ["-m"]
     cmd += ["forbiditerative.plan"]
     cmd += ["--planner"]
-    cmd += ["diverse"]
+    cmd += ["extended_unordered_topq"]
     cmd += ["--domain"]
     cmd += [getkeyvalue(expdetails, 'domainfile')]
     cmd += ["--problem"]
     cmd += [getkeyvalue(expdetails, 'problemfile')]
     cmd += ["--number-of-plans"]
     cmd += [str(getkeyvalue(expdetails, 'k'))]
+    cmd += ["--quality-bound"]
+    cmd += [str(getkeyvalue(expdetails, 'q'))]
     cmd += ["--symmetries"]
     cmd += ["--use-local-folder"]
     cmd += ["--clean-local-folder"]
     cmd += ["--suppress-planners-output"]
-    cmd += ["--quality-bound"]
-    cmd += [str(getkeyvalue(expdetails, 'q'))]
+    
 
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
     tmprun = os.path.join(tmpdir, 'tmp-run-dir')
@@ -52,7 +54,8 @@ def FIPlannerWrapper(args, task, expdetails):
     fienv['FI_PLANNER_RUNS'] = tmprun
     output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
     planlist = []
-    found_plans = os.path.join(tmpdir, 'found_plans')
+    found_plans = os.path.join(tmpdir, 'found_plans', 'done')
+    if not os.path.exists(found_plans): return {'reason': 'No plans found by fi'}
     for plan in os.listdir(found_plans):
         with open(os.path.join(found_plans, plan), 'r') as f:
             planlist.append(f.read())
