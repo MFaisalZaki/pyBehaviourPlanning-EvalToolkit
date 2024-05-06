@@ -17,6 +17,8 @@ def FBIPlannerWrapper(args, task, expdetails):
     planner_params = update_fbi_parameters(planner_params, expdetails)
     with OneshotPlanner(name='FBIPlanner',  params=planner_params) as planner:
         result = planner.solve(task)
+    if len(result) == 0: 
+        return {'reason': 'No plans found by fbi'}
     planlist = [r.plan for r in result[0]]
     logmsgs  = result[1]
     # This is hacky by I have no time to properly fix this shit.
@@ -52,17 +54,20 @@ def FIPlannerWrapper(args, task, expdetails):
 
     fienv = os.environ.copy()
     fienv['FI_PLANNER_RUNS'] = tmprun
-    output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
-    planlist = []
-    found_plans = os.path.join(tmpdir, 'found_plans', 'done')
-    if not os.path.exists(found_plans): return {'reason': 'No plans found by fi'}
-    for plan in os.listdir(found_plans):
-        with open(os.path.join(found_plans, plan), 'r') as f:
-            planlist.append(f.read())
-
-    planner_params = read_planner_cfg(args.experiment_file)
-    results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
-    return results
+    try:
+        output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
+    except SubprocessError as e:
+        pass
+    finally:
+        planlist = []
+        found_plans = os.path.join(tmpdir, 'found_plans', 'done')
+        if not os.path.exists(found_plans): return {'reason': 'No plans found by fi'}
+        for plan in os.listdir(found_plans):
+            with open(os.path.join(found_plans, plan), 'r') as f:
+                planlist.append(f.read())
+        planner_params = read_planner_cfg(args.experiment_file)
+        results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
+        return results
 
 def SymKPlannerWrapper(args, task, expdetails):
     planlist = []
