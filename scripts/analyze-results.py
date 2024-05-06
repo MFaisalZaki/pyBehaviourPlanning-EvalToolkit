@@ -4,7 +4,6 @@ from argparse import ArgumentParser
 
 # from .utilities import getkeyvalue
 
-
 def getkeyvalue(data, target_key):
     if isinstance(data, dict):
         if target_key in data:
@@ -28,6 +27,7 @@ def read_scores(directory):
             filepath = os.path.join(directory, filename)
             with open(filepath, 'r') as file:
                 data = json.load(file)
+                if len(data) == 0: continue
                 pass
 
 

@@ -17,8 +17,6 @@ from .constants import *
 
 def solve(args):
     
-    get_environment().credits_stream  = None
-    get_environment().error_used_name = False
     
     results = {}
     expdetails = experiment_reader(args.experiment_file)
@@ -38,6 +36,9 @@ def solve(args):
         domain  = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
         assert domain is not None and problem is not None, "Domain or problem file is not provided."
+        get_environment().credits_stream  = None
+        get_environment().error_used_name = False
+    
         task = PDDLReader().parse_problem(domain, problem)
 
         match expdetails['planner']:

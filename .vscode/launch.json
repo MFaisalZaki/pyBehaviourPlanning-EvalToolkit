@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", 
-            "--exp-details-dir", "${workspaceFolder}/exp-1-details", 
+            "--exp-details-dir", "${workspaceFolder}/exp-behaviour-count", 
             "--sandbox-dir", "${workspaceFolder}/sandbox", 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part"]
@@ -63,8 +63,8 @@
             "program": "${workspaceFolder}/scripts/summaries-errors.py",
             "console": "integratedTerminal",
             "args": [
-            "--error-dir", "${workspaceFolder}/sandbox-fbi-baseline/run_errors",
-            "--bspace-results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results",
+            "--error-dir", "${workspaceFolder}/sandbox/solve-run-errors",
+            "--bspace-results-dir", "${workspaceFolder}/sandbox/score-results",
             ],
             "justMyCode": false
         },

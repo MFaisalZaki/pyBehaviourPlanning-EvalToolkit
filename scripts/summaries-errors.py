@@ -2,7 +2,21 @@ import os
 import json
 from argparse import ArgumentParser
 
-from .utilities import getkeyvalue
+
+def getkeyvalue(data, target_key):
+    if isinstance(data, dict):
+        if target_key in data:
+            return data[target_key]
+        for value in data.values():
+            result = getkeyvalue(value, target_key)
+            if result is not None:
+                return result
+    elif isinstance(data, list):
+        for item in data:
+            result = getkeyvalue(item, target_key)
+            if result is not None:
+                return result
+    return None
 
 common_msgs_commonkey_map_error = {
     'The seed plan ': 'symk-timeouted',
@@ -85,6 +99,7 @@ def read_bspace_logs(directory):
                 data = json.load(file)
                 fbi_logs = getkeyvalue(data, 'fbi-logs')
                 bspace_logs = getkeyvalue(data, 'bspace-logs')
+                if fbi_logs is None and bspace_logs is None: continue
                 read_files_list.append((filepath, fbi_logs + bspace_logs))
     return read_files_list
 
