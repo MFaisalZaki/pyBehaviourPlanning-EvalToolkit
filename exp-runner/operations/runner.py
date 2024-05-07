@@ -7,8 +7,7 @@ from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
 import up_symk
 
-from fbi.shortcuts import *
-from bss.shortcuts import *
+from behaviour_planning_smt.shortcuts import *
 
 from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 
