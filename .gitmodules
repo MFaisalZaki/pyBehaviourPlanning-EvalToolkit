@@ -1,3 +1,6 @@
 [submodule "external-pkgs/classical-domains"]
 	path = external-pkgs/classical-domains
 	url = https://github.com/AI-Planning/classical-domains.git
+[submodule "external-pkgs/pyBehaviourPlanning"]
+	path = external-pkgs/pyBehaviourPlanning
+	url = https://github.com/MFaisalZaki/pyBehaviourPlanning.git
