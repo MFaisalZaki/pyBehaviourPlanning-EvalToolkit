@@ -5,7 +5,7 @@ import json
 import importlib.util
 
 from unified_planning.io import PDDLWriter
-from bss.shortcuts import *
+from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 def parse_experiment_details(expdetailsdir:str):
     """

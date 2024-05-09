@@ -7,7 +7,7 @@ from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
 import up_symk
 
-from behaviour_planning_smt.shortcuts import *
+from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 
