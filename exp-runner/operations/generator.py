@@ -106,6 +106,14 @@ def generate_solve_cmds(args, venv_dir):
                     os.makedirs(rundir, exist_ok=True)
                     os.makedirs(task['tmp-dir'], exist_ok=True)
 
+                    # Add the behaviour space dimensions here also to be used later by fi and fbi.
+                    task['dims'] = []
+                    task['dims'].append(["GoalPredicatesOrdering", "None"])
+                    task['dims'].append(["MakespanOptimalCostBound", {"disable_action_check": False}])
+
+                    if not task['resources'] == 'none':
+                        task['dims'].append(["ResourceCount", task['resources']])
+
                     # Save task json file to the dump directory.
                     task_jsonfile = os.path.join(generated_cmds_dir, f"{filename}.json")
                     with open(task_jsonfile, 'w') as f:

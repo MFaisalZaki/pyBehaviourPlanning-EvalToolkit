@@ -72,6 +72,7 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
                     continue
 
                 # check if the domain and problem instance has resources.
+                planning_problem['resources'] = 'none'
                 if _ipc_year in resources and _domainname in resources[_ipc_year]:
                     if str(_instanceno) in resources[_ipc_year][_domainname]:
                         # maybe I'll consider this later.
@@ -210,6 +211,9 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
             actions = PDDLWriter(task).get_plan(plan)
             cost    = len(actions.split('\n'))
             results['plans'] += [actions + f'; {cost} cost (unit)']
+
+    # Copy the dimensions.
+    results['dims'] = getkeyvalue(expdetails, 'dims')
 
     results['logmsgs'] = logmsgs
     return results
