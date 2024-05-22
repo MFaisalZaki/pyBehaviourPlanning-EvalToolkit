@@ -4,3 +4,6 @@
 [submodule "external-pkgs/pyBehaviourPlanning"]
 	path = external-pkgs/pyBehaviourPlanning
 	url = https://github.com/MFaisalZaki/pyBehaviourPlanning.git
+[submodule "external-pkgs/numeric-domains"]
+	path = external-pkgs/numeric-domains
+	url = https://github.com/pyPMT/numeric-domains.git
