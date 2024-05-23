@@ -10,13 +10,15 @@
             "request": "launch",
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
-            "args": ["generate", 
-            //"--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count", 
+            "args": ["generate", "--partition", "sturm-part",
             "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count-numeric",
-            "--sandbox-dir", "${workspaceFolder}/sandbox", 
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
-            "--partition", "sturm-part"]
+            "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
+
+            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fi-behaviour-count",
+            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains"
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fi", 
+            ]
         },
         {
             "name": "Generate score experiment commands",

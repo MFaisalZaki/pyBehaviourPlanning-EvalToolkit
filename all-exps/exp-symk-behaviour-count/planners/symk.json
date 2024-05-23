@@ -3,5 +3,10 @@
     "planner": "symk",
     "planner-parameters": {
         
-    }
+    },
+    "dims": [
+        ["GoalPredicatesOrdering", "None"],
+        ["MakespanOptimalCostBound", {"disable_action_check": false}],
+        ["ResourceCount", "TODO"]
+    ]
 }

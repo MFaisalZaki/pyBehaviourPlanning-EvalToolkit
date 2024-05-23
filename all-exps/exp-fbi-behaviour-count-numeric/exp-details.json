@@ -1,7 +1,7 @@
 {
     "k": [5, 10, 100, 1000],
     "q": [1.0, 2.0],
-    "resources-file-dir": "",
+    "resources-file-dir": "${currentdir}/functions-domains-info",
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
     "skip-cfgs":[

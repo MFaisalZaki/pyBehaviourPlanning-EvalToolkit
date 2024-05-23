@@ -108,11 +108,17 @@ def generate_solve_cmds(args, venv_dir):
 
                     # Add the behaviour space dimensions here also to be used later by fi and fbi.
                     task['dims'] = []
-                    task['dims'].append(["GoalPredicatesOrdering", "None"])
-                    task['dims'].append(["MakespanOptimalCostBound", {"disable_action_check": False}])
-
-                    if not task['resources'] == 'none':
-                        task['dims'].append(["ResourceCount", task['resources']])
+                    # Read the dimensions from the planner config file.
+                    with open(plannercfg, 'r') as f:
+                        plannercfg_data = json.load(f)
+                        _dims = getkeyvalue(plannercfg_data, 'dims')
+                        if _dims:
+                            for dimname, dimopts in _dims:
+                                if dimname in ['ResourceCount', 'Functions']:
+                                    if not task['resources'] == 'none':
+                                        task['dims'].append([dimname, task['resources']])
+                                else:
+                                    task['dims'].append([dimname, dimopts])               
 
                     # Save task json file to the dump directory.
                     task_jsonfile = os.path.join(generated_cmds_dir, f"{filename}.json")
