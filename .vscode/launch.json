@@ -15,10 +15,11 @@
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
             "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
 
-            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fi-behaviour-count",
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains"
-            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fi", 
-            ]
+            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count",
+            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical"
+            ],
+            "justMyCode": false
         },
         {
             "name": "Generate score experiment commands",
@@ -32,7 +33,8 @@
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part",
             "--for-score-exp",
-            "--score-for-k", "5", "10", "100", "1000"]
+            "--score-for-k", "5", "10", "100", "1000"],
+            "justMyCode": false
         },
         {
             "name": "Run solve experiment command",
@@ -42,9 +44,10 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            // "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
-            // "${workspaceFolder}/sandbox/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
-            "${workspaceFolder}/sandbox/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
+            "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-rover-1-1.0-1000-fbi.json",
+            // "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
+            // "${workspaceFolder}/sandbox-classical/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
+            // "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
             ],
             "justMyCode": false
         },

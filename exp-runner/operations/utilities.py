@@ -72,7 +72,7 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
                     continue
 
                 # check if the domain and problem instance has resources.
-                planning_problem['resources'] = 'none'
+                resourcesfile = None
                 if _ipc_year in resources and _domainname in resources[_ipc_year]:
                     if str(_instanceno) in resources[_ipc_year][_domainname]:
                         # maybe I'll consider this later.
@@ -81,6 +81,9 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
                         with open(resourcesfile, 'w') as f:
                             f.write(resources[_ipc_year][_domainname][str(_instanceno)])
                         planning_problem['resources'] = resourcesfile
+                
+                if not resourcesfile:
+                    planning_problem['resources'] = resourcesfile
                 
                 # Ignore if the domain or problem file does not exist.
                 if not (os.path.exists(planning_problem['domainfile']) and os.path.exists(planning_problem['problemfile'])): 
@@ -223,7 +226,7 @@ def update_fbi_parameters(planner_params, expdetails):
     # Check if we have a resource dimension.
     updated_dims = []
     for idx, (dimname, details) in enumerate(getkeyvalue(planner_params, 'dims')):
-        if 'Resource' in dimname:
+        if 'Resource' in dimname or 'Functions' in dimname:
             resourcesfile = getkeyvalue(expdetails, 'resources')
             if resourcesfile is not None:
                 updated_dims.append([eval(dimname), resourcesfile])

@@ -13,9 +13,10 @@
               ["MakespanOptimalCostBound", {"disable_action_check": false}],
               ["Functions", "TODO"]
             ],
-            "upper-bound": 100,
+            "upper-bound": 11,
             "disable-action-check": false,
-            "run-plan-validation": true
+            "run-plan-validation": true,
+            "init-space-using-planner": false
           }
     }
 }

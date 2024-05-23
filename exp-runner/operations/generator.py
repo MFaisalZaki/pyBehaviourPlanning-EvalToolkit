@@ -115,7 +115,7 @@ def generate_solve_cmds(args, venv_dir):
                         if _dims:
                             for dimname, dimopts in _dims:
                                 if dimname in ['ResourceCount', 'Functions']:
-                                    if not task['resources'] == 'none':
+                                    if not task['resources'] is None:
                                         task['dims'].append([dimname, task['resources']])
                                 else:
                                     task['dims'].append([dimname, dimopts])               

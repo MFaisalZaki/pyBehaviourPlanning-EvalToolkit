@@ -15,7 +15,8 @@
             ],
             "upper-bound": 100,
             "disable-action-check": false,
-            "run-plan-validation": true
+            "run-plan-validation": true,
+            "init-space-using-planner": true
           }
     }
 }
