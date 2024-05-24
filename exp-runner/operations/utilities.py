@@ -3,6 +3,7 @@ from copy import deepcopy
 import os
 import json
 import importlib.util
+import re
 
 from unified_planning.io import PDDLWriter
 from behaviour_planning.over_domain_models.smt.shortcuts import *
@@ -59,7 +60,10 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
             _domainname = domainsproblems[0]['name']
             _ipc_year   = domainsproblems[0]['ipc']
             for no, problem in enumerate(domainsproblems[0]['problems']):
-                _instanceno = no+1
+                try:
+                    _instanceno = int(''.join(re.findall(r'\d+', problem[1])))
+                except:
+                    _instanceno = no+1
                 planning_problem                = defaultdict(dict)
                 planning_problem['domainname']  = _domainname
                 planning_problem['instanceno']  = _instanceno
