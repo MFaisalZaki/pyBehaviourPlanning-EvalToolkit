@@ -16,7 +16,8 @@
             "upper-bound": 11,
             "disable-action-check": false,
             "run-plan-validation": true,
-            "init-space-using-planner": false
+            "init-space-using-planner": false,
+            "disable-after-goal-state-actions": false
           }
     }
 }
