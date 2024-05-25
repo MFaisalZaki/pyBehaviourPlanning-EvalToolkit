@@ -59,6 +59,7 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
             domainsproblems = deepcopy(domain_module.domains)
             _domainname = domainsproblems[0]['name']
             _ipc_year   = domainsproblems[0]['ipc']
+            domainsproblems[0]['problems'].sort(key=lambda x:x[1])
             for no, problem in enumerate(domainsproblems[0]['problems']):
                 _instanceno = no+1
                 planning_problem                = defaultdict(dict)
