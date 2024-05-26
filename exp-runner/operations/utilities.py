@@ -227,16 +227,19 @@ def update_fbi_parameters(planner_params, expdetails):
     updated_parameters = deepcopy(planner_params)
     # Check if we have a resource dimension.
     updated_dims = []
+    q_value = getkeyvalue(expdetails, 'q')
     for idx, (dimname, details) in enumerate(getkeyvalue(planner_params, 'dims')):
-        if 'Resource' in dimname or 'Functions' in dimname:
+        if any(x in dimname for x in ['Resource', 'Functions']):
             resourcesfile = getkeyvalue(expdetails, 'resources')
             if resourcesfile is not None:
                 updated_dims.append([eval(dimname), resourcesfile])
+        elif any(x in dimname for x in ['MakespanOptimalCostBound', 'CostBound']):
+            updated_dims.append([eval(dimname), {'quality-bound-factor': q_value}])
         else:
             updated_dims.append([eval(dimname), details])
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
-    updated_parameters['bspace-cfg']['quality-bound-factor'] = getkeyvalue(expdetails, 'q')
+    updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value
     return updated_parameters
 
 
