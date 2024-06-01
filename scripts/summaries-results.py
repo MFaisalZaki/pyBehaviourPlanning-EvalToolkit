@@ -37,7 +37,7 @@ def read_bspace_results(directory):
                 domain = getkeyvalue(data, 'domain')
                 problem = getkeyvalue(data, 'problem')
                 q = str(getkeyvalue(data, 'q'))
-                results_str = 'f{domain}-{problem}-{q}-{planner}'
+                results_str = f'{domain}-{problem}-{q}-{planner}'
                 read_files_list.append((results_str, len(plans)))
                 k = len(plans)
 

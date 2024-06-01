@@ -85,7 +85,7 @@
             "program": "${workspaceFolder}/scripts/summaries-results.py",
             "console": "integratedTerminal",
             "args": [
-            "--results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump_results"
+            "--results-dir", "${workspaceFolder}/sandbox-fbi-baseline/dump-results"
             ],
             "justMyCode": false
         },
