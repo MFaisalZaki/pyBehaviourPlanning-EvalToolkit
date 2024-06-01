@@ -79,7 +79,7 @@ def generate_solve_cmds(args, venv_dir):
     for plannername, plannercfg in getkeyvalue(expdetails, 'planners').items():
         with open(plannercfg, 'r') as f:
             data = json.load(f)
-            plannerslist.append((plannername, getkeyvalue(data, 'tag'), plannercfg))
+            plannerslist.append((getkeyvalue(data, 'planner'), getkeyvalue(data, 'tag'), plannercfg))
     qlist = getkeyvalue(expdetails, 'q')
     klist = getkeyvalue(expdetails, 'k')
     skip_cfgs = getkeyvalue(expdetails, 'skip-cfgs')
@@ -89,7 +89,7 @@ def generate_solve_cmds(args, venv_dir):
                 for plannername, tag, plannercfg in plannerslist:
                     if (q, k , plannername) in skip_cfgs: 
                         continue
-                    print(f"Generating tasks for q={q}, k={k}, planner={plannername}: {taskidx}/{len(planning_tasks)}")
+                    print(f"Generating tasks for q={q}, k={k}, planner={tag}: {taskidx}/{len(planning_tasks)}")
                     task = deepcopy(planning_task)
                     task['k'] = k
                     task['q'] = q
@@ -97,7 +97,7 @@ def generate_solve_cmds(args, venv_dir):
                     task['planner-cfg'] = plannercfg
                     task['tag']         = tag
 
-                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{plannername}"
+                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{tag}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')
                     task['error-file']       = os.path.join(error_dir, f'{filename}.error')
                     task['tmp-dir']          = os.path.join(tmp_dir, filename)
