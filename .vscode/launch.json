@@ -11,9 +11,13 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", "--partition", "sturm-part",
-            "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count-numeric",
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
-            "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
+            "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-different-encodings",
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
+
+            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count-numeric",
+            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
 
             // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
@@ -44,11 +48,13 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
+            "/home/ma342/developer/pyBehaviourPlanning-EvalToolkit/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-3-2.0-1000-fbi-qfuf.json"
+
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-rover-1-1.0-1000-fbi.json"
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-ext-plant-watering-4-1.0-1000-fbi.json"
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-satellite-1-1.0-1000-fbi.json"
 
-            "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-3-2.0-1000-fbi.json"
+            // "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-3-2.0-1000-fbi.json"
             // "${workspaceFolder}/sandbox-classical/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
             // "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
             ],
@@ -63,6 +69,20 @@
             "args": ["score", 
             "--experiment-file", "${workspaceFolder}/sandbox-fi-behaviour-count/dump-results/1998-gripper-1-1.0-100-fi.json",
             "--k", "10"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Analyze different encoding experiment results",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-analyzer/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "analyze", 
+                "--compare-different-encodings-run",
+                "--dump-results-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/analysis-results"
             ],
             "justMyCode": false
         },
