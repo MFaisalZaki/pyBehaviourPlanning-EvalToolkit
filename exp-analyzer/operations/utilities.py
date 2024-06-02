@@ -47,6 +47,10 @@ def read_files(exp_dir):
                 # read the sat-time
                 ret_results[domain][problem][k][q][tag]["sat-time"] = getkeyvalue(data, "sat-time")
 
+                # check if the planner has solved the planning task.
+                plans = getkeyvalue(data, "plans")
+                ret_results[domain][problem][k][q][tag]["solved"] = not (plans is None or len(plans) < k)
+
     return ret_results
 
 def dump_list_to_csv(csv_dump, output_file):

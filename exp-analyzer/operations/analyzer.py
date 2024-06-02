@@ -20,6 +20,7 @@ def count_solved_instances(results):
                     for tag, tag_results in q_results.items():
                         if not q in counter_values: counter_values[q] = defaultdict(dict)
                         if not k in counter_values[q]: counter_values[q][k] = defaultdict(dict)
+                        if not tag_results['solved']: continue
                         if not tag in counter_values[q][k]: counter_values[q][k][tag] = []
                         counter_values[q][k][tag].append(os.path.join(domain, problem))
 
@@ -78,7 +79,7 @@ def analyze_sat_time(results):
                 for k, k_results in q_results.items():
                     for tag, tag_results in k_results.items():
                         solved_instances_by_all_planners.append((domain, problem, q, k))
-    solved_instances_by_all_planners = list(filter(lambda item: item[1] > 2, Counter(solved_instances_by_all_planners).items()))
+    solved_instances_by_all_planners = list(filter(lambda item: item[1] == len(planners_tags), Counter(solved_instances_by_all_planners).items()))
     pass
 
 
