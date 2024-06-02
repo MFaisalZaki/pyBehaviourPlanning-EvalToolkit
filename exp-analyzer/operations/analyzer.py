@@ -80,6 +80,21 @@ def analyze_sat_time(results):
                     for tag, tag_results in k_results.items():
                         solved_instances_by_all_planners.append((domain, problem, q, k))
     solved_instances_by_all_planners = list(filter(lambda item: item[1] == len(planners_tags), Counter(solved_instances_by_all_planners).items()))
+
+    # gather the sat time for each planner per domain.
+    sat_time_per_domain = defaultdict(dict)
+    for (domain, problem, q, k), _ in solved_instances_by_all_planners:
+        domain_problem = os.path.join(domain, problem).replace(".pddl", "").replace("/", "-")
+        sat_time_per_domain[domain_problem] = defaultdict(dict)
+        sat_time_per_domain[domain_problem][q] = defaultdict(dict)
+        sat_time_per_domain[domain_problem][q][k] = defaultdict(dict)
+        for tag in planners_tags:
+            sat_time_per_domain[domain_problem][q][k][tag] = domain_sat_time_results[domain][problem][q][k][tag]
+        pass
+    
+    
+    
+    
     pass
 
 
