@@ -7,7 +7,8 @@ from collections import Counter
 
 from .utilities import (
     read_files,
-    dump_list_to_csv
+    dump_list_to_csv,
+    remove_entries
 )
 
 # We need a function to read experiments file and group them by planner, domain, problem
@@ -15,14 +16,20 @@ def count_solved_instances(results):
     counter_values = defaultdict(dict)
     for domain, domain_results in results.items():
         for problem, problem_results in domain_results.items():
-            for k, k_results in problem_results.items():
-                for q, q_results in k_results.items():
-                    for tag, tag_results in q_results.items():
+            for q, q_results in problem_results.items():
+                for k, k_results in q_results.items():
+                    for tag, tag_results in k_results.items():
                         if not q in counter_values: counter_values[q] = defaultdict(dict)
                         if not k in counter_values[q]: counter_values[q][k] = defaultdict(dict)
                         if not tag_results['solved']: continue
                         if not tag in counter_values[q][k]: counter_values[q][k][tag] = []
                         counter_values[q][k][tag].append(os.path.join(domain, problem))
+
+    # Count the common instances.
+    common_instances = defaultdict(dict)
+    for q, q_results in counter_values.items():
+        for k, k_results in q_results.items():
+            common_instances[q][k] = len(set.intersection(*map(set, k_results.values())))
 
     # Now count the number of solved instances for each planner inside this configuration
     for q, q_results in counter_values.items():
@@ -35,23 +42,13 @@ def count_solved_instances(results):
     for q, q_results in counter_values.items():
         for k, k_results in q_results.items():
             for tag, tag_results in k_results.items():
-                csv_dump.append(f'{q}, {k}, {tag}, {tag_results}')
+                csv_dump.append(f'{q}, {k}, {common_instances[q][k]}, {tag}, {tag_results}')
     # sort based on the q, k then tag.
-    csv_dump = sorted(csv_dump, key=lambda x: (float(x.split(",")[0]), int(x.split(",")[1]), x.split(",")[2]))
-    csv_dump = ['q, k, tag, solved_instances'] + csv_dump
+    csv_dump = sorted(csv_dump, key=lambda x: (float(x.split(",")[0]), int(x.split(",")[1]), x.split(",")[3]))
+    csv_dump = ['q, k, common instances, tag, solved_instances'] + csv_dump
     return csv_dump
 
 def analyze_sat_time(results):
-    def _remove_entries(dict_sat, _to_remove_keys):
-        for domain, problem, q, k in _to_remove_keys:
-            if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and k in dict_sat[domain][problem][q]:
-                del dict_sat[domain][problem][q][k]
-            if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and len(dict_sat[domain][problem][q]) == 0:
-                del dict_sat[domain][problem][q]
-            if domain in dict_sat and problem in dict_sat[domain] and len(dict_sat[domain][problem]) == 0:
-                del dict_sat[domain][problem]
-            if domain in dict_sat and len(dict_sat[domain]) == 0:
-                del dict_sat[domain]
 
     planners_tags = set()
     domain_sat_time_results = defaultdict(dict)
@@ -97,12 +94,35 @@ def analyze_sat_time(results):
     
     pass
 
+def remove_entries_with_more_than_cost_bound(results, cost_bound):
+    _remove_keys = []
+    _removed_from_planners = defaultdict(dict)
+    for domain, domain_results in results.items():
+        for problem, problem_results in domain_results.items():
+            for q, q_results in problem_results.items():
+                for k, k_results in q_results.items():
+                    for tag, tag_results in k_results.items():
+                        if not tag in _removed_from_planners: _removed_from_planners[tag] = []
+                        if max(tag_results["plan-length-range"]) > cost_bound:
+                            _remove_keys.append((domain, problem, q, k))
+                            _removed_from_planners[tag].append((domain, problem, q, k))
+    # start removing the entries.
+    remove_entries(results, _remove_keys)
+    # string the removed instances count for each planner.
+    header = sorted(list(_removed_from_planners.keys()))
+    removed_results = [str(len(_removed_from_planners[p])) for p in header]
+    return results, [', '.join(header)] + [', '.join(removed_results)]
+
 
 def analyze_different_encodings(args):
     # read experiments files.
     planners_results = read_files(args.dump_results_dir)
+    # remove any instances where any of the planner generates plans with more that a cost bound of 25.
+    planners_results, removed_instances_count = remove_entries_with_more_than_cost_bound(planners_results, 25)
     # count the number of solved instances for each planner inside this configuration
     solved_instaces_count = count_solved_instances(planners_results)
+    # append the number of removed instances.
+    solved_instaces_count +=  ['------ removed instances count ------'] + removed_instances_count
     # dump the results to a CSV file.
     dump_list_to_csv(solved_instaces_count, os.path.join(args.output_dir, "solved_instances.csv"))
     # analyze the sat-time for each planner per domain.
