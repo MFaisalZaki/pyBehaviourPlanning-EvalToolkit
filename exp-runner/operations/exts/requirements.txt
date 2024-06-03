@@ -5,3 +5,4 @@ up-pyperplan
 networkx
 pytest
 git+https://github.com/MFaisalZaki/forbiditerative.git
+git+https://github.com/MFaisalZaki/DiverseScore.git

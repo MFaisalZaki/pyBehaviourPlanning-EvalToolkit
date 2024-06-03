@@ -1,0 +1,12 @@
+{
+    "tag": "fi",
+    "planner": "fi",
+    "planner-parameters": {
+        "selection-method": "first-k"
+    },
+    "dims": [
+        ["GoalPredicatesOrdering", "None"],
+        ["MakespanOptimalCostBound", {"disable_action_check": false}],
+        ["ResourceCount", "TODO"]
+    ]
+}

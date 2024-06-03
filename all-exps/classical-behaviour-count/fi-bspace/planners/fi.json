@@ -2,7 +2,7 @@
     "tag": "fi",
     "planner": "fi",
     "planner-parameters": {
-        
+        "selection-method": "bspace"
     },
     "dims": [
         ["GoalPredicatesOrdering", "None"],

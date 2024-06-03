@@ -1,0 +1,12 @@
+{
+    "tag": "fi",
+    "planner": "fi",
+    "planner-parameters": {
+        "selection-method": "maxsum"
+    },
+    "dims": [
+        ["GoalPredicatesOrdering", "None"],
+        ["MakespanOptimalCostBound", {"disable_action_check": false}],
+        ["ResourceCount", "TODO"]
+    ]
+}

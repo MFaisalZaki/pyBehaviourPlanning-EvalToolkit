@@ -1,6 +1,6 @@
 import tempfile
 import os
-
+import json
 import sys
 import subprocess
 import logging
@@ -8,6 +8,8 @@ from subprocess import SubprocessError
 
 from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
+
+
 
 from .utilities import update_fbi_parameters, generate_summary_file, updatekeyvalue, getkeyvalue, read_planner_cfg
 
@@ -28,6 +30,14 @@ def FBIPlannerWrapper(args, task, expdetails):
     return results
 
 def FIPlannerWrapper(args, task, expdetails):
+
+    def _selection_using_first_k(k, _planlist):
+        return _planlist[:k] if len(_planlist) > k else _planlist
+    
+    def _selection_maxsum(args, task, k, _planlist):
+        if len(_planlist) <= k: return _planlist
+        pass
+
 
     cmd  = [sys.executable]
     cmd += ["-m"]
@@ -65,8 +75,30 @@ def FIPlannerWrapper(args, task, expdetails):
         for plan in os.listdir(found_plans):
             with open(os.path.join(found_plans, plan), 'r') as f:
                 planlist.append(f.read())
+        
+        # select plans based on the selection criteria.
+        with open(getkeyvalue(expdetails, 'planner-cfg'), 'r') as f:
+            planner_cfg = json.load(f)
+        selection_method = getkeyvalue(planner_cfg, 'selection-method')
+
+        match selection_method:
+            case 'first-k':
+                planlist = _selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
+            case 'bspace':
+                pass
+            case 'maxsum':
+                pass
+            case _:
+                assert False, f"Unknown selection method: {selection_method}"
+
         planner_params = read_planner_cfg(args.experiment_file)
         results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
+
+        
+
+
+
+
         return results
 
 def SymKPlannerWrapper(args, task, expdetails):
