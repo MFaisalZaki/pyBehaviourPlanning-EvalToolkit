@@ -66,17 +66,20 @@ def analyze_sat_time(results, dump_dir):
             for q, q_results in problem_results.items():
                 for k, k_results in q_results.items():
                     for tag, tag_results in k_results.items():
+                        # ignore the timeout instances,. timeout is 600.0 seconds, we may want to have this as a parameter.
+                        timeout_instance = list(map(lambda x: eval(x.split(',')[1]) == 600.0, tag_results["sat-time"]))
+                        if all(timeout_instance): continue
+                        index = next((index for index, item in enumerate(tag_results["sat-time"]) if 'False' in item), None)
+                        # remove the sat time for the plans and focus on the sat time for the behaviours only.
+                        if index is not None: tag_results["sat-time"] = tag_results["sat-time"][:index]
+                        if len(tag_results["sat-time"]) == 0: continue
+                        
                         if not domain in domain_sat_time_results: domain_sat_time_results[domain] = defaultdict(dict)
                         if not problem in domain_sat_time_results[domain]: domain_sat_time_results[domain][problem] = defaultdict(dict)
                         if not q in domain_sat_time_results[domain][problem]: domain_sat_time_results[domain][problem][q] = defaultdict(dict)
                         if not k in domain_sat_time_results[domain][problem][q]: domain_sat_time_results[domain][problem][q][k] = defaultdict(dict)
+                                                
                         if not tag in domain_sat_time_results[domain][problem][q][k]: domain_sat_time_results[domain][problem][q][k][tag] = []
-                        # ignore the timeout instances,. timeout is 600.0 seconds, we may want to have this as a parameter.
-                        timeout_instance = list(map(lambda x: eval(x.split(',')[1]) == 600.0, tag_results["sat-time"]))
-                        if any(timeout_instance) > 0: continue
-                        index = next((index for index, item in enumerate(tag_results["sat-time"]) if 'False' in item), None)
-                        # remove the sat time for the plans and focus on the sat time for the behaviours only.
-                        if index is not None: tag_results["sat-time"] = tag_results["sat-time"][:index]
                         domain_sat_time_results[domain][problem][q][k][tag].append(tag_results["sat-time"])
                         planners_tags.add(tag)
 
