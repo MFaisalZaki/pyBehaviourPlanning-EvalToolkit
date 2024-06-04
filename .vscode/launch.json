@@ -11,13 +11,13 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", "--partition", "sturm-part",
-            "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-different-encodings",
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
-            "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
+            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-different-encodings",
+            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
 
-            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count-numeric",
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
-            // "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
+            "--exp-details-dir", "${workspaceFolder}/exps/numeric-behaviour-count/fbi",
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
+            "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
 
             // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
@@ -48,7 +48,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fi-maxsum/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
+            "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-rover-1-1.0-1000-fbi-new-implementation.json"
 
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-rover-1-1.0-1000-fbi.json"
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-ext-plant-watering-4-1.0-1000-fbi.json"

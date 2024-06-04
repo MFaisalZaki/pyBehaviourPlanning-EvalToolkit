@@ -1,5 +1,3 @@
-
-
 python3.11 exp-runner/initenv.py
 
 mkdir -p sandbox-classical-behaviour-count-exp
@@ -12,4 +10,4 @@ mkdir -p sandbox-classical-behaviour-count-exp
 ./scripts/generate-solve-exp.sh $(pwd)/exps/different-encodings/fbi $(pwd)/sandbox-fbi-different-encodings
 
 mkdir -p sandbox-numeric-behaviour-count-exp
-./scripts/generate-solve-exp.sh $(pwd)/exps/numeric-behaviour-count/exp-fbi-behaviour-count $(pwd)/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count
+./scripts/generate-solve-exp.sh $(pwd)/exps/numeric-behaviour-count/fbi $(pwd)/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count
