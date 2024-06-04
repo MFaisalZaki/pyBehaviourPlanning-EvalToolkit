@@ -11,15 +11,15 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", "--partition", "sturm-part",
-            "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-different-encodings",
+            "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-different-encodings",
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
 
-            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count-numeric",
+            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count-numeric",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
             // "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
 
-            // "--exp-details-dir", "${workspaceFolder}/all-exps/exp-fbi-behaviour-count",
+            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             // "--sandbox-dir", "${workspaceFolder}/sandbox-classical"
             ],
