@@ -48,7 +48,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fi-bspace/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fi-maxsum/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
 
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-rover-1-1.0-1000-fbi.json"
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-ext-plant-watering-4-1.0-1000-fbi.json"

@@ -3,7 +3,6 @@ from copy import deepcopy
 import os
 import json
 import importlib.util
-import re
 
 from unified_planning.io import PDDLWriter
 from behaviour_planning.over_domain_models.smt.shortcuts import *
@@ -242,7 +241,6 @@ def update_fbi_parameters(planner_params, expdetails):
     updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value
     return updated_parameters
 
-
 def construct_behaviour_space(dims):
     updated_dims = []
     for idx, (dimname, details) in enumerate(dims):
@@ -253,3 +251,12 @@ def construct_behaviour_space(dims):
         else:
             updated_dims.append([eval(dimname), details])
     return updated_dims
+
+def get_ibm_diversescore_binary():
+    return os.path.join(os.path.dirname(__file__), '..', 'ibm-diversescore', 'fast-downward.py')
+
+def dump_plan_set(planset, dumpdir):
+    os.makedirs(dumpdir, exist_ok=True)
+    for i, plan in enumerate(planset):
+        with open(os.path.join(dumpdir, f'sas_plan.{i+1}'), 'w') as f:
+            f.write(f'{plan}')

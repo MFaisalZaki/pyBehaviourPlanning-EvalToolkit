@@ -12,7 +12,15 @@ from unified_planning.io import PDDLReader
 
 from behaviour_planning.over_domain_models.smt.shortcuts import BehaviourSpace, GoalPredicatesOrdering, MakespanOptimalCostBound, ResourceCount
 
-from .utilities import update_fbi_parameters, generate_summary_file, updatekeyvalue, getkeyvalue, read_planner_cfg
+from .utilities import (
+    update_fbi_parameters, 
+    generate_summary_file, 
+    updatekeyvalue, 
+    getkeyvalue, 
+    read_planner_cfg,
+    dump_plan_set,
+    get_ibm_diversescore_binary
+)
 
 def FBIPlannerWrapper(args, task, expdetails):
     # Update the behaviour space with the resources file if exists.
@@ -43,15 +51,35 @@ def FIPlannerWrapper(args, task, expdetails):
         
         domainfile        = getkeyvalue(exp_details, 'domainfile')
         problemfile       = getkeyvalue(exp_details, 'problemfile')
-        dumpplansetsize   = len(_planlist)
-        selectplansetsize = k
-        metricslist       = ['stability']
-        dump_json_file    = os.path.join(_tmprun, 'selected-plans')
-        assert False, "This is not implemented yet."
-        pass
+        metric            = 'stability'
+        plans_dump_dir    = os.path.join(_tmprun, 'plans-dump')
+        score_run_dir     = os.path.join(_tmprun, 'score-run')
+        
+        # first dump the plans to a directory in sas file format.
+        dump_plan_set(_planlist, plans_dump_dir)
+
+        # construct the score command for the IBM diverse score.
+        score = f"subset(compute_{metric.lower()}_metric=true,aggregator_metric=avg,plans_as_multisets=false,plans_subset_size={k},exact_method=false,similarity=false,reduce_labels=false,dump_plans=true)"
+        cmd = [sys.executable, 
+               get_ibm_diversescore_binary(), 
+               domainfile, 
+               problemfile, 
+               "--diversity-score", score, 
+               "--internal-plan-files-path", plans_dump_dir, 
+               "--internal-num-plans-to-read", str(len(_planlist))]
+        
+        # select plans based on the stability metric.
+        os.makedirs(score_run_dir, exist_ok=True)
+        result = subprocess.check_output(cmd, universal_newlines=True, cwd=score_run_dir)
+
+        # read the selected plans from the score_run_dir.
+        selected_plans = []
+        for plan in os.listdir(score_run_dir):
+            with open(os.path.join(score_run_dir, plan), 'r') as f:
+                selected_plans.append(f.read())    
+        return selected_plans
     
     def _selection_bspace(_args, _task, k, _planlist):
-        k = 3 # for development now.
         with open(_args.experiment_file, 'r') as exp_details_file:
             exp_details = json.load(exp_details_file)
         exp_details['base-planner-cfg'] = {'k': k }
