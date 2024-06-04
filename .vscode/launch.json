@@ -81,8 +81,11 @@
             "args": [
                 "analyze", 
                 "--compare-different-encodings-run",
-                "--dump-results-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/analysis-results"
+                "--dump-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/analysis-results"
+
+                // "--dump-results-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/dump-results",
+                // "--output-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/analysis-results"
             ],
             "justMyCode": false
         },
