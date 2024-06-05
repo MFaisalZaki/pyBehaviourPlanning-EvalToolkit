@@ -55,9 +55,11 @@
             // "${workspaceFolder}/sandbox-numeric/experiment-tasks/None-satellite-1-1.0-1000-fbi.json"
 
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/experiment-tasks/2006-rovers-3-2.0-1000-fbi-new-implementation.json"
-            "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-qfuf.json"
-            // "${workspaceFolder}/sandbox-classical/experiment-tasks/1998-assembly-1-1.0-5-symk.json"
-            // "${workspaceFolder}/sandbox-classical/experiment-tasks/2006-rovers-1-1.0-5-fi.json"
+            // "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-qfuf.json"
+            // "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-seq.json"
+            // "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-r2e.json"
+
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count/experiment-tasks/None-rover-3-1.0-1000-fbi-seq.json"
             ],
             "justMyCode": false
         },

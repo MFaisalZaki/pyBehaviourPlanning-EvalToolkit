@@ -1,5 +1,5 @@
 {
-    "tag": "fbi-smt",
+    "tag": "fbi-seq",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
