@@ -11,4 +11,4 @@ else
     PARTITION=$3
 fi
 
-source v-env/bin/activate && python $(pwd)/exp-runner/main.py generate --exp-details-dir $1 --sandbox-dir $2 --planning-tasks-dir $(pwd)/external-pkgs/classical-domains --partition $PARTITION --for-score-exp --score-for-k 5 10 100 1000 && deactivate
+source v-env/bin/activate && python $(pwd)/exp-runner/main.py generate --exp-details-dir $1 --sandbox-dir $2 --planning-tasks-dir $3 --partition $PARTITION --for-score-exp --score-for-k 5 10 100 1000 && deactivate
