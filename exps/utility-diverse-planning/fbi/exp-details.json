@@ -1,0 +1,17 @@
+{
+    "k": [5, 10, 100, 1000],
+    "q": [1.0, 2.0],
+    "resources-file-dir": "${currentdir}/classical-domains-ru-info",
+    "timelimit": "00:30:00",
+    "memorylimit": "16GB",
+    "skip-cfgs":[
+        [1.0, 5, "fbi"],
+        [2.0, 5, "fbi"],
+        [1.0, 10, "fbi"],
+        [2.0, 10, "fbi"],
+        [1.0, 100, "fbi"],
+        [2.0, 100, "fbi"]
+    ],
+    "selected-planning-instances": [
+    ]
+}
