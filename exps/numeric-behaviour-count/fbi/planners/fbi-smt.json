@@ -1,10 +1,14 @@
 {
-    "tag": "fbi",
+    "tag": "fbi-smt",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
-            "planner-name": "symk-opt",
-            "symk_search_time_limit": "900s"
+            "planner-name": "SMTPlanner",
+            "encoder": "EncoderSequentialSMT", 
+            "upper-bound": 100, 
+            "search-strategy": "SMTSearch", 
+            "configuration": "seq", 
+            "run-validation": false
           },
           "bspace-cfg": {
             "solver-timeout-ms": 600000,
@@ -12,7 +16,7 @@
             "dims": [
               ["GoalPredicatesOrdering", "None"],
               ["MakespanOptimalCostBound", {}],
-              ["ResourceCount", "TODO"]
+              ["Functions", "TODO"]
             ],
             "run-plan-validation": true,
             "disable-after-goal-state-actions": false

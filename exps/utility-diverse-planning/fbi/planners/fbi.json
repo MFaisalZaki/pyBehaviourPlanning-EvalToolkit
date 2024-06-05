@@ -13,7 +13,6 @@
             ],
             "upper-bound": 50,
             "run-plan-validation": true,
-            "init-space-using-planner": false,
             "disable-after-goal-state-actions": false
           }
     }

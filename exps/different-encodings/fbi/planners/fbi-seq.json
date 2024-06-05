@@ -3,20 +3,17 @@
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
-            "base-planner": "PlanningType.SYMK",
-            "solver-timeout-ms": 600000,
-            "solver-memorylimit-mb": 16000
           },
           "bspace-cfg": {
+            "solver-timeout-ms": 600000,
+            "solver-memorylimit-mb": 16000,
             "dims": [
               ["GoalPredicatesOrdering", "None"],
               ["MakespanOptimalCostBound", {"cost-bound-value": 20}],
               ["ResourceCount", "TODO"]
             ],
             "upper-bound": 25,
-            "disable-action-check": false,
             "run-plan-validation": true,
-            "init-space-using-planner": false,
             "disable-after-goal-state-actions": false,
             "encoder": "seq"
           }
