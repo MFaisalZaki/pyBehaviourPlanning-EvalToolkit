@@ -1,5 +1,5 @@
 {
-    "tag": "fi",
+    "tag": "fi-first-k",
     "planner": "fi",
     "planner-parameters": {
         "selection-method": "first-k"

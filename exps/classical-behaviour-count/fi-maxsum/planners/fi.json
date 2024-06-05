@@ -1,5 +1,5 @@
 {
-    "tag": "fi",
+    "tag": "fi-maxsum",
     "planner": "fi",
     "planner-parameters": {
         "selection-method": "maxsum"

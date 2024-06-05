@@ -1,5 +1,5 @@
 {
-    "tag": "fi",
+    "tag": "fi-bspace",
     "planner": "fi",
     "planner-parameters": {
         "selection-method": "bspace"
