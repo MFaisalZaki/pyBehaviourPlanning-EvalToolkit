@@ -1,12 +1,12 @@
 {
-    "k": [5, 1000],
-    "q": [2.0],
+    "k": [1000],
+    "q": [1.0],
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
-    "is-utility-planning" : false,
+    "is-utility-planning" : true,
+    "cost-bound-factor" : 0.5,
     "skip-cfgs":[
-
     ],
     "selected-planning-instances": [
         "(2000, schedule, 9)",

@@ -11,13 +11,18 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", "--partition", "sturm-part",
+            "--exp-details-dir", "${workspaceFolder}/exps/utility-diverse-planning",
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            "--sandbox-dir", "${workspaceFolder}/sandbox-diverse-utility-planning"
+
+
             // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-different-encodings",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
 
-            "--exp-details-dir", "${workspaceFolder}/exps/numeric-behaviour-count/fbi",
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
-            "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
+            // "--exp-details-dir", "${workspaceFolder}/exps/numeric-behaviour-count/fbi",
+            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
 
             // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count",
             // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
@@ -59,7 +64,10 @@
             // "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-seq.json"
             // "${workspaceFolder}/sandbox-fbi-different-encodings/experiment-tasks/2006-rovers-1-2.0-5-fbi-r2e.json"
 
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count/experiment-tasks/None-rover-3-1.0-1000-fbi-seq.json"
+            //"${workspaceFolder}/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count/experiment-tasks/None-rover-3-1.0-1000-fbi-seq.json"
+
+            // "${workspaceFolder}/sandbox-diverse-utility-planning/experiment-tasks/2006-rovers-3-1.0-1000-fbi.json"
+            "${workspaceFolder}/sandbox-diverse-utility-planning/experiment-tasks/2006-rovers-3-1.0-1000-symk.json"
             ],
             "justMyCode": false
         },

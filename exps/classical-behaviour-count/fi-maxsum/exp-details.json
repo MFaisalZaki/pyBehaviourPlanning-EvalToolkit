@@ -4,6 +4,7 @@
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
+    "is-utility-planning" : false,
     "skip-cfgs":[
     ],
     "selected-planning-instances": [

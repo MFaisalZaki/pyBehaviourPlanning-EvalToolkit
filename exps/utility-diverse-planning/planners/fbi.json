@@ -1,13 +1,14 @@
 {
-    "tag": "fbi-new-implementation",
+    "tag": "fbi",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
-            "base-planner": "PlanningType.SMT",
-            "solver-timeout-ms": 600000,
-            "solver-memorylimit-mb": 16000
+          "planner-name": "symk-opt",
+          "symk_search_time_limit": "900s"
           },
           "bspace-cfg": {
+            "solver-timeout-ms": 600000,
+            "solver-memorylimit-mb": 16000,
             "dims": [
               ["Utility", "TODO"]
             ],

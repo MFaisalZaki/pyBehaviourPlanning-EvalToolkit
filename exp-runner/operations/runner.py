@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 
+import unified_planning as up
 from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
 import up_symk
@@ -38,7 +39,17 @@ def solve(args):
         
         get_environment().credits_stream  = None
         get_environment().error_used_name = False
+        
+        # Update task with oversubscription metric if the planning problem is utility-planning.
         task = PDDLReader().parse_problem(domain, problem)
+        if getkeyvalue(expdetails, 'is-utility-planning'):
+            goals = {}
+            for i, goal in enumerate(task.goals):
+                i = i + 1
+                for j, g in enumerate(goal.args):
+                    j = j + 1
+                    goals[g] = i * j
+            task.add_quality_metric(up.model.metrics.Oversubscription(goals))
 
         match expdetails['planner']:
             case 'fbi':

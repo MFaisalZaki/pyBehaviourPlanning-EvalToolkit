@@ -170,18 +170,44 @@ def FIPlannerWrapper(args, task, expdetails):
         return results
 
 def SymKPlannerWrapper(args, task, expdetails):
+
     planlist = []
     k = getkeyvalue(expdetails, 'k')
     q = getkeyvalue(expdetails, 'q')
-    search_config = f"symq-bd(plan_selection=top_k(num_plans={k},dump_plans=true),quality={q})"
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
 
-    with tempfile.TemporaryDirectory(dir=tmpdir) as tmpdirname:        
-        with AnytimePlanner(name='symk-opt', params={"symk_anytime_search_config": search_config}) as planner:
-            for i, result in enumerate(planner.get_solutions(task)):
-                if result.status == ResultsStatus.INTERMEDIATE:
-                    planlist.append(result.plan) if i < k else None
-    
+    if getkeyvalue(expdetails, 'is-utility-planning'):
+        tmpdir_onshot = os.path.join(tmpdir, 'tmp-onshot-dir')
+        os.makedirs(tmpdir_onshot, exist_ok=True)
+        oversubscription_metric = task.quality_metrics.pop()
+        # solve the planning problem first without the oversubscription metric.
+        cost_bound = None
+        with tempfile.TemporaryDirectory(dir=tmpdir_onshot) as tmpdirname:        
+            with OneshotPlanner(name="symk-opt") as planner:
+                result = planner.solve(task)
+                plan = result.plan
+                assert plan is not None, "No plan found by symk"
+                cost_bound = int(len(plan.actions) * getkeyvalue(expdetails, 'cost-bound-factor'))
+        # now remove the hard goals then generate k plans with different utilities.
+        _ = task.goals.pop()
+        task.add_quality_metric(oversubscription_metric)
+        tmpdir_anytime = os.path.join(tmpdir, 'tmp-anytime-dir')
+        os.makedirs(tmpdir_anytime, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=tmpdir_anytime) as tmpdirname:        
+            with AnytimePlanner(name='symk', params={"plan_cost_bound": cost_bound, "number_of_plans": k}) as planner:
+                for i, result in enumerate(planner.get_solutions(task)):
+                    if result.status == ResultsStatus.INTERMEDIATE:
+                        planlist.append(result.plan) if i < k else None
+            # remove empty plans.
+            planlist = list(filter(lambda p: len(p.actions) > 0, planlist))
+    else:
+        search_config = f"symq-bd(plan_selection=top_k(num_plans={k},dump_plans=true),quality={q})"
+        with tempfile.TemporaryDirectory(dir=tmpdir) as tmpdirname:        
+            with AnytimePlanner(name='symk-opt', params={"symk_anytime_search_config": search_config}) as planner:
+                for i, result in enumerate(planner.get_solutions(task)):
+                    if result.status == ResultsStatus.INTERMEDIATE:
+                        planlist.append(result.plan) if i < k else None
+
     planner_params = read_planner_cfg(args.experiment_file)
     results = generate_summary_file(task, expdetails, 'symk', planner_params, planlist, [])
     return results
