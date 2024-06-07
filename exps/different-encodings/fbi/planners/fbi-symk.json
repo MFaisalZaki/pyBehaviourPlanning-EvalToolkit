@@ -1,5 +1,5 @@
 {
-    "tag": "fbi-symk-seq",
+    "tag": "symk-seq",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
