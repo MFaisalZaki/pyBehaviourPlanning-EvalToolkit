@@ -85,6 +85,8 @@ def generate_solve_cmds(args, venv_dir):
     skip_cfgs = getkeyvalue(expdetails, 'skip-cfgs')
     is_utility_planning = getkeyvalue(expdetails, 'is-utility-planning')
     cost_bound_factor = getkeyvalue(expdetails, 'cost-bound-factor')
+    compute_behaviour_count = getkeyvalue(expdetails, 'compute-behaviour-count')
+    behaviour_count_k_list  = getkeyvalue(expdetails, 'behaviour-count-k-list')
     for taskidx, planning_task in enumerate(planning_tasks):
         for q in qlist:
             for k in klist:
@@ -100,6 +102,8 @@ def generate_solve_cmds(args, venv_dir):
                     task['tag']         = tag
                     task['is-utility-planning'] = is_utility_planning
                     task['cost-bound-factor'] = cost_bound_factor
+                    task['compute-behaviour-count'] = compute_behaviour_count
+                    task['behaviour-count-k-list'] = behaviour_count_k_list
 
                     filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{tag}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')

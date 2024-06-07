@@ -5,6 +5,8 @@
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
     "is-utility-planning" : false,
+    "compute-behaviour-count": true,
+    "behaviour-count-k-list": [5, 10, 100, 1000],
     "skip-cfgs":[
         [1.0, 5, "fbi"],
         [2.0, 5, "fbi"],

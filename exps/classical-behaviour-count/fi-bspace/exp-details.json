@@ -5,6 +5,8 @@
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
     "is-utility-planning" : false,
+    "compute-behaviour-count": true,
+    "behaviour-count-k-list": [],
     "skip-cfgs":[
     ],
     "selected-planning-instances": [

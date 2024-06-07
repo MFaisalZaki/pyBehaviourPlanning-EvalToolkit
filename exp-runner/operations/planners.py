@@ -91,7 +91,7 @@ def FIPlannerWrapper(args, task, expdetails):
 
         # compute upper bound.
         upper_bound = max([len(p.actions) for p in planlist])
-        cfg['encoder']     = 'seq' 
+        cfg['encoder']     = 'qfuf' 
         cfg['upper-bound'] = upper_bound
         cfg['run-plan-validation'] = False
         cfg['disable-after-goal-state-actions'] = True

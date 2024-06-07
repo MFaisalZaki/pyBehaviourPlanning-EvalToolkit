@@ -58,6 +58,42 @@ def solve(args):
                 results = FIPlannerWrapper(args, task, expdetails)
             case 'symk':
                 results = SymKPlannerWrapper(args, task, expdetails)
+
+        # check if the behaviour count is required to be compute.
+        if expdetails['compute-behaviour-count']:
+            k_list = expdetails['behaviour-count-k-list']
+            if len(k_list) == 0: k_list = [expdetails['k']]
+
+            planlist = [PDDLReader().parse_plan_string(task, p) for p in results['plans']]
+
+            # compute upper bound.
+            upper_bound = max([len(p.actions) for p in planlist])
+            cfg = dict()
+            cfg['encoder']     = 'qfuf' 
+            cfg['upper-bound'] = upper_bound
+            cfg['run-plan-validation'] = False
+            cfg['disable-after-goal-state-actions'] = True
+            cfg['is-utility-planning'] = False
+            cfg['dims'] = construct_behaviour_space(getkeyvalue(expdetails, 'dims'))
+
+            diversity_scores_results = {k: 0 for k in k_list}
+            bspace = BehaviourSpace(task, cfg)
+            
+            for k in k_list:
+                if k > len(planlist): break
+                match expdetails['planner']:
+                    case 'fbi' | 'symk':
+                        top_k_plans = planlist[:k] 
+                    case 'fi':
+                        top_k_plans = planlist
+                collected_behaviours = set()
+                for i, plan in enumerate(top_k_plans):
+                    ret = bspace.plan_behaviour(plan, i)
+                    collected_behaviours.add(ret.behaviour)
+                diversity_scores_results[k] = len(collected_behaviours)
+            
+            results['diversity-scores'] = {'behaviour-count': diversity_scores_results}
+
     except Exception as e:
         # Dump error to file.
         error_file = getkeyvalue(expdetails, 'error-file')
