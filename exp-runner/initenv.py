@@ -15,7 +15,7 @@ def install_bplanning(currentdir, pkgsdir, venvdir):
     for pkg in pkgsdir:
         os.chdir(pkg)
         os.system(f'{venvdir}/bin/python3.10 -m pip install .')
-    os.chdir(currentdir)
+    
 
 def clone_and_compile_ibm_diversescore():
     IBM_DIVERSESCORE_NAME = 'ibm-diversescore'
