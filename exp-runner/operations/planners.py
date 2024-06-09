@@ -10,7 +10,7 @@ from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
 from unified_planning.io import PDDLReader
 
-from behaviour_planning.over_domain_models.smt.shortcuts import BehaviourSpace, GoalPredicatesOrdering, MakespanOptimalCostBound, ResourceCount
+from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 from .utilities import (
     update_fbi_parameters, 
