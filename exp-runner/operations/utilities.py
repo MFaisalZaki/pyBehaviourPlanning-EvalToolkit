@@ -232,7 +232,7 @@ def update_fbi_parameters(planner_params, expdetails):
             resourcesfile = getkeyvalue(expdetails, 'resources')
             if resourcesfile is not None:
                 updated_dims.append([eval(dimname), resourcesfile])
-        elif any(x in dimname for x in ['MakespanOptimalCostBound', 'CostBound']):
+        elif any(x in dimname for x in ['MakespanOptimalCost', 'CostBound']):
             cost_bound_additional_information = deepcopy(details)
             cost_bound_additional_information.update({'quality-bound-factor': q_value})
             updated_dims.append([eval(dimname), cost_bound_additional_information])

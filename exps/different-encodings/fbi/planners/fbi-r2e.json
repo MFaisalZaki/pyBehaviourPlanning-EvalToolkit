@@ -9,7 +9,7 @@
             "solver-memorylimit-mb": 16000,
             "dims": [
               ["GoalPredicatesOrdering", "None"],
-              ["MakespanOptimalCostBound", {"cost-bound-value": 20}],
+              ["MakespanOptimalCost", {"cost-bound-value": 20}],
               ["ResourceCount", "TODO"]
             ],
             "upper-bound": 25,

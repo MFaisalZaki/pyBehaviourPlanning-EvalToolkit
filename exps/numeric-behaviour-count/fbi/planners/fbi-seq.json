@@ -15,7 +15,7 @@
             "solver-memorylimit-mb": 16000,
             "dims": [
               ["GoalPredicatesOrdering", "None"],
-              ["MakespanOptimalCostBound", {}],
+              ["MakespanOptimalCost", {}],
               ["Functions", "TODO"]
             ],
             "run-plan-validation": true,

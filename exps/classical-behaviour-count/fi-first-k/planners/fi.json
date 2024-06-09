@@ -6,7 +6,7 @@
     },
     "dims": [
         ["GoalPredicatesOrdering", "None"],
-        ["MakespanOptimalCostBound", {"disable_action_check": false}],
+        ["MakespanOptimalCost", {"disable_action_check": false}],
         ["ResourceCount", "TODO"]
     ]
 }
