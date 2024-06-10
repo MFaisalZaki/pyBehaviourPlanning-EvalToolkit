@@ -26,7 +26,7 @@ def read_files(exp_dir):
             with open(os.path.join(exp_dir, file), "r") as f:
                 data = json.load(f)
                 
-                # Read the planning task.
+                # read the planning task.
                 domain = getkeyvalue(data, "domain")
                 problem = getkeyvalue(data, "problem")                
                 if not domain in ret_results: ret_results[domain] = defaultdict(dict)
@@ -53,7 +53,10 @@ def read_files(exp_dir):
                 ret_results[domain][problem][q][k][tag]["solved"] = not (plans is None or len(plans) < k)
 
                 # get range of plans length.
-                ret_results[domain][problem][q][k][tag]["plan-length-range"] = list(map(lambda x:int(x), getkeyvalue(data, 'makespan-optimal-cost-bound')))
+                ret_results[domain][problem][q][k][tag]["plan-length-range"] = list(map(lambda x:int(x), getkeyvalue(data, 'makespan-optimal-cost')))
+
+                # get the behaviour count socres.
+                ret_results[domain][problem][q][k][tag]["behaviour-count"] = getkeyvalue(data, "behaviour-count")
 
     return ret_results
 

@@ -4,7 +4,7 @@
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
     "timelimit": "00:30:00",
     "memorylimit": "16GB",
-    "is-utility-planning" : true,
+    "is-oversubscription-planning" : true,
     "compute-behaviour-count": true,
     "behaviour-count-k-list": [5, 10, 100, 1000],
     "cost-bound-factor" : 0.5,

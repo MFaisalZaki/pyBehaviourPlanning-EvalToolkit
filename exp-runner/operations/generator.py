@@ -83,7 +83,7 @@ def generate_solve_cmds(args, venv_dir):
     qlist = getkeyvalue(expdetails, 'q')
     klist = getkeyvalue(expdetails, 'k')
     skip_cfgs = getkeyvalue(expdetails, 'skip-cfgs')
-    is_utility_planning = getkeyvalue(expdetails, 'is-utility-planning')
+    is_utility_planning = getkeyvalue(expdetails, 'is-oversubscription-planning')
     cost_bound_factor = getkeyvalue(expdetails, 'cost-bound-factor')
     compute_behaviour_count = getkeyvalue(expdetails, 'compute-behaviour-count')
     behaviour_count_k_list  = getkeyvalue(expdetails, 'behaviour-count-k-list')
@@ -100,7 +100,7 @@ def generate_solve_cmds(args, venv_dir):
                     task['planner']     = plannername
                     task['planner-cfg'] = plannercfg
                     task['tag']         = tag
-                    task['is-utility-planning'] = is_utility_planning
+                    task['is-oversubscription-planning'] = is_utility_planning
                     task['cost-bound-factor'] = cost_bound_factor
                     task['compute-behaviour-count'] = compute_behaviour_count
                     task['behaviour-count-k-list'] = behaviour_count_k_list

@@ -95,7 +95,7 @@ def FIPlannerWrapper(args, task, expdetails):
         cfg['upper-bound'] = upper_bound
         cfg['run-plan-validation'] = False
         cfg['disable-after-goal-state-actions'] = True
-        cfg['is-utility-planning'] = False
+        cfg['is-oversubscription-planning'] = False
 
         # create the behaviour space.
         bspace = BehaviourSpace(_task, cfg)
@@ -176,7 +176,7 @@ def SymKPlannerWrapper(args, task, expdetails):
     q = getkeyvalue(expdetails, 'q')
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
 
-    if getkeyvalue(expdetails, 'is-utility-planning'):
+    if getkeyvalue(expdetails, 'is-oversubscription-planning'):
         tmpdir_onshot = os.path.join(tmpdir, 'tmp-onshot-dir')
         os.makedirs(tmpdir_onshot, exist_ok=True)
         oversubscription_metric = task.quality_metrics.pop()

@@ -178,10 +178,6 @@ def analyze_different_encodings(args):
     # analyze the sat-time for each planner per domain.
     sat_time_analysis = analyze_sat_time(planners_results, args.output_dir)
 
-
-
-
-
 def analyze(args):
     if args.compare_different_encodings_run:
         analyze_different_encodings(args)

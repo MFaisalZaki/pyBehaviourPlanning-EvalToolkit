@@ -42,7 +42,7 @@ def solve(args):
         
         # Update task with oversubscription metric if the planning problem is utility-planning.
         task = PDDLReader().parse_problem(domain, problem)
-        if getkeyvalue(expdetails, 'is-utility-planning'):
+        if getkeyvalue(expdetails, 'is-oversubscription-planning'):
             goals = {}
             for i, goal in enumerate(task.goals):
                 i = i + 1
@@ -73,7 +73,7 @@ def solve(args):
             cfg['upper-bound'] = upper_bound
             cfg['run-plan-validation'] = False
             cfg['disable-after-goal-state-actions'] = True
-            cfg['is-utility-planning'] = False
+            cfg['is-oversubscription-planning'] = False
             cfg['dims'] = construct_behaviour_space(getkeyvalue(expdetails, 'dims'))
 
             diversity_scores_results = {k: 0 for k in k_list}
