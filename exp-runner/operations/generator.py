@@ -87,6 +87,7 @@ def generate_solve_cmds(args, venv_dir):
     cost_bound_factor = getkeyvalue(expdetails, 'cost-bound-factor')
     compute_behaviour_count = getkeyvalue(expdetails, 'compute-behaviour-count')
     behaviour_count_k_list  = getkeyvalue(expdetails, 'behaviour-count-k-list')
+    behaviour_count_encoder = getkeyvalue(expdetails, 'behaviour-count-encoder')
     for taskidx, planning_task in enumerate(planning_tasks):
         for q in qlist:
             for k in klist:
@@ -104,6 +105,7 @@ def generate_solve_cmds(args, venv_dir):
                     task['cost-bound-factor'] = cost_bound_factor
                     task['compute-behaviour-count'] = compute_behaviour_count
                     task['behaviour-count-k-list'] = behaviour_count_k_list
+                    task['behaviour-count-encoder'] = behaviour_count_encoder
 
                     filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{tag}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')

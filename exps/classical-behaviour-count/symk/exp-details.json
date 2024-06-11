@@ -2,11 +2,12 @@
     "k": [5, 10, 100, 1000],
     "q": [1.0, 2.0],
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
-    "timelimit": "00:40:00",
+    "timelimit": "00:45:00",
     "memorylimit": "16GB",
     "is-oversubscription-planning" : false,
     "compute-behaviour-count": true,
     "behaviour-count-k-list": [5, 10, 100, 1000],
+    "behaviour-count-encoder": "seq",
     "skip-cfgs":[
         [1.0, 5, "symk"],
         [2.0, 5, "symk"],

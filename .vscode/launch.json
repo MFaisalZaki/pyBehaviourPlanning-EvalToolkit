@@ -53,7 +53,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/experiment-tasks/2000-elevators-8-1.0-1000-fbi.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/experiment-tasks/2006-rovers-2-1.0-1000-fbi.json"
         
             ],
             "justMyCode": false

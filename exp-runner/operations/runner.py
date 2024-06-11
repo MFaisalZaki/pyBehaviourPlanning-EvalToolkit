@@ -60,7 +60,7 @@ def solve(args):
                 results = SymKPlannerWrapper(args, task, expdetails)
 
         # check if the behaviour count is required to be compute.
-        if expdetails['compute-behaviour-count']:
+        if expdetails['compute-behaviour-count'] and len(results['plans']) > 0:
             k_list = expdetails['behaviour-count-k-list']
             if len(k_list) == 0: k_list = [expdetails['k']]
 
@@ -69,7 +69,7 @@ def solve(args):
             # compute upper bound.
             upper_bound = max([len(p.actions) for p in planlist])
             cfg = dict()
-            cfg['encoder']     = 'qfuf' if len(task.all_objects) > 0  else 'seq'
+            cfg['encoder']     = expdetails['behaviour-count-encoder'] #'qfuf' if len(task.all_objects) > 0  else 'seq'
             cfg['upper-bound'] = upper_bound
             cfg['run-plan-validation'] = False
             cfg['disable-after-goal-state-actions'] = True
