@@ -95,16 +95,11 @@
             "console": "integratedTerminal",
             "args": [
                 "analyze", 
-                "--compare-behaviour-count-coverage",
+                "--compute-behaviour-count",
+                "--compute-coverage",
 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count/dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/results"
-
-                //"--dump-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/dump-results",
-                //"--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/analysis-results"
-
-                // "--dump-results-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/dump-results",
-                // "--output-dir", "${workspaceFolder}/sandbox-fbi-different-encodings/analysis-results"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/results"
             ],
             "justMyCode": false
         },

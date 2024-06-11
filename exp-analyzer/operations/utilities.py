@@ -19,11 +19,20 @@ def getkeyvalue(data, target_key):
 
 def read_files(exp_dir):
     ret_results = defaultdict(dict)
+    planners_tags = set()
+    no_coverage_available = set()
+    skipping_reasons = set()
+
     # Get all the files in the directory
     for file in os.listdir(exp_dir):
         if file.endswith(".json"):
-            with open(os.path.join(exp_dir, file), "r") as f:
+            results_file = os.path.join(exp_dir, file)
+            with open(results_file, "r") as f:
                 data = json.load(f)
+
+                if 'reason' in data:
+                    skipping_reasons.add((results_file, data['reason']))
+                    continue
                 
                 # read the planning task.
                 domain = getkeyvalue(data, "domain")
@@ -33,33 +42,36 @@ def read_files(exp_dir):
 
                 # read the quality bound.
                 q = getkeyvalue(data, "q")
-                if not q in ret_results[domain][problem]: ret_results[domain][problem][q] = defaultdict(dict)
+                if not q in ret_results[domain][problem]: 
+                    q = str(q)
+                    ret_results[domain][problem][q] = defaultdict(dict)
 
                 # read the required number of plans.
                 k = getkeyvalue(data, "k")
-                if not k in ret_results[domain][problem][q]: ret_results[domain][problem][q][k] = defaultdict(dict)
+                if not k in ret_results[domain][problem][q]: 
+                    k = str(k)
+                    ret_results[domain][problem][q][k] = defaultdict(dict)
 
                 # read the planner.
                 tag = getkeyvalue(data, "tag")
-                if not tag in ret_results[domain][problem]: ret_results[domain][problem][q][k][tag] = defaultdict(dict)
-
-                if 'fi' in tag:
-                    pass
+                if not tag in ret_results[domain][problem]: 
+                    ret_results[domain][problem][q][k][tag] = defaultdict(dict)
+                    ret_results[domain][problem][q][k][tag]["behaviour-count"] = {}
 
                 # read the sat-time
                 ret_results[domain][problem][q][k][tag]["sat-time"] = getkeyvalue(data, "sat-time")
 
-                # check if the planner has solved the planning task.
-                plans = getkeyvalue(data, "plans")
-                ret_results[domain][problem][q][k][tag]["solved"] = not (plans is None or len(plans) < k)
-
-                # get range of plans length.
-                ret_results[domain][problem][q][k][tag]["plan-length-range"] = list(map(lambda x:int(x), getkeyvalue(data, 'makespan-optimal-cost')))
-
                 # get the behaviour count socres.
-                ret_results[domain][problem][q][k][tag]["behaviour-count"] = getkeyvalue(data, "behaviour-count")
+                try:
+                    ret_results[domain][problem][q][k][tag]["behaviour-count"].update(getkeyvalue(data, "behaviour-count")) 
+                except:
+                    ret_results[domain][problem][q][k][tag]["behaviour-count"].update({k: 0})
+                    no_coverage_available.add(results_file)
 
-    return ret_results
+                # add the planner tag to the list of planners.
+                planners_tags.add(tag)
+
+    return ret_results, sorted(planners_tags)
 
 def dump_list_to_csv(csv_dump, output_file):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
@@ -68,17 +80,6 @@ def dump_list_to_csv(csv_dump, output_file):
             f.write(line + "\n")
     return 0
 
-def remove_entries(dict_sat, _to_remove_keys):
-    for domain, problem, q, k in _to_remove_keys:
-        if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and k in dict_sat[domain][problem][q]:
-            del dict_sat[domain][problem][q][k]
-        if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and len(dict_sat[domain][problem][q]) == 0:
-            del dict_sat[domain][problem][q]
-        if domain in dict_sat and problem in dict_sat[domain] and len(dict_sat[domain][problem]) == 0:
-            del dict_sat[domain][problem]
-        if domain in dict_sat and len(dict_sat[domain]) == 0:
-            del dict_sat[domain]
-    return dict_sat
 
 def get_planners_list(domain_results):
     planners_list = set()
@@ -97,9 +98,10 @@ def get_common_instances(domain_results, planners_list):
             for q, qresults in problemresults.items():
                 for k, kresults in qresults.items():
                     if len(kresults) == len(planners_list):
-                        common_instances.add((domainname, problemname, q, k))
-                    else:
-                        pass
+                        # make sure that all the planners have solved the same instances for the given k.
+                        solved_tags = [tagresults['behaviour-count'][k] > 0 for _, tagresults in kresults.items()]
+                        if not all(solved_tags): continue
+                        common_instances.add((domainname, problemname, q))
     return common_instances
 
 def fitler_domain_results(domain_results, filter_list):
@@ -108,14 +110,12 @@ def fitler_domain_results(domain_results, filter_list):
         for problemname, problemresults in domainresults.items():
             for q, qresults in problemresults.items():
                 for k, kresults in qresults.items():
-                    if not (domainname, problemname, q, k) in filter_list: continue
+                    if not (domainname, problemname, q) in filter_list: continue
                     if not domainname in filtered_results: filtered_results[domainname] = defaultdict(dict)
                     if not problemname in filtered_results[domainname]: filtered_results[domainname][problemname] = defaultdict(dict)
                     if not q in filtered_results[domainname][problemname]: filtered_results[domainname][problemname][q] = defaultdict(dict)
-                    if not k in filtered_results[domainname][problemname][q]: filtered_results[domainname][problemname][q][k] = defaultdict(dict)
                     for tag, tagresults in kresults.items():
-                        filtered_results[domainname][problemname][q][k][tag] = tagresults
-                        
+                        filtered_results[domainname][problemname][q][tag] = tagresults
     return filtered_results
 
 
@@ -148,6 +148,7 @@ def combine_behaviour_count(planners_results):
                 if not k in common_instances_count[q]: common_instances_count[q][k] = 0
                 behaviour_count_per_k = []
                 for raw in tagresults['raw']:
+                    if len(raw) == 0: continue # skip empty results, this is cause due to the creation of raw results.
                     assert k in raw, f"Key {k} not found in {raw}"
                     behaviour_count_per_k.append(raw[k])
                 common_instances_count[q][k] = len(behaviour_count_per_k)
@@ -161,7 +162,9 @@ def stringfiy_behaviour_count(plannerslist, planners_behaviour_count, common_ins
         for k, kcount in qresults.items():
             for planner_tag in plannerslist:
                 assert planner_tag in planners_behaviour_count[q], f"Planner {planner_tag} not found in {planners_behaviour_count[q]}"
-                assert k in planners_behaviour_count[q][planner_tag], f"Key {k} not found in {planners_behaviour_count[q][planner_tag]}"
+                if not k in planners_behaviour_count[q][planner_tag]: 
+                    # this case is for fi since it may failed to generate the specific k value.
+                    planners_behaviour_count[q][planner_tag][k] = 0
                 csv_dump.append(f'{q}, {k}, {kcount}, {planner_tag}, {planners_behaviour_count[q][planner_tag][k]}')
     return csv_dump
 
@@ -192,5 +195,5 @@ def count_solved_instances(domain_results):
             if not tag in planners_solved_instances_count[q]: planners_solved_instances_count[q][tag] = {}
             k_values = list(tagresults['raw'][0].keys())
             for k in k_values:
-                planners_solved_instances_count[q][tag][k] = [ c[k] > 0 for c in tagresults['raw']].count(True)
+                planners_solved_instances_count[q][tag][k] = [ not k in c or c[k] > 0 for c in tagresults['raw']].count(True)
     return planners_solved_instances_count

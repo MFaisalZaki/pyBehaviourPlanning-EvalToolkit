@@ -46,7 +46,8 @@ def _create_arg_parser():
         subparser[cmd].add_argument( "--planner-results-dir", type=str, help="Dump results directory.")
         # subparser[cmd].add_argument( "--compare-different-encodings-run", action="store_true", help="Profile the code.")
         subparser[cmd].add_argument( "--output-dir", type=str, help="Processed results directory.")
-        subparser[cmd].add_argument( "--compare-behaviour-count-coverage", action="store_true", help="Compute the behaviour count.")
+        subparser[cmd].add_argument( "--compute-behaviour-count", action="store_true", help="Compute the behaviour count.")
+        subparser[cmd].add_argument( "--compute-coverage", action="store_true", help="Compute the coverage scores.")
     
     return parser
 

@@ -155,3 +155,15 @@ def analyze_different_encodings(args):
     dump_list_to_csv(solved_instaces_count, os.path.join(args.output_dir, "solved_instances.csv"))
     # analyze the sat-time for each planner per domain.
     sat_time_analysis = analyze_sat_time(planners_results, args.output_dir)
+
+def remove_entries(dict_sat, _to_remove_keys):
+    for domain, problem, q, k in _to_remove_keys:
+        if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and k in dict_sat[domain][problem][q]:
+            del dict_sat[domain][problem][q][k]
+        if domain in dict_sat and problem in dict_sat[domain] and q in dict_sat[domain][problem] and len(dict_sat[domain][problem][q]) == 0:
+            del dict_sat[domain][problem][q]
+        if domain in dict_sat and problem in dict_sat[domain] and len(dict_sat[domain][problem]) == 0:
+            del dict_sat[domain][problem]
+        if domain in dict_sat and len(dict_sat[domain]) == 0:
+            del dict_sat[domain]
+    return dict_sat
