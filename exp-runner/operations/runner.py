@@ -15,9 +15,10 @@ from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space
 from .constants import *
 
+
+        
 def solve(args):
-    
-    
+       
     results = {}
     expdetails = experiment_reader(args.experiment_file)
     try:
@@ -36,11 +37,10 @@ def solve(args):
         domain  = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
         assert domain is not None and problem is not None, "Domain or problem file is not provided."
-        
-        get_environment().credits_stream  = None
-        get_environment().error_used_name = False
-        
+
         # Update task with oversubscription metric if the planning problem is utility-planning.
+        up.shortcuts.get_environment().credits_stream = None
+        up.shortcuts.get_environment().error_used_name = True
         task = PDDLReader().parse_problem(domain, problem)
         if getkeyvalue(expdetails, 'is-oversubscription-planning'):
             goals = {}
