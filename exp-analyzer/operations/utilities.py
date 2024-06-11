@@ -2,7 +2,6 @@ import os
 import json
 from collections import defaultdict
 
-
 def getkeyvalue(data, target_key):
     if isinstance(data, dict):
         if target_key in data:
@@ -118,3 +117,80 @@ def fitler_domain_results(domain_results, filter_list):
                         filtered_results[domainname][problemname][q][k][tag] = tagresults
                         
     return filtered_results
+
+
+def combine_per_planner(domain_results):
+    planners_results = defaultdict(dict)
+    for domainname, domainresults in domain_results.items():
+        for problemname, problemresults in domainresults.items():
+            for q, qresults in problemresults.items():
+                for k, kresults in qresults.items():
+
+                    for tag, tagresults in kresults.items():
+                        if not q in planners_results: planners_results[q] = defaultdict(dict)
+                        if not tag in planners_results[q]: planners_results[q][tag] = {'raw': [], 'behaviour-count': {}}
+                        behaviour_count_values = getkeyvalue(tagresults, "behaviour-count")
+                        if behaviour_count_values is None: continue
+                        planners_results[q][tag]['raw'].append(behaviour_count_values)            
+    return planners_results
+
+def combine_behaviour_count(planners_results):
+    planners_behaviour_count = defaultdict(dict)
+    common_instances_count = defaultdict(dict)
+    for q, qresults in planners_results.items():
+        if not q in planners_behaviour_count: planners_behaviour_count[q] = defaultdict(dict)
+        if not q in common_instances_count: common_instances_count[q] = defaultdict(dict)
+        for tag, tagresults in qresults.items():
+            if not tag in planners_behaviour_count[q]: planners_behaviour_count[q][tag] = {}
+            k_values = list(tagresults['raw'][0].keys())
+            for k in k_values:
+                if not k in planners_behaviour_count[q][tag]: planners_behaviour_count[q][tag][k] = 0
+                if not k in common_instances_count[q]: common_instances_count[q][k] = 0
+                behaviour_count_per_k = []
+                for raw in tagresults['raw']:
+                    assert k in raw, f"Key {k} not found in {raw}"
+                    behaviour_count_per_k.append(raw[k])
+                common_instances_count[q][k] = len(behaviour_count_per_k)
+                planners_behaviour_count[q][tag][k] = sum(behaviour_count_per_k)
+    return planners_behaviour_count, common_instances_count
+
+def stringfiy_behaviour_count(plannerslist, planners_behaviour_count, common_instances_count):
+    csv_dump = ['q, k, common instances, tag, behaviour count']
+    q_list = sorted(planners_behaviour_count.keys())
+    for q, qresults in common_instances_count.items():
+        for k, kcount in qresults.items():
+            for planner_tag in plannerslist:
+                assert planner_tag in planners_behaviour_count[q], f"Planner {planner_tag} not found in {planners_behaviour_count[q]}"
+                assert k in planners_behaviour_count[q][planner_tag], f"Key {k} not found in {planners_behaviour_count[q][planner_tag]}"
+                csv_dump.append(f'{q}, {k}, {kcount}, {planner_tag}, {planners_behaviour_count[q][planner_tag][k]}')
+    return csv_dump
+
+def stringfiy_coverage(plannerslist, planners_solved_instances_count):
+    csv_dump = ['q, k, tag, coverage']
+    # get k values.
+    klist = set()
+    for q, qresults in planners_solved_instances_count.items():
+        for tag, tagresults in qresults.items():
+            for k, kcount in tagresults.items():
+                klist.add(k)
+    klist = sorted(klist, key=int)
+    for q, qresults in planners_solved_instances_count.items():
+        for k in klist:
+            for planner_tag in plannerslist:
+                assert planner_tag in qresults, f"Planner {planner_tag} not found in {qresults}"
+                assert k in qresults[planner_tag], f"Key {k} not found in {qresults[planner_tag]}"
+                csv_dump.append(f'{q}, {k}, {planner_tag}, {qresults[planner_tag][k]}')
+
+    return csv_dump
+
+def count_solved_instances(domain_results):
+    planners_results = combine_per_planner(domain_results)
+    planners_solved_instances_count = defaultdict(dict)
+    for q, qresults in planners_results.items():
+        if not q in planners_solved_instances_count: planners_solved_instances_count[q] = defaultdict(dict)
+        for tag, tagresults in qresults.items():
+            if not tag in planners_solved_instances_count[q]: planners_solved_instances_count[q][tag] = {}
+            k_values = list(tagresults['raw'][0].keys())
+            for k in k_values:
+                planners_solved_instances_count[q][tag][k] = [ c[k] > 0 for c in tagresults['raw']].count(True)
+    return planners_solved_instances_count
