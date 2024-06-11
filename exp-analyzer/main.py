@@ -44,10 +44,13 @@ def _create_arg_parser():
 
     for cmd in ["analyze"]:
         subparser[cmd].add_argument( "--planner-results-dir", type=str, help="Dump results directory.")
-        # subparser[cmd].add_argument( "--compare-different-encodings-run", action="store_true", help="Profile the code.")
         subparser[cmd].add_argument( "--output-dir", type=str, help="Processed results directory.")
         subparser[cmd].add_argument( "--compute-behaviour-count", action="store_true", help="Compute the behaviour count.")
         subparser[cmd].add_argument( "--compute-coverage", action="store_true", help="Compute the coverage scores.")
+
+    for cmd in ["summarise-errors"]:
+        subparser[cmd].add_argument( "--error-files-dir", type=str, help="Error directory.")
+        subparser[cmd].add_argument( "--output-dir", type=str, help="Processed results directory.")
     
     return parser
 
@@ -55,6 +58,10 @@ _COMMANDS = {
     "analyze": {
         "fn": analyzer.analyze,
         "desc": "Analyze the experiments files."
+    },
+    "summarise-errors": {
+        "fn": analyzer.summarise_error,
+        "desc": "Summarise the error files."
     }
 }
 

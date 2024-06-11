@@ -69,7 +69,7 @@ def solve(args):
             # compute upper bound.
             upper_bound = max([len(p.actions) for p in planlist])
             cfg = dict()
-            cfg['encoder']     = 'qfuf' 
+            cfg['encoder']     = 'qfuf' if len(task.all_objects) > 0  else 'seq'
             cfg['upper-bound'] = upper_bound
             cfg['run-plan-validation'] = False
             cfg['disable-after-goal-state-actions'] = True
