@@ -40,10 +40,12 @@ def read_files(exp_dir):
                 k = getkeyvalue(data, "k")
                 if not k in ret_results[domain][problem][q]: ret_results[domain][problem][q][k] = defaultdict(dict)
 
-                
                 # read the planner.
                 tag = getkeyvalue(data, "tag")
                 if not tag in ret_results[domain][problem]: ret_results[domain][problem][q][k][tag] = defaultdict(dict)
+
+                if 'fi' in tag:
+                    pass
 
                 # read the sat-time
                 ret_results[domain][problem][q][k][tag]["sat-time"] = getkeyvalue(data, "sat-time")
@@ -78,3 +80,41 @@ def remove_entries(dict_sat, _to_remove_keys):
         if domain in dict_sat and len(dict_sat[domain]) == 0:
             del dict_sat[domain]
     return dict_sat
+
+def get_planners_list(domain_results):
+    planners_list = set()
+    for domainname, domainresults in domain_results.items():
+        for problemname, problemresults in domainresults.items():
+            for q, qresults in problemresults.items():
+                for k, kresults in qresults.items():
+                    for tag, tagresults in kresults.items():
+                        planners_list.add(tag)
+    return sorted(planners_list)
+
+def get_common_instances(domain_results, planners_list):
+    common_instances = set()
+    for domainname, domainresults in domain_results.items():
+        for problemname, problemresults in domainresults.items():
+            for q, qresults in problemresults.items():
+                for k, kresults in qresults.items():
+                    if len(kresults) == len(planners_list):
+                        common_instances.add((domainname, problemname, q, k))
+                    else:
+                        pass
+    return common_instances
+
+def fitler_domain_results(domain_results, filter_list):
+    filtered_results = defaultdict(dict)
+    for domainname, domainresults in domain_results.items():
+        for problemname, problemresults in domainresults.items():
+            for q, qresults in problemresults.items():
+                for k, kresults in qresults.items():
+                    if not (domainname, problemname, q, k) in filter_list: continue
+                    if not domainname in filtered_results: filtered_results[domainname] = defaultdict(dict)
+                    if not problemname in filtered_results[domainname]: filtered_results[domainname][problemname] = defaultdict(dict)
+                    if not q in filtered_results[domainname][problemname]: filtered_results[domainname][problemname][q] = defaultdict(dict)
+                    if not k in filtered_results[domainname][problemname][q]: filtered_results[domainname][problemname][q][k] = defaultdict(dict)
+                    for tag, tagresults in kresults.items():
+                        filtered_results[domainname][problemname][q][k][tag] = tagresults
+                        
+    return filtered_results

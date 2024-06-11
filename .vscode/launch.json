@@ -88,18 +88,17 @@
             "justMyCode": false
         },
         {
-            "name": "Analyze different encoding experiment results",
+            "name": "Analyze experiment results",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/exp-analyzer/main.py",
             "console": "integratedTerminal",
             "args": [
                 "analyze", 
-                "--compare-different-encodings-run",
+                "--compare-behaviour-count-coverage",
 
-                "--dump-results-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/fbi-seq-numeric",
-                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/analysis-fbi-seq-numeric"
-
+                "--planner-results-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/sandbox-fbi-behaviour-count/dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/results"
 
                 //"--dump-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/dump-results",
                 //"--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi/analysis-results"
