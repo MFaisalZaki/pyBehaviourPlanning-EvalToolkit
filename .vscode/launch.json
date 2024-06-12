@@ -81,8 +81,8 @@
                 "--compute-behaviour-count",
                 "--compute-coverage",
 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/symk/solve-run-errors",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/symk/error-analysis"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/analysis-exp-results"
             ],
             "justMyCode": false
         },
@@ -94,8 +94,8 @@
             "console": "integratedTerminal",
             "args": [
                 "summarise-errors",
-                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fi/solve-run-errors",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fi/error-analysis",
+                "--error-files-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/solve-run-errors",
+                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/analysis-solve-run-errors",
             ],
             "justMyCode": false
         }
