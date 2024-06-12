@@ -161,6 +161,8 @@ def FIPlannerWrapper(args, task, expdetails):
                 planlist = _selection_bspace(args, task, getkeyvalue(expdetails, 'k'), planlist)
             case 'maxsum':
                 planlist = _selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmprun)
+            case 'none':
+                planlist = planlist
             case _:
                 assert False, f"Unknown selection method: {selection_method}"
 

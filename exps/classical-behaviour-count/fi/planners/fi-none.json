@@ -1,8 +1,8 @@
 {
-    "tag": "fi-maxsum",
+    "tag": "fi-none",
     "planner": "fi",
     "planner-parameters": {
-        "selection-method": "maxsum"
+        "selection-method": "none"
     },
     "dims": [
         ["GoalPredicatesOrdering", "None"],
