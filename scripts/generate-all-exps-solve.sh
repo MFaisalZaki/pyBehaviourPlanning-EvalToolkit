@@ -18,6 +18,6 @@ mkdir -p sandbox-numeric-behaviour-count-exp
 ./scripts/generate-solve-exp.sh $(pwd)/exps/numeric-behaviour-count/fbi $(pwd)/sandbox-numeric-behaviour-count-exp/ $(pwd)/external-pkgs/numeric-domains
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-numeric-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-numeric-behaviour-count-exp/numeric-cmds.txt
 
-mkdir -p sandbox-oversubscription-exp
+mkdir -p sandbox-oversubscription-behaviour-count-exp
 ./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning $(pwd)/sandbox-oversubscription-behaviour-count-exp/ $(pwd)/external-pkgs/classical-domains
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-cmds.txt
