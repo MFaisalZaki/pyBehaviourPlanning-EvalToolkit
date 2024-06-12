@@ -57,6 +57,8 @@ def read_files(exp_dir):
                 if not tag in ret_results[domain][problem]: 
                     ret_results[domain][problem][q][k][tag] = defaultdict(dict)
                     ret_results[domain][problem][q][k][tag]["behaviour-count"] = {}
+                else:
+                    pass
 
                 # read the sat-time
                 ret_results[domain][problem][q][k][tag]["sat-time"] = getkeyvalue(data, "sat-time")
