@@ -53,7 +53,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/symk/experiment-tasks/2006-trucks-1-1.0-1000-symk.json"
+            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/1998-movie-4-1.0-100-fbi-utility-set.json"
         
             ],
             "justMyCode": false

@@ -236,6 +236,9 @@ def update_fbi_parameters(planner_params, expdetails):
             cost_bound_additional_information = deepcopy(details)
             cost_bound_additional_information.update({'quality-bound-factor': q_value})
             updated_dims.append([eval(dimname), cost_bound_additional_information])
+        elif any(x in dimname for x in ['UtilitySet', 'UtilityValue']):
+            cost_bound_additional_information = deepcopy(details)
+            cost_bound_additional_information.update({'cost-bound-factor': getkeyvalue(expdetails, 'cost-bound-factor')})
         else:
             updated_dims.append([eval(dimname), details])
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
