@@ -1,4 +1,4 @@
-# python3.11 exp-runner/initenv.py
+python3.11 exp-runner/initenv.py
 
 mkdir -p sandbox-classical-behaviour-count-exp
 ./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count/fbi  $(pwd)/sandbox-classical-behaviour-count-exp/fbi  $(pwd)/external-pkgs/classical-domains
@@ -19,5 +19,11 @@ mkdir -p sandbox-numeric-behaviour-count-exp
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-numeric-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-numeric-behaviour-count-exp/numeric-cmds.txt
 
 mkdir -p sandbox-oversubscription-behaviour-count-exp
-./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning $(pwd)/sandbox-oversubscription-behaviour-count-exp/ $(pwd)/external-pkgs/classical-domains
-./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-cmds.txt
+./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/0.5 $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.5 $(pwd)/external-pkgs/classical-domains
+./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.5/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-0.5-cmds.txt
+
+./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/0.25 $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.25 $(pwd)/external-pkgs/classical-domains
+./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.25/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-0.25-cmds.txt
+
+./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/0.75 $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.75 $(pwd)/external-pkgs/classical-domains
+./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.75/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-0.75-cmds.txt

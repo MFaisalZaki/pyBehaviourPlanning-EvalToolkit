@@ -1,5 +1,5 @@
 {
-    "tag": "fbi",
+    "tag": "fbi-utility-value",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
@@ -10,7 +10,7 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["Utility", "TODO"]
+              ["UtilityValue", "TODO"]
             ],
             "upper-bound": 50,
             "run-plan-validation": true,

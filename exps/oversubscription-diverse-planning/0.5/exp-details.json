@@ -1,5 +1,5 @@
 {
-    "k": [1000],
+    "k": [5, 10, 100, 1000],
     "q": [1.0],
     "resources-file-dir": "${currentdir}/classical-domains-ru-info",
     "timelimit": "00:45:00",
