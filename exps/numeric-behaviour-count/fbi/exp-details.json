@@ -2,10 +2,10 @@
     "k": [5, 10, 100, 1000],
     "q": [1.0, 2.0],
     "resources-file-dir": "${currentdir}/functions-domains-info",
-    "timelimit": "00:45:00",
-    "memorylimit": "12GB",
+    "timelimit": "00:30:00",
+    "memorylimit": "16GB",
     "is-oversubscription-planning" : false,
-    "compute-behaviour-count": true,
+    "compute-behaviour-count": false,
     "behaviour-count-k-list": [5, 10, 100, 1000],
     "behaviour-count-encoder": "seq",
     "skip-cfgs":[
