@@ -31,6 +31,7 @@ def FBIPlannerWrapper(args, task, expdetails):
     if len(result) == 0: 
         return {'reason': 'No plans found by fbi'}
     planlist = [r.plan for r in result[0]]
+    planlist = list(filter(lambda p: not p is None, planlist))
     logmsgs  = result[1]
     # This is hacky by I have no time to properly fix this shit.
     updatekeyvalue(planner_params, 'dims', [[d.__name__, af] for d, af in getkeyvalue(planner_params, 'dims')])
