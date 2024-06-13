@@ -1,8 +1,8 @@
 python3.11 exp-runner/initenv.py
 
 mkdir -p sandbox-classical-behaviour-count-exp
-./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count/fbi-symk  $(pwd)/sandbox-classical-behaviour-count-exp/fbi  $(pwd)/external-pkgs/classical-domains
-./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count/fi        $(pwd)/sandbox-classical-behaviour-count-exp/fi   $(pwd)/external-pkgs/classical-domains
+./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count/fbi-symk  $(pwd)/sandbox-classical-behaviour-count-exp/fbi-symk $(pwd)/external-pkgs/classical-domains
+./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count/fi        $(pwd)/sandbox-classical-behaviour-count-exp/fi       $(pwd)/external-pkgs/classical-domains
 
 # list all slurm scripts
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-classical-behaviour-count-exp/fbi-symk/slurm-solve-scripts  $(pwd)/sandbox-classical-behaviour-count-exp/fbi-symk-cmds.txt
