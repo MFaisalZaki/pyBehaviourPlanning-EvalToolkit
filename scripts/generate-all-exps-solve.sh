@@ -1,13 +1,7 @@
 python3.11 exp-runner/initenv.py
 
-
 ./scripts/generate-solve-exp.sh $(pwd)/exps/classical-behaviour-count $(pwd)/sandbox-classical-behaviour-count-exp $(pwd)/external-pkgs/classical-domains
-
-# list all slurm scripts
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-classical-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-classical-behaviour-count-exp/fbi-symk-fi-cmds.txt
-
-./scripts/generate-solve-exp.sh    $(pwd)/exps/different-encodings $(pwd)/sandbox-classical-different-encodings-exp $(pwd)/external-pkgs/classical-domains
-./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-classical-different-encodings-exp/slurm-solve-scripts $(pwd)/sandbox-classical-different-encodings-exp/different-encodings-cmds.txt
 
 ./scripts/generate-solve-exp.sh    $(pwd)/exps/numeric-behaviour-count $(pwd)/sandbox-numeric-behaviour-count-exp/ $(pwd)/external-pkgs/numeric-domains
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-numeric-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-numeric-behaviour-count-exp/numeric-cmds.txt

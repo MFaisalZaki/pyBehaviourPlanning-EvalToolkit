@@ -1,5 +1,5 @@
 {
-    "tag": "fbi",
+    "tag": "fbi-qfuf",
     "planner": "fbi",
     "planner-parameters": {
         "base-planner-cfg": {
@@ -7,6 +7,7 @@
             "symk_search_time_limit": "900s"
           },
           "bspace-cfg": {
+            "encoder": "qfuf",
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
