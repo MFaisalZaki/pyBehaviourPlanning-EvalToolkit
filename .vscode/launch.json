@@ -52,7 +52,7 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["score", 
-            "--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-results/1998-gripper-1-1.0-5-fi-none-bspace.json",
+            "--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-results/1998-gripper-1-1.0-5-fi-none-first-k.json",
             "--k", "5"
             ],
             "justMyCode": false

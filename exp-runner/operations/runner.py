@@ -136,22 +136,24 @@ def score(args):
         # check if the planner is fi or symk|fbi
         planlist = getkeyvalue(expdetails, 'plans')
         selection_method = getkeyvalue(expdetails, 'selection-method')
-        optimise_behaviour_count = False
         match getkeyvalue(expdetails, 'planner'):
             case 'fi':
                 match selection_method:
                     case 'first-k':
                         planlist = selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
+                        tag = 'fi-first-k'
                     case 'bspace':
                         # use behaviour count to select the plans.
                         bspace_cfg['select-k'] = args.k
+                        tag = 'fi-bspace'
                     case 'maxsum':
                         planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmp_dump_dir)
+                        tag = 'fi-maxsum'
             case 'symk' | 'fbi':
                 planlist = planlist[:args.k]
+                tag = getkeyvalue(expdetails, 'tag')
             case _:
                 assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
-
 
         # Based on the planner we need may want to apply a different selection strategy.
         diversity_scores_results['plans'] = planlist
@@ -162,7 +164,7 @@ def score(args):
             'domain':  getkeyvalue(expdetails, 'domain'),
             'problem': getkeyvalue(expdetails, 'problem'),
             'planner': getkeyvalue(expdetails, 'planner'),
-            'tag': getkeyvalue(expdetails, 'tag'),
+            'tag': tag,
             'k': args.k,
             'q': getkeyvalue(expdetails, 'q')
         }
@@ -175,11 +177,7 @@ def score(args):
         assert error_file is not None, "Error file is not provided."
         with open(error_file, 'w') as f:
             f.write(str(e))
-    finally:
-        
+    finally:        
         # Dump results to json file.
         with open(result_file, 'w') as f:
             json.dump(diversity_scores_results, f, indent=4)
-    pass
-
-
