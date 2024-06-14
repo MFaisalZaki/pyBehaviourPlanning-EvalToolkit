@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 import json
 
-from .utilities import parse_planning_tasks, parse_experiment_details, construct_solve_cmd, construct_score_cmd, warpCommand, getkeyvalue
+from .utilities import parse_planning_tasks, parse_experiment_details, construct_solve_cmd, construct_score_cmd, warpCommand, getkeyvalue, updatekeyvalue
 from .constants import *
 
 
@@ -32,12 +32,31 @@ def generate_score_cmds(args, venv_dir):
             plans = getkeyvalue(results, 'plans')
             if plans is None: continue
             no_plans = len(plans)
-            for k in args.score_for_k:
-                if k > no_plans: break
-                cmd = construct_score_cmd(k, results_file)
-                rundir = os.path.join(run_score_dir, f'score-{os.path.basename(results_file)}-k-{k}')
-                os.makedirs(rundir, exist_ok=True)
-                generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
+            planner = getkeyvalue(results, 'planner')
+            if planner in ['fi']:
+                basefilename = os.path.basename(results_file).replace('.json','')
+                selection_methods = ['first-k', 'bspace', 'maxsum']
+                for selection_method in selection_methods:
+                    selection_method_results_file = os.path.join(scores_results, f'{basefilename}-{selection_method}.json')
+                    cpy_results = deepcopy(results)
+                    updatekeyvalue(cpy_results, 'selection-method', selection_method)
+                    with open(selection_method_results_file, 'w') as f:
+                        json.dump(cpy_results, f, indent=4)
+                    for k in args.score_for_k:
+                        if k > no_plans: break
+                        cmd = construct_score_cmd(k, selection_method_results_file)
+                        rundir = os.path.join(run_score_dir, f'score-{basefilename}-k-{k}')
+                        os.makedirs(rundir, exist_ok=True)
+                        generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
+            elif planner in ['symk', 'fbi']:
+                for k in args.score_for_k:
+                    if k > no_plans: break
+                    cmd = construct_score_cmd(k, results_file)
+                    rundir = os.path.join(run_score_dir, f'score-{os.path.basename(results_file)}-k-{k}')
+                    os.makedirs(rundir, exist_ok=True)
+                    generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
+            else:
+                assert False, f"Unknown planner: {planner}"
 
     # dump those commands to a file.
     generated_cmds_dir = os.path.join(args.sandbox_dir, SCORES_RESULTS_CMD)

@@ -19,3 +19,4 @@ SCORES_RESULTS_RUN = 'score-results-run'
 SCORES_RESULTS_CMD = 'score-results-cmd'
 
 TMP_DIR = 'tmp-dir'
+TMP_DUMP = 'tmp-scores-dump'

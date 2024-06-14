@@ -11,7 +11,7 @@ import up_symk
 from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
-
+from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
 from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space
 from .constants import *
 
@@ -114,6 +114,9 @@ def score(args):
     results_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', SCORES_RESULTS)
     os.makedirs(results_dump_dir, exist_ok=True)
 
+    tmp_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', TMP_DUMP)
+    os.makedirs(tmp_dump_dir, exist_ok=True)
+    
     result_file = os.path.basename(args.experiment_file).replace('.json', f'-{args.k}-scores.json')
     result_file = os.path.join(results_dump_dir, result_file)
     try:
@@ -124,11 +127,33 @@ def score(args):
 
         # It is better to construct the behaviour space from those dimensions.
         bspace_cfg = getkeyvalue(expdetails, 'bspace-cfg')
-        updatekeyvalue(bspace_cfg, 'k', args.k)
-        updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'dims')))
+        if bspace_cfg is None: 
+            bspace_cfg = {'k': args.k, 'dims': construct_behaviour_space(getkeyvalue(expdetails, 'dims'))}
+        else:
+            updatekeyvalue(bspace_cfg, 'k', args.k)
+            updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'dims')))
+        
+        # check if the planner is fi or symk|fbi
+        planlist = getkeyvalue(expdetails, 'plans')
+        selection_method = getkeyvalue(expdetails, 'selection-method')
+        optimise_behaviour_count = False
+        match getkeyvalue(expdetails, 'planner'):
+            case 'fi':
+                match selection_method:
+                    case 'first-k':
+                        planlist = selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
+                    case 'bspace':
+                        # use behaviour count to select the plans.
+                        bspace_cfg['select-k'] = args.k
+                    case 'maxsum':
+                        planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmp_dump_dir)
+            case 'symk' | 'fbi':
+                planlist = planlist[:args.k]
+            case _:
+                assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
+
 
         # Based on the planner we need may want to apply a different selection strategy.
-        planlist = getkeyvalue(expdetails, 'plans')[:args.k]
         diversity_scores_results['plans'] = planlist
 
         bspace = BehaviourCount(domain, problem, bspace_cfg, planlist)

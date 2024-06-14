@@ -14,19 +14,6 @@
             "--exp-details-dir", "${workspaceFolder}/exps/utility-diverse-planning",
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--sandbox-dir", "${workspaceFolder}/sandbox-diverse-utility-planning"
-
-
-            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-different-encodings",
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
-            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-fbi-different-encodings"
-
-            // "--exp-details-dir", "${workspaceFolder}/exps/numeric-behaviour-count/fbi",
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
-            // "--sandbox-dir", "${workspaceFolder}/sandbox-numeric"
-
-            // "--exp-details-dir", "${workspaceFolder}/exps/exp-fbi-behaviour-count",
-            // "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
-            // "--sandbox-dir", "${workspaceFolder}/sandbox-classical"
             ],
             "justMyCode": false
         },
@@ -37,8 +24,8 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", 
-            "--exp-details-dir", "${workspaceFolder}/exp-baseline-fbi", 
-            "--sandbox-dir", "${workspaceFolder}/sandbox", 
+            "--exp-details-dir", "${workspaceFolder}/exps/classical-behaviour-count/fi", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp", 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part",
             "--for-score-exp",
@@ -65,8 +52,8 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["score", 
-            "--experiment-file", "${workspaceFolder}/sandbox-fi-behaviour-count/dump-results/1998-gripper-1-1.0-100-fi.json",
-            "--k", "10"
+            "--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-results/1998-gripper-1-1.0-5-fi-none-bspace.json",
+            "--k", "5"
             ],
             "justMyCode": false
         },
