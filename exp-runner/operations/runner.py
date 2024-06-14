@@ -111,7 +111,7 @@ def score(args):
     diversity_scores_results = defaultdict(dict)
     expdetails = experiment_reader(args.experiment_file)
     
-    results_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', SCORES_RESULTS)
+    results_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', SCORE_DUMP_RESULTS)
     os.makedirs(results_dump_dir, exist_ok=True)
 
     tmp_dump_dir = os.path.join(os.path.dirname(args.experiment_file), '..', TMP_DUMP)

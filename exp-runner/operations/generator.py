@@ -18,7 +18,7 @@ def generate_score_cmds(args, venv_dir):
     run_score_dir = os.path.join(args.sandbox_dir, SCORES_RESULTS_RUN)
     os.makedirs(run_score_dir, exist_ok=True)
     # Create a directory to dump the results into.
-    scores_results = os.path.join(args.sandbox_dir, SCORES_RESULTS)
+    scores_results = os.path.join(args.sandbox_dir, SCORES_RESULTS_EXP)
     os.makedirs(scores_results, exist_ok=True)
     # Check the directory containing the experiment results.
     generated_cmds = set()
@@ -74,6 +74,10 @@ def generate_score_cmds(args, venv_dir):
         slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
         with open(os.path.join(slurm_cmds, f'slurm_batch_task_{i}.txt'), 'w') as f:
             f.write(slurmcmd)
+    
+    # create the score results directory.
+    score_results_dir = os.path.join(args.sandbox_dir, SCORE_DUMP_RESULTS)
+    os.makedirs(score_results_dir, exist_ok=True)
 
 def generate_solve_cmds(args, venv_dir):
     # create the experiment folders.
