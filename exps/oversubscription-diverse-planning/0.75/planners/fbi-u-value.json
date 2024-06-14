@@ -14,7 +14,7 @@
               ["UtilityValue", {}]
             ],
             "upper-bound": 50,
-            "run-plan-validation": true,
+            "run-plan-validation": false,
             "disable-after-goal-state-actions": false
           }
     }
