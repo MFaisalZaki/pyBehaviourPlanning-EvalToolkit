@@ -81,8 +81,8 @@
             "console": "integratedTerminal",
             "args": [
                 "summarise-errors",
-                "--error-files-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/solve-run-errors",
-                "--output-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/analysis-solve-run-errors",
+                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/slurm-score-logs",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-slurm-score-logs",
             ],
             "justMyCode": false
         }
