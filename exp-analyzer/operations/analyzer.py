@@ -49,7 +49,33 @@ def compute_coverage(resultsdir, dumpdir):
     csv_dump = stringfiy_coverage(planners_list, planners_behaviour_count_results)
     dump_list_to_csv(csv_dump, os.path.join(dumpdir, "coverage.csv"))
 
+def compare_planners_results(resultsdir, dumpdir):
+    # read the results files.
+    domain_results, planners_list = read_files(resultsdir)
+
+    planner_summary = defaultdict(dict)
+
+    for domainname, domainresults in domain_results.items():
+        for problemname, problemresults in domainresults.items():
+            for q, qresults in problemresults.items():
+                for k, kresults in qresults.items():
+                    for tag, tagresults in kresults.items():
+                        if not q in planner_summary: planner_summary[q] = defaultdict(dict)
+                        if not tag in planner_summary[q]: planner_summary[q][tag] = {kvalue: [] for kvalue in [5, 10, 100, 1000]}
+                        for kvalue in [5, 10, 100, 1000]:
+                            planner_summary[q][tag][kvalue].append( kvalue <= tagresults['number-of-plans'])
+
+    # now count the number of True per k value.
+    for q, qresults in planner_summary.items():
+        for tag, tagresults in qresults.items():
+            for kvalue, kresults in tagresults.items():
+                planner_summary[q][tag][kvalue] = planner_summary[q][tag][kvalue].count(True)
+    pass
+
 def analyze(args):
+
+    compare_planners_results(args.planner_results_dir, args.output_dir)
+
     if args.compute_behaviour_count:
         compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
     if args.compute_coverage:

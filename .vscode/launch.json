@@ -68,8 +68,8 @@
                 "--compute-behaviour-count",
                 "--compute-coverage",
 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/common-files/dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-resutls"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results-fbi",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-results-fbi"
             ],
             "justMyCode": false
         },

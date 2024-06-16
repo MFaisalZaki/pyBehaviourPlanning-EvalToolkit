@@ -63,6 +63,9 @@ def read_files(exp_dir):
                 # read the sat-time
                 ret_results[domain][problem][q][k][tag]["sat-time"] = getkeyvalue(data, "sat-time")
 
+                # reed the number of plans.
+                ret_results[domain][problem][q][k][tag]["number-of-plans"] = len(getkeyvalue(data, "plans"))
+
                 # get the behaviour count socres.
                 try:
                     ret_results[domain][problem][q][k][tag]["behaviour-count"].update(getkeyvalue(data, "behaviour-count")) 
@@ -127,7 +130,6 @@ def combine_per_planner(domain_results):
         for problemname, problemresults in domainresults.items():
             for q, qresults in problemresults.items():
                 for k, kresults in qresults.items():
-
                     for tag, tagresults in kresults.items():
                         if not q in planners_results: planners_results[q] = defaultdict(dict)
                         if not tag in planners_results[q]: planners_results[q][tag] = {'raw': [], 'behaviour-count': {}}
