@@ -40,7 +40,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi-symk/experiment-tasks/2006-rovers-1-1.0-1000-fbi.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2014-ged-1-1.0-1000-fbi-seq.json"
         
             ],
             "justMyCode": false
