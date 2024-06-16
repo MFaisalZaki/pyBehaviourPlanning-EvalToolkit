@@ -15,7 +15,7 @@
               ["MakespanOptimalCost", {}],
               ["ResourceCount", "TODO"]
             ],
-            "run-plan-validation": false,
+            "run-plan-validation": true,
             "disable-after-goal-state-actions": false
           }
     }
