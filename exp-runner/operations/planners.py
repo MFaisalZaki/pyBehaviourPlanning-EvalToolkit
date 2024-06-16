@@ -5,7 +5,7 @@ import sys
 import subprocess
 import logging
 from subprocess import SubprocessError
-
+from copy import deepcopy
 from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
 
@@ -25,18 +25,16 @@ from .utilities import (
 def FBIPlannerWrapper(args, task, expdetails):
     # Update the behaviour space with the resources file if exists.
     planner_params = read_planner_cfg(args.experiment_file)
+    dimensions_cpy = getkeyvalue(planner_params, 'dims')
     planner_params = update_fbi_parameters(planner_params, expdetails)
-    planner_params['bspace-cfg']['run-plan-validation'] = True
-    with OneshotPlanner(name='FBIPlanner',  params=planner_params) as planner:
+    with OneshotPlanner(name='FBIPlanner',  params=deepcopy(planner_params)) as planner:
         result = planner.solve(task)
-    if len(result) == 0: 
+    if len(result[0]) <= 1: 
         return {'reason': 'No plans found by fbi'}
     planlist = [r.plan for r in result[0]]
     planlist = list(filter(lambda p: not p is None, planlist))
     logmsgs  = result[1]
-    # This is hacky by I have no time to properly fix this shit.
-    updatekeyvalue(planner_params, 'dims', [[d.__name__, af] for d, af in getkeyvalue(planner_params, 'dims')])
-    
+    planner_params['bspace-cfg']['dims'] = dimensions_cpy
     results = generate_summary_file(task, expdetails, 'fbi', planner_params, planlist, logmsgs)
     return results
 
