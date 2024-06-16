@@ -191,6 +191,8 @@ def read_planner_cfg(expfile):
 
 def generate_summary_file(task, expdetails, name, planner_params, planlist, logmsgs):
     
+    planlist_size = len(planlist)
+    planlist = list(set(planlist)) # remove duplicates.
     domain  = getkeyvalue(expdetails, 'domainfile')
     problem = getkeyvalue(expdetails, 'problemfile')
     
@@ -205,7 +207,8 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
         'domainfile': domain,
         'problemfile': problem,
         'k': getkeyvalue(expdetails, 'k'),
-        'q': getkeyvalue(expdetails, 'q')
+        'q': getkeyvalue(expdetails, 'q'),
+        'duplicate-plans-found': not (len(planlist) == planlist_size)
     }
     results['plans'] = []
     for plan in planlist:

@@ -26,6 +26,7 @@ def FBIPlannerWrapper(args, task, expdetails):
     # Update the behaviour space with the resources file if exists.
     planner_params = read_planner_cfg(args.experiment_file)
     planner_params = update_fbi_parameters(planner_params, expdetails)
+    planner_params['bspace-cfg']['run-plan-validation'] = True
     with OneshotPlanner(name='FBIPlanner',  params=planner_params) as planner:
         result = planner.solve(task)
     if len(result) == 0: 

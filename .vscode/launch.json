@@ -40,7 +40,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2014-ged-1-1.0-1000-fbi-seq.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2000-elevators-1-1.0-1000-fbi-seq.json"
         
             ],
             "justMyCode": false
@@ -81,8 +81,8 @@
             "console": "integratedTerminal",
             "args": [
                 "summarise-errors",
-                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/slurm-score-logs",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-slurm-score-logs",
+                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi-run-errors",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-fbi-run-errors",
             ],
             "justMyCode": false
         }
