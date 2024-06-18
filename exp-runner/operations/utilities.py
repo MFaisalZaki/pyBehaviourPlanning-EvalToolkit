@@ -230,20 +230,27 @@ def update_fbi_parameters(planner_params, expdetails):
     # Check if we have a resource dimension.
     updated_dims = []
     q_value = getkeyvalue(expdetails, 'q')
+    is_oversubsscription = getkeyvalue(expdetails, 'is-oversubscription-planning')
     for idx, (dimname, details) in enumerate(getkeyvalue(planner_params, 'dims')):
+        updated_dim_details = None
         if any(x in dimname for x in ['Resource', 'Functions']):
             resourcesfile = getkeyvalue(expdetails, 'resources')
             if resourcesfile is not None:
-                updated_dims.append([eval(dimname), resourcesfile])
+                updated_dim_details = [dimname, resourcesfile]
         elif any(x in dimname for x in ['MakespanOptimalCost', 'CostBound']):
             cost_bound_additional_information = deepcopy(details)
             cost_bound_additional_information.update({'quality-bound-factor': q_value})
-            updated_dims.append([eval(dimname), cost_bound_additional_information])
+            updated_dim_details = [dimname, cost_bound_additional_information]
         elif any(x in dimname for x in ['UtilitySet', 'UtilityValue']):
             cost_bound_additional_information = deepcopy(details)
             cost_bound_additional_information.update({'cost-bound-factor': getkeyvalue(expdetails, 'cost-bound-factor')})
+            updated_dim_details = [dimname, cost_bound_additional_information]
         else:
-            updated_dims.append([eval(dimname), details])
+            updated_dim_details = [dimname, details]
+
+        updated_dims.append([eval(updated_dim_details[0]), updated_dim_details[1]])
+        # if is_oversubsscription
+    
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
     updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value

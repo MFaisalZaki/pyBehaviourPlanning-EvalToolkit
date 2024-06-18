@@ -10,6 +10,18 @@
     "behaviour-count-encoder": "seq",
     "cost-bound-factor" : 0.25,
     "skip-cfgs":[
+        [1.0, 5, "fbi"],
+        [2.0, 5, "fbi"],
+        [1.0, 10, "fbi"],
+        [2.0, 10, "fbi"],
+        [1.0, 100, "fbi"],
+        [2.0, 100, "fbi"],
+        [1.0, 5, "symk"],
+        [2.0, 5, "symk"],
+        [1.0, 10, "symk"],
+        [2.0, 10, "symk"],
+        [1.0, 100, "symk"],
+        [2.0, 100, "symk"]
     ],
     "selected-planning-instances": [
         "(2000, schedule, 9)",
