@@ -21,8 +21,11 @@ def solve(args):
        
     results = {}
     expdetails = experiment_reader(args.experiment_file)
+    
     try:
         result_file = getkeyvalue(expdetails, 'dump-result-file')
+        failed_to_solvedir = os.path.join(os.path.dirname(result_file), 'failed-to-solve')
+        os.makedirs(failed_to_solvedir, exist_ok=True)
         assert result_file is not None, "Result file is not provided."
         if os.path.exists(result_file):
             # move this to another directory.
@@ -102,10 +105,13 @@ def solve(args):
             f.write(str(e))
     finally:
         if len(results) > 0:
-            # Dump results to json file.
-            with open(result_file, 'w') as f:
-                json.dump(results, f, indent=4)
-
+            if 'reason' in results:
+                with open(os.path.join(failed_to_solvedir, os.path.basename(result_file)), 'w') as f:
+                    json.dump(results, f, indent=4)
+            else:
+                # Dump results to json file.
+                with open(result_file, 'w') as f:
+                    json.dump(results, f, indent=4)
 
 def score(args):
     diversity_scores_results = defaultdict(dict)
