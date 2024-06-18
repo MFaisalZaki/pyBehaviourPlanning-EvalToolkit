@@ -248,7 +248,8 @@ def update_fbi_parameters(planner_params, expdetails):
         else:
             updated_dim_details = [dimname, details]
 
-        updated_dims.append([eval(updated_dim_details[0]), updated_dim_details[1]])
+        if updated_dim_details:
+            updated_dims.append([eval(updated_dim_details[0]), updated_dim_details[1]])
         # if is_oversubsscription
     
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
