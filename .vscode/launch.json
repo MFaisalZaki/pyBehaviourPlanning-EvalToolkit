@@ -68,8 +68,8 @@
                 "--compute-behaviour-count",
                 "--compute-coverage",
 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results-fbi",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-results-fbi"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/no-validation",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/try-catch"
             ],
             "justMyCode": false
         },
@@ -81,8 +81,8 @@
             "console": "integratedTerminal",
             "args": [
                 "summarise-errors",
-                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/fbi-run-errors",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-fbi-run-errors",
+                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/impl6-solve-run-dir",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/impl6-solve-run-dir",
             ],
             "justMyCode": false
         }
