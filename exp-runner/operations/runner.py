@@ -52,6 +52,8 @@ def solve(args):
                 for j, g in enumerate(goal.args):
                     j = j + 1
                     goals[g] = i * j
+            if len(goals) == 1:
+                expdetails['planner'] = 'SKIP'
             task.add_quality_metric(up.model.metrics.Oversubscription(goals))
 
         match expdetails['planner']:
@@ -61,6 +63,8 @@ def solve(args):
                 results = FIPlannerWrapper(args, task, expdetails)
             case 'symk':
                 results = SymKPlannerWrapper(args, task, expdetails)
+            case 'SKIP':
+                results = {}
 
         # # check if the behaviour count is required to be compute.
         # if expdetails['compute-behaviour-count'] and len(results['plans']) > 0:
