@@ -15,3 +15,6 @@ mkdir -p sandbox-oversubscription-behaviour-count-exp
 
 ./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/0.75 $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.75 $(pwd)/external-pkgs/classical-domains
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.75/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-0.75-cmds.txt
+
+./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/1.0 $(pwd)/sandbox-oversubscription-behaviour-count-exp/1.0 $(pwd)/external-pkgs/classical-domains
+./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-oversubscription-behaviour-count-exp/1.0/slurm-solve-scripts $(pwd)/sandbox-oversubscription-behaviour-count-exp/oversubscription-1.0-cmds.txt

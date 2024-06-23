@@ -4,5 +4,7 @@
     "planner-parameters": {
         
     },
-    "dims": [ ]
+    "dims": [ 
+        ["UtilityValue", {}]
+    ]
 }
