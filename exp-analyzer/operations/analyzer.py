@@ -2,6 +2,7 @@ import os
 import json
 
 from collections import defaultdict
+from itertools import combinations
 
 # try to install matplotlib
 try:
@@ -20,7 +21,8 @@ from .utilities import (
     combine_behaviour_count,
     combine_per_planner,
     count_solved_instances,
-    stringfiy_behaviour_count
+    stringfiy_behaviour_count,
+    getkeyvalue
     # stringfiy_coverage
 )
 
@@ -90,26 +92,77 @@ def dump_coverage_results(klist, planner_coverage, planner_tag, dumpdir):
             for kvalue in klist:
                 coverage_csv_dump.append(f'{q},{kvalue},{tag},{tagresults["coverage"][kvalue]}')
     # dump the planner_coverage details into json file.
-    with open(os.path.join(json_files_dir, f'{planner_tag}-coverage-details.json'), "w") as f:
+    dumped_json_file = os.path.join(json_files_dir, f'{planner_tag}-coverage-details.json')
+    with open(dumped_json_file, "w") as f:
         json.dump(planner_coverage, f, indent=4)
     dump_list_to_csv(coverage_csv_dump, os.path.join(csv_files_dir, f'{tag}-coverage.csv'))
+    return dumped_json_file
 
+def extract_common_instances(planner1, planner2, planners_files, klist, dumpdir):
+    os.makedirs(dumpdir, exist_ok=True)
+    common_instances = defaultdict(dict)
+    planners_results = dict()
+    q_values = set()
+    for p in [planner1, planner2]:
+        with open(planners_files[p], 'r') as f:
+            if len(planners_results) == 0:
+                planners_results = json.load(f)
+                q_values.update(list(planners_results.keys()))
+            else:
+                planner_2_results = json.load(f)
+                for q in q_values:
+                    planners_results[q].update(planner_2_results[q])
+    
+    # after gathering the planners results, we need to compute the common instances 
+    # for this planner pairs.
+    for q, planners in planners_results.items():
+        common_instances[q] = defaultdict(list)
+        for k in klist:
+            p1_solved = set(planners[planner1]['solved-instaces'][str(k)])
+            p2_solved = set(planners[planner2]['solved-instaces'][str(k)])
+            common_instances[q][k] = list(set.intersection(p1_solved, p2_solved))
+    
+    # save this to json file and return it.
+    dumpfile = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances.json')
+    with open(dumpfile, 'w') as f:
+        json.dump(common_instances, f, indent=4)
+    return dumpfile
 
 def analyze(args):
     # To have a good results, It will be better to read each planner results on its own
     # then dump files for each planner, which will be used to compute the behaviour coverage based on planners.
     os.makedirs(args.output_dir, exist_ok=True)
+    dump_common_instances_dir = os.path.join(args.output_dir, 'common-instances-details')
 
     klist = [5, 10, 100, 1000]
-    planners_list = ['symk', 'fi-none', 'fbi']
+    planners_list = ['symk', 'fi-none', 'fbi-seq']
+    planners_files = {}
     for planner_tag in planners_list:
         print(f'Analyzing planner: {planner_tag}')
         # read only the files with the planner_tag.
         domain_results, _ = read_files(args.planner_results_dir, planner_tag)
         planner_coverage = compute_coverage(domain_results, klist)
-        dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
-        pass
+        dumped_json_file = dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
+        planners_files[planner_tag] = dumped_json_file
+    
+    common_instaces_list = {}
+    for planner1, planner2 in combinations(planners_list, 2):
+        print(f'Computing the common instances between {planner1}, {planner2}')
+        # shit we need to get the q values also.
+        # load the results for those two planners.
+        dumpfile = extract_common_instances(planner1, planner2, planners_files, klist, dump_common_instances_dir)
+        common_instaces_list[(planner1, planner2)] = dumpfile
 
+    pass
+                
+                
+                
+                
+
+
+    pass
+
+    # now we want to compute the common solved instances between the planners.
 
 
 
