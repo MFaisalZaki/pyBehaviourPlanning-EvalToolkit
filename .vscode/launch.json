@@ -68,8 +68,8 @@
                 "--compute-behaviour-count",
                 "--compute-coverage",
                 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/original-dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-dump-results"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/no-validation",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/try-catch"
             ],

@@ -80,6 +80,71 @@ def read_files(exp_dir, planner_name=None):
 
     return ret_results, sorted(planners_tags)
 
+def read_score_files(scoresdir, planner_tag, k):
+    planner_results = defaultdict(dict)
+    for file in os.listdir(scoresdir):
+        if file.endswith(".json"):
+            if planner_tag not in file or f'{str(k)}-scores' not in file:
+                continue
+            results_file = os.path.join(scoresdir, file)
+            with open(results_file, "r") as f:
+                data = json.load(f)
+
+                q  = getkeyvalue(data, 'q')
+                _k = getkeyvalue(data, 'k')
+                bc = getkeyvalue(data, 'behaviour-count')
+                tag = getkeyvalue(data, 'tag')
+                domain = getkeyvalue(data, 'domain')
+                problem = getkeyvalue(data, 'problem')
+
+                if q is None or _k is None or bc is None: continue
+                if domain is None or problem is None: continue
+
+                assert k == _k, "The skipping conditions are not working as expected."
+
+                if not q in planner_results: planner_results[q] = defaultdict(dict)
+                if not k in planner_results[q]: 
+                    planner_results[q][k] = defaultdict(dict)
+                    planner_results[q][k]['solved-domains'] = set()
+                planner_results[q][k]['solved-domains'].add(f'{domain}-{problem}')
+    return planner_results
+
+def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
+    commonlist = set(commonlist)
+    planner_results = defaultdict(dict)
+    for file in os.listdir(scoresdir):
+        if file.endswith(".json"):
+            if planner_tag not in file or f'{str(k)}-scores' not in file:
+                continue
+            results_file = os.path.join(scoresdir, file)
+
+            with open(results_file, "r") as f:
+                data = json.load(f)
+
+                _q = getkeyvalue(data, 'q')
+                _k = getkeyvalue(data, 'k')
+                bc = getkeyvalue(data, 'behaviour-count')
+                
+                domain  = getkeyvalue(data, 'domain')
+                problem = getkeyvalue(data, 'problem')
+
+                if int(k) != _k: continue
+                if q != str(_q): continue
+                if domain is None or problem is None: continue
+                if _q is None or _k is None or bc is None: continue
+                if not f'{domain}-{problem}' in commonlist: continue
+
+                if not q in planner_results: planner_results[q] = defaultdict(dict)
+                if not k in planner_results[q]: 
+                    planner_results[q][k] = defaultdict(dict)
+                    planner_results[q][k]['bc'] = 0
+                    planner_results[q][k]['samples'] = []
+                planner_results[q][k]['bc'] += bc
+                planner_results[q][k]['samples'].append((f'{domain}-{problem}', bc))
+    return planner_results
+
+
+
 def dump_list_to_csv(csv_dump, output_file):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, "w") as f:

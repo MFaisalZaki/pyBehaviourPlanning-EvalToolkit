@@ -22,7 +22,9 @@ from .utilities import (
     combine_per_planner,
     count_solved_instances,
     stringfiy_behaviour_count,
-    getkeyvalue
+    getkeyvalue,
+    read_score_files,
+    extract_behaviour_count
     # stringfiy_coverage
 )
 
@@ -133,45 +135,129 @@ def analyze(args):
     # then dump files for each planner, which will be used to compute the behaviour coverage based on planners.
     os.makedirs(args.output_dir, exist_ok=True)
     dump_common_instances_dir = os.path.join(args.output_dir, 'common-instances-details')
+    dumpdir = dump_common_instances_dir
+    os.makedirs(dumpdir, exist_ok=True)
 
-    klist = [5, 10, 100, 1000]
-    planners_list = ['symk', 'fi-none', 'fbi-seq']
-    planners_files = {}
+    klist = [5] #, 10, 100, 1000]
+    q_values = set()
+    planners_list = ['symk', 'fbi-seq']
+    planners_results = defaultdict(dict)
     for planner_tag in planners_list:
-        print(f'Analyzing planner: {planner_tag}')
-        # read only the files with the planner_tag.
-        domain_results, _ = read_files(args.planner_results_dir, planner_tag)
-        planner_coverage = compute_coverage(domain_results, klist)
-        dumped_json_file = dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
-        planners_files[planner_tag] = dumped_json_file
+        if not planner_tag in planners_results: planners_results[planner_tag] = defaultdict(dict)
+        for k in klist:
+            print(f'Analyzing planner: {planner_tag} - k:{k}')
+            _k_planner_results = read_score_files(args.planner_results_dir, planner_tag, k)
+            # populate the results.
+            for q, qvalues in _k_planner_results.items():
+                q_values.add(q)
+                if not q in planners_results[planner_tag]: 
+                    planners_results[planner_tag][q] = defaultdict(dict)
+                    planners_results[planner_tag][q][k] = defaultdict(dict)
+                planners_results[planner_tag][q][k].update(qvalues[k])
     
-    common_instaces_list = {}
-    for planner1, planner2 in combinations(planners_list, 2):
-        print(f'Computing the common instances between {planner1}, {planner2}')
-        # shit we need to get the q values also.
-        # load the results for those two planners.
-        dumpfile = extract_common_instances(planner1, planner2, planners_files, klist, dump_common_instances_dir)
-        common_instaces_list[(planner1, planner2)] = dumpfile
+    planners_files = {}
+    for planner1, planner2 in combinations(list(planners_results.keys()), 2):
+        # Here we need to get the common instances for this pair.
+        common_instances = defaultdict(dict)
+        for q in q_values:
+            common_instances[q] = defaultdict(dict)
+            for k in klist:
+                common_instances[q][k] = list(set.intersection(planners_results[planner1][q][k]['solved-domains'], planners_results[planner2][q][k]['solved-domains']))
+
+        # dump this to file.
+        dump_json = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances.json')
+        planners_files[(planner1, planner2)] = dump_json
+        with open(dump_json, 'w') as f:
+            json.dump({'common-instances':common_instances}, f, indent=4)
+
+
+    for (planner1, planner2), common_instances_file in planners_files.items():
+        # get the common instances values.
+        with open(common_instances_file, 'r') as f:
+            common_instances = json.load(f)['common-instances']
+        
+        planners_bc_results = {}
+        # now we need to extract the behaviour count for those instances.
+        for q, k_instances in common_instances.items():
+            planners_bc_results[q] = defaultdict(dict)
+            for k, ci_domains_list in k_instances.items():
+                planners_bc_results[q][k] = defaultdict(dict)
+                samples_values = []
+                for planner in [planner1, planner2]:
+                    print(f'Extracting behaviour count for {planner} - q:{q} - k:{k}')
+                    bc_values = extract_behaviour_count(args.planner_results_dir, ci_domains_list, planner, k, q)
+                    planners_bc_results[q][str(k)][planner] = bc_values[q][str(k)]['bc']
+                    samples_values.append(bc_values[q][str(k)]['samples'])
+                assert len(samples_values[0]) == len(samples_values[1]), f'Error: {planner1} and {planner2} have different number of samples'
+                assert len(samples_values[0]) == len(ci_domains_list), f'Error: {planner1} and {planner2} have different number of samples'
+
+                # now compute the t-test for those samples, but we need to sort the bc values based on the domain names.
+                
+                
+                pass
+        
+        # dump this to file.
+        dump_json = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances-behaviour-count.json')
+        with open(dump_json, 'w') as f:
+            json.dump(planners_bc_results, f, indent=4)
+
+                    
 
     pass
-                
-                
-                
-                
 
 
     pass
 
-    # now we want to compute the common solved instances between the planners.
+                
+    pass
 
 
 
-    # compare_planners_results(args.planner_results_dir, args.output_dir, 'symk')
 
-    # if args.compute_behaviour_count:
-    #     compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
-    # if args.compute_coverage:
-    #     compute_coverage(args.planner_results_dir, args.output_dir)
+        # # read only the files with the planner_tag.
+        # domain_results, _ = read_files(args.planner_results_dir, planner_tag)
+        # planner_coverage = compute_coverage(domain_results, klist)
+        # dumped_json_file = dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
+        # planners_files[planner_tag] = dumped_json_file
+    
+
+    
+
+
+
+
+
+
+
+
+
+    # common_instaces_list = {}
+    # for planner1, planner2 in combinations(planners_list, 2):
+    #     print(f'Computing the common instances between {planner1}, {planner2}')
+    #     # shit we need to get the q values also.
+    #     # load the results for those two planners.
+    #     dumpfile = extract_common_instances(planner1, planner2, planners_files, klist, dump_common_instances_dir)
+    #     common_instaces_list[(planner1, planner2)] = dumpfile
+
+    # pass
+                
+                
+                
+                
+
+
+    # pass
+
+    # # now we want to compute the common solved instances between the planners.
+
+
+
+    # # compare_planners_results(args.planner_results_dir, args.output_dir, 'symk')
+
+    # # if args.compute_behaviour_count:
+    # #     compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
+    # # if args.compute_coverage:
+    # #     compute_coverage(args.planner_results_dir, args.output_dir)
     return 0
 
 def summarise_error(args):
