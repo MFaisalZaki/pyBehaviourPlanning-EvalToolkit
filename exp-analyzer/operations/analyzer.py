@@ -20,8 +20,8 @@ from .utilities import (
     combine_behaviour_count,
     combine_per_planner,
     count_solved_instances,
-    stringfiy_behaviour_count,
-    stringfiy_coverage
+    stringfiy_behaviour_count
+    # stringfiy_coverage
 )
 
 
@@ -41,45 +41,84 @@ def compare_behaviour_count_coverage(resultsdir, dumpdir):
     csv_dump = stringfiy_behaviour_count(planners_list, planners_behaviour_count_common_results, common_instances_count)
     dump_list_to_csv(csv_dump, os.path.join(dumpdir, "behaviour-count-common-instances.csv"))
 
-def compute_coverage(resultsdir, dumpdir):
-    # read the results files.
-    domain_results, planners_list = read_files(resultsdir)
-    # now we need to dump the number of solved instances per planner.
-    planners_behaviour_count_results = count_solved_instances(domain_results)
-    csv_dump = stringfiy_coverage(planners_list, planners_behaviour_count_results)
-    dump_list_to_csv(csv_dump, os.path.join(dumpdir, "coverage.csv"))
+# def compute_coverage(resultsdir, dumpdir):
+#     # read the results files.
+#     domain_results, planners_list = read_files(resultsdir)
+#     # now we need to dump the number of solved instances per planner.
+#     planners_behaviour_count_results = count_solved_instances(domain_results)
+#     csv_dump = stringfiy_coverage(planners_list, planners_behaviour_count_results)
+#     dump_list_to_csv(csv_dump, os.path.join(dumpdir, "coverage.csv"))
 
-def compare_planners_results(resultsdir, dumpdir):
+def compare_planners_results(resultsdir, dumpdir, planner_name=None):
     # read the results files.
-    domain_results, planners_list = read_files(resultsdir)
+    domain_results, planners_list = read_files(resultsdir, planner_name)
 
+def compute_coverage(domain_results, klist):
+    solved_domains = set()
     planner_summary = defaultdict(dict)
-
     for domainname, domainresults in domain_results.items():
         for problemname, problemresults in domainresults.items():
             for q, qresults in problemresults.items():
                 for k, kresults in qresults.items():
                     for tag, tagresults in kresults.items():
                         if not q in planner_summary: planner_summary[q] = defaultdict(dict)
-                        if not tag in planner_summary[q]: planner_summary[q][tag] = {kvalue: [] for kvalue in [5, 10, 100, 1000]}
-                        for kvalue in [5, 10, 100, 1000]:
-                            planner_summary[q][tag][kvalue].append( kvalue <= tagresults['number-of-plans'])
+                        if not tag in planner_summary[q]: 
+                            planner_summary[q][tag]['coverage'] = {kvalue: [] for kvalue in klist}
+                            planner_summary[q][tag]['solved-instaces'] = {kvalue: set() for kvalue in klist}
+                        for kvalue in klist:
+                            planner_summary[q][tag]['coverage'][kvalue].append(kvalue <= tagresults['number-of-plans'])
+                            if kvalue <= tagresults['number-of-plans']:
+                                planner_summary[q][tag]['solved-instaces'][kvalue].add(f'{domainname}-{problemname}')
 
     # now count the number of True per k value.
     for q, qresults in planner_summary.items():
         for tag, tagresults in qresults.items():
-            for kvalue, kresults in tagresults.items():
-                planner_summary[q][tag][kvalue] = planner_summary[q][tag][kvalue].count(True)
-    pass
+            for kvalue in klist:
+                planner_summary[q][tag]['coverage'][kvalue] = planner_summary[q][tag]['coverage'][kvalue].count(True)
+                planner_summary[q][tag]['solved-instaces'][kvalue] = list(planner_summary[q][tag]['solved-instaces'][kvalue])
+    return planner_summary
+
+def dump_coverage_results(klist, planner_coverage, planner_tag, dumpdir):
+    # dump the results to two files: 1 for the coverage and the other for the solved instances.
+    csv_files_dir = os.path.join(dumpdir, 'csv')
+    os.makedirs(csv_files_dir, exist_ok=True)
+    json_files_dir = os.path.join(dumpdir, 'json')
+    os.makedirs(json_files_dir, exist_ok=True)
+    coverage_csv_dump = [f'q,k,tag,coverage']
+    for q, qresults in planner_coverage.items():
+        for tag, tagresults in qresults.items():
+            for kvalue in klist:
+                coverage_csv_dump.append(f'{q},{kvalue},{tag},{tagresults["coverage"][kvalue]}')
+    # dump the planner_coverage details into json file.
+    with open(os.path.join(json_files_dir, f'{planner_tag}-coverage-details.json'), "w") as f:
+        json.dump(planner_coverage, f, indent=4)
+    dump_list_to_csv(coverage_csv_dump, os.path.join(csv_files_dir, f'{tag}-coverage.csv'))
+
 
 def analyze(args):
+    # To have a good results, It will be better to read each planner results on its own
+    # then dump files for each planner, which will be used to compute the behaviour coverage based on planners.
+    os.makedirs(args.output_dir, exist_ok=True)
 
-    compare_planners_results(args.planner_results_dir, args.output_dir)
+    klist = [5, 10, 100, 1000]
+    planners_list = ['symk', 'fi-none', 'fbi']
+    for planner_tag in planners_list:
+        print(f'Analyzing planner: {planner_tag}')
+        # read only the files with the planner_tag.
+        domain_results, _ = read_files(args.planner_results_dir, planner_tag)
+        planner_coverage = compute_coverage(domain_results, klist)
+        dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
+        pass
 
-    if args.compute_behaviour_count:
-        compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
-    if args.compute_coverage:
-        compute_coverage(args.planner_results_dir, args.output_dir)
+
+
+
+    # compare_planners_results(args.planner_results_dir, args.output_dir, 'symk')
+
+    # if args.compute_behaviour_count:
+    #     compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
+    # if args.compute_coverage:
+    #     compute_coverage(args.planner_results_dir, args.output_dir)
     return 0
 
 def summarise_error(args):

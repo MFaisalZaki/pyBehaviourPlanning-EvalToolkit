@@ -17,7 +17,7 @@ def getkeyvalue(data, target_key):
                 return result
     return None
 
-def read_files(exp_dir):
+def read_files(exp_dir, planner_name=None):
     ret_results = defaultdict(dict)
     planners_tags = set()
     no_coverage_available = set()
@@ -26,6 +26,8 @@ def read_files(exp_dir):
     # Get all the files in the directory
     for file in os.listdir(exp_dir):
         if file.endswith(".json"):
+            if planner_name is not None and planner_name not in file:
+                continue
             results_file = os.path.join(exp_dir, file)
             with open(results_file, "r") as f:
                 data = json.load(f)
@@ -33,7 +35,7 @@ def read_files(exp_dir):
                 if 'reason' in data:
                     skipping_reasons.add((results_file, data['reason']))
                     continue
-                
+
                 # read the planning task.
                 domain = getkeyvalue(data, "domain")
                 problem = getkeyvalue(data, "problem")                
