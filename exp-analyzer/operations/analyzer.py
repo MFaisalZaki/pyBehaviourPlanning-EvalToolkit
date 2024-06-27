@@ -142,7 +142,7 @@ def analyze(args):
 
     klist = [5, 10, 100, 1000]
     q_values = set()
-    planners_list = ['symk', 'fbi-seq']
+    planners_list = ['symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k', 'fbi-seq']
     planners_results = defaultdict(dict)
     for planner_tag in planners_list:
         if not planner_tag in planners_results: planners_results[planner_tag] = defaultdict(dict)
