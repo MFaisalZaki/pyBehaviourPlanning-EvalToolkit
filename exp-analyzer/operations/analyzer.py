@@ -3,6 +3,8 @@ import json
 
 from collections import defaultdict
 from itertools import combinations
+from scipy import stats
+from statistics import mean
 
 # try to install matplotlib
 try:
@@ -138,7 +140,7 @@ def analyze(args):
     dumpdir = dump_common_instances_dir
     os.makedirs(dumpdir, exist_ok=True)
 
-    klist = [5] #, 10, 100, 1000]
+    klist = [5, 10, 100, 1000]
     q_values = set()
     planners_list = ['symk', 'fbi-seq']
     planners_results = defaultdict(dict)
@@ -186,22 +188,20 @@ def analyze(args):
                 for planner in [planner1, planner2]:
                     print(f'Extracting behaviour count for {planner} - q:{q} - k:{k}')
                     bc_values = extract_behaviour_count(args.planner_results_dir, ci_domains_list, planner, k, q)
+                    samples_values.append(list(map(lambda v:v[1], sorted(bc_values[q][str(k)]['samples'], key=lambda x: x[0]))))
                     planners_bc_results[q][str(k)][planner] = bc_values[q][str(k)]['bc']
-                    samples_values.append(bc_values[q][str(k)]['samples'])
+                    planners_bc_results[q][str(k)][f'{planner}-samples'] = ','.join(map(str, samples_values[-1]))
+                    planners_bc_results[q][str(k)][f'{planner}-samples-mean'] = mean(samples_values[-1])
                 assert len(samples_values[0]) == len(samples_values[1]), f'Error: {planner1} and {planner2} have different number of samples'
                 assert len(samples_values[0]) == len(ci_domains_list), f'Error: {planner1} and {planner2} have different number of samples'
 
-                # now compute the t-test for those samples, but we need to sort the bc values based on the domain names.
-                
-                
-                pass
+                planners_bc_results[q][str(k)]['p-value'] = stats.ttest_rel(*samples_values).pvalue
+                planners_bc_results[q][str(k)]['ci-#'] = len(ci_domains_list)
         
         # dump this to file.
         dump_json = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances-behaviour-count.json')
         with open(dump_json, 'w') as f:
             json.dump(planners_bc_results, f, indent=4)
-
-                    
 
     pass
 
