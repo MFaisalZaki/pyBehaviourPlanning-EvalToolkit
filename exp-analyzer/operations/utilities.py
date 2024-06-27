@@ -132,7 +132,7 @@ def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
                 if q != str(_q): continue
                 if domain is None or problem is None: continue
                 if _q is None or _k is None or bc is None: continue
-                if not f'{domain}-{problem}' in commonlist: continue
+                if len(commonlist) > 0 and not f'{domain}-{problem}' in commonlist: continue
 
                 if not q in planner_results: planner_results[q] = defaultdict(dict)
                 if not k in planner_results[q]: 

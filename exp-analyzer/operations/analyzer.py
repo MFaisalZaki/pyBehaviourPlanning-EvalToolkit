@@ -172,7 +172,6 @@ def analyze(args):
         with open(dump_json, 'w') as f:
             json.dump({'common-instances':common_instances}, f, indent=4)
 
-
     for (planner1, planner2), common_instances_file in planners_files.items():
         # get the common instances values.
         with open(common_instances_file, 'r') as f:
@@ -187,9 +186,11 @@ def analyze(args):
                 samples_values = []
                 for planner in [planner1, planner2]:
                     print(f'Extracting behaviour count for {planner} - q:{q} - k:{k}')
-                    bc_values = extract_behaviour_count(args.planner_results_dir, ci_domains_list, planner, k, q)
-                    samples_values.append(list(map(lambda v:v[1], sorted(bc_values[q][str(k)]['samples'], key=lambda x: x[0]))))
-                    planners_bc_results[q][str(k)][planner] = bc_values[q][str(k)]['bc']
+                    common_bc_values = extract_behaviour_count(args.planner_results_dir, ci_domains_list, planner, k, q)
+                    coverage = extract_behaviour_count(args.planner_results_dir, [], planner, k, q)
+                    samples_values.append(list(map(lambda v:v[1], sorted(common_bc_values[q][str(k)]['samples'], key=lambda x: x[0]))))
+                    planners_bc_results[q][str(k)][f'{planner}-bc'] = common_bc_values[q][str(k)]['bc']
+                    planners_bc_results[q][str(k)][f'{planner}-coverage'] = len(coverage[q][str(k)]['samples'])
                     planners_bc_results[q][str(k)][f'{planner}-samples'] = ','.join(map(str, samples_values[-1]))
                     planners_bc_results[q][str(k)][f'{planner}-samples-mean'] = mean(samples_values[-1])
                 assert len(samples_values[0]) == len(samples_values[1]), f'Error: {planner1} and {planner2} have different number of samples'
