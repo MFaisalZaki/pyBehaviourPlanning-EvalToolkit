@@ -143,6 +143,7 @@ def analyze(args):
     klist = [5, 10, 100, 1000]
     q_values = set()
     planners_list = ['symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k', 'fbi-seq']
+    planners_list = ['fi-none-maxsum', 'fbi-seq']
     planners_results = defaultdict(dict)
     for planner_tag in planners_list:
         if not planner_tag in planners_results: planners_results[planner_tag] = defaultdict(dict)
@@ -184,10 +185,14 @@ def analyze(args):
             for k, ci_domains_list in k_instances.items():
                 planners_bc_results[q][k] = defaultdict(dict)
                 samples_values = []
+                _debug_domain = []
                 for planner in [planner1, planner2]:
                     print(f'Extracting behaviour count for {planner} - q:{q} - k:{k}')
                     common_bc_values = extract_behaviour_count(args.planner_results_dir, ci_domains_list, planner, k, q)
                     coverage = extract_behaviour_count(args.planner_results_dir, [], planner, k, q)
+
+                    _debug_domain.append(list(map(lambda v:v[0], sorted(common_bc_values[q][str(k)]['samples'], key=lambda x: x[0]))))
+
                     samples_values.append(list(map(lambda v:v[1], sorted(common_bc_values[q][str(k)]['samples'], key=lambda x: x[0]))))
                     planners_bc_results[q][str(k)][f'{planner}-bc'] = common_bc_values[q][str(k)]['bc']
                     planners_bc_results[q][str(k)][f'{planner}-coverage'] = len(coverage[q][str(k)]['samples'])

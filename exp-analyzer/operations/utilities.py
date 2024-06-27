@@ -126,7 +126,7 @@ def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
                 _k = getkeyvalue(data, 'k')
                 bc = getkeyvalue(data, 'behaviour-count')
                 tag = getkeyvalue(data, 'tag')
-
+                plans = getkeyvalue(data, 'plans')
                 domain  = getkeyvalue(data, 'domain')
                 problem = getkeyvalue(data, 'problem')
 
@@ -134,11 +134,11 @@ def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
                 if int(k) != _k: continue
                 if q != str(_q): continue
                 if planner_tag.replace('-none','') != tag: continue
-                if domain is None or problem is None or tag is None: continue
+                if domain is None or problem is None or tag is None or plans is None: continue
                 if f'{domain}-{problem}' in covered_domains: continue
                 if _q is None or _k is None or bc is None: continue
                 if len(commonlist) > 0 and not f'{domain}-{problem}' in commonlist: continue
-
+                if 'fi' in planner_tag and len(plans) > _k: continue
                 if not q in planner_results: planner_results[q] = defaultdict(dict)
                 if not k in planner_results[q]: 
                     planner_results[q][k] = defaultdict(dict)
@@ -146,7 +146,7 @@ def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
                     planner_results[q][k]['samples'] = []
                 planner_results[q][k]['bc'] += bc
                 planner_results[q][k]['samples'].append((f'{domain}-{problem}', bc))
-                
+
                 covered_domains.append(f'{domain}-{problem}')
     return planner_results
 
