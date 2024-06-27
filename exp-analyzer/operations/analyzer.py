@@ -137,8 +137,10 @@ def analyze(args):
     # then dump files for each planner, which will be used to compute the behaviour coverage based on planners.
     os.makedirs(args.output_dir, exist_ok=True)
     dump_common_instances_dir = os.path.join(args.output_dir, 'common-instances-details')
-    dumpdir = dump_common_instances_dir
-    os.makedirs(dumpdir, exist_ok=True)
+    os.makedirs(dump_common_instances_dir, exist_ok=True)
+
+    dump_behaviour_count_results = os.path.join(args.output_dir, 'behaviour-count-results')
+    os.makedirs(dump_behaviour_count_results)
 
     klist = [5, 10, 100, 1000]
     q_values = set()
@@ -168,7 +170,7 @@ def analyze(args):
                 common_instances[q][k] = list(set.intersection(planners_results[planner1][q][k]['solved-domains'], planners_results[planner2][q][k]['solved-domains']))
 
         # dump this to file.
-        dump_json = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances.json')
+        dump_json = os.path.join(dump_common_instances_dir, f'{planner1}-{planner2}-common-instances.json')
         planners_files[(planner1, planner2)] = dump_json
         with open(dump_json, 'w') as f:
             json.dump({'common-instances':common_instances}, f, indent=4)
@@ -205,7 +207,7 @@ def analyze(args):
                 planners_bc_results[q][str(k)]['ci-#'] = len(ci_domains_list)
         
         # dump this to file.
-        dump_json = os.path.join(dumpdir, f'{planner1}-{planner2}-common-instances-behaviour-count.json')
+        dump_json = os.path.join(dump_behaviour_count_results, f'{planner1}-{planner2}-common-instances-behaviour-count.json')
         with open(dump_json, 'w') as f:
             json.dump(planners_bc_results, f, indent=4)
 
