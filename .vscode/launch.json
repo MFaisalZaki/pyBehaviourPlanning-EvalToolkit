@@ -93,6 +93,18 @@
             "justMyCode": false
         },
         {
+            "name": "pprint-state file",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-analyzer/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "pprint-stats",
+                "--stats-file", "${workspaceFolder}/sandbox-runtime-profiling/2006-rovers-3-1.0-1000-fbi-utility-set.json.prof"
+            ],
+            "justMyCode": false
+        },
+        {
             "name": "replace domain/problem files",
             "type": "debugpy",
             "request": "launch",

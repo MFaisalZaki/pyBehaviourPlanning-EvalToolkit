@@ -288,3 +288,9 @@ def summarise_error(args):
     os.makedirs(args.output_dir, exist_ok=True)
     with open(os.path.join(args.output_dir, "errors_summary.json"), "w") as f:
         json.dump(errors_log_summary, f, indent=4)
+
+def pprint_stats_file(args):
+    import pstats
+    from pstats import SortKey
+    statsfile = pstats.Stats(args.stats_file)
+    statsfile.sort_stats(SortKey.CUMULATIVE).print_stats(100)

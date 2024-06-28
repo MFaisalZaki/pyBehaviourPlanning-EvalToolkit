@@ -51,6 +51,9 @@ def _create_arg_parser():
     for cmd in ["summarise-errors"]:
         subparser[cmd].add_argument( "--error-files-dir", type=str, help="Error directory.")
         subparser[cmd].add_argument( "--output-dir", type=str, help="Processed results directory.")
+
+    for cmd in ["pprint-stats"]:
+        subparser[cmd].add_argument( "--stats-file", type=str, help="path for the stats file.")
     
     return parser
 
@@ -62,6 +65,10 @@ _COMMANDS = {
     "summarise-errors": {
         "fn": analyzer.summarise_error,
         "desc": "Summarise the error files."
+    },
+    "pprint-stats": {
+        "fn": analyzer.pprint_stats_file,
+        "desc": "Pritty print for the stats file."
     }
 }
 

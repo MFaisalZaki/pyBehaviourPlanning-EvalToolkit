@@ -19,7 +19,13 @@ def main(ARG_PARSER):
     Entry point function.
     """
     args = ARG_PARSER.parse_args()
-    exitcode = args.func(args)
+
+    profiling_dump_dir = os.path.join(os.path.dirname(__file__), '..', 'sandbox-runtime-profiling')
+    os.makedirs(profiling_dump_dir, exist_ok=True)
+    profiling_file = os.path.basename(args.experiment_file) if args.experiment_file else 'Ignore'
+    profiling_file = os.path.join(profiling_dump_dir, f"{profiling_file}.prof")
+    cProfile.runctx('args.func(args)', {'args':args}, {}, filename=profiling_file)
+
     return 0
 
 def _create_arg_parser():
