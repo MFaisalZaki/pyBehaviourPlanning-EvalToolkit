@@ -12,7 +12,7 @@ from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
-from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space
+from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
 
 
@@ -132,8 +132,18 @@ def score(args):
     try:
 
         # Now we need to construct the behaviour space for the diversity scores.
-        domain = getkeyvalue(expdetails, 'domainfile')
+        domain  = getkeyvalue(expdetails, 'domainfile')
         problem = getkeyvalue(expdetails, 'problemfile')
+
+        # Check if the task is oversubscription.
+        is_oversubscription = getkeyvalue(expdetails, 'is-oversubscription')
+        if is_oversubscription:
+            # update the cost-bound-factor value to 1.0
+            dims = getkeyvalue(expdetails, 'dims')
+            for dimname, additional_info in dims:
+                if dimname in ["UtilityDimension", "UtilitySet", "UtilityValue"]:
+                    additional_info['cost-bound-factor'] = 1.0
+            updatekeyvalue(expdetails, 'dims', dims)
 
         # It is better to construct the behaviour space from those dimensions.
         bspace_cfg = getkeyvalue(expdetails, 'bspace-cfg')
@@ -164,8 +174,6 @@ def score(args):
                 tag = getkeyvalue(expdetails, 'tag')
             case _:
                 assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
-
-        is_oversubscription = getkeyvalue(expdetails, 'is-oversubscription')
 
         # Based on the planner we need may want to apply a different selection strategy.
         diversity_scores_results['plans'] = planlist
