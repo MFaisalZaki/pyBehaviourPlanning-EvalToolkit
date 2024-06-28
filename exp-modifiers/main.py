@@ -54,6 +54,9 @@ def _create_arg_parser():
         subparser[cmd].add_argument( "--dump-dir", type=str, help="Directory to dump files.", default="")
         subparser[cmd].add_argument( "--cost-bound", type=float, help="Cost bound factor.", default=1.0)
     
+    for cmd in ["add-oversubscription-flag"]:
+        subparser[cmd].add_argument( "--dir", type=str, help="Directory to search for files.", default="")
+
     return parser
 
 _COMMANDS = {
@@ -64,6 +67,10 @@ _COMMANDS = {
     "update-symk": {
         "fn": modifiers.update_symk_oversubscription_dims,
         "desc": "updates symk oversubscription dims."
+    },
+    "add-oversubscription-flag": {
+        "fn": modifiers.add_oversubscription_flag,
+        "desc": "adds oversubscription flag to exp results."
     }
 }
 

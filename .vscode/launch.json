@@ -125,9 +125,20 @@
             "program": "${workspaceFolder}/exp-modifiers/main.py",
             "console": "integratedTerminal",
             "args": ["update-symk",
-            "--cost-bound", "0.5",
-            "--dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results",
-            "--dump-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/updated-symk-dump-results"
+            "--cost-bound", "0.25",
+            "--dir", "/Users/mustafafaisal/Desktop/all-dump-results/0.25/dump-results",
+            "--dump-dir", "/Users/mustafafaisal/Desktop/all-dump-results/0.25/updated-dump-results"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "fix oversubscription flag in results",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-modifiers/main.py",
+            "console": "integratedTerminal",
+            "args": ["add-oversubscription-flag",
+            "--dir", "/Users/mustafafaisal/Desktop/all-dump-results/1.0/dump-results",
             ],
             "justMyCode": false
         }
