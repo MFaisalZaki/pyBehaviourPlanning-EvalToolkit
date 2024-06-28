@@ -165,10 +165,12 @@ def score(args):
             case _:
                 assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
 
+        is_oversubscription = getkeyvalue(expdetails, 'is-oversubscription')
+
         # Based on the planner we need may want to apply a different selection strategy.
         diversity_scores_results['plans'] = planlist
 
-        bspace = BehaviourCount(domain, problem, bspace_cfg, planlist)
+        bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
 
         diversity_scores_results['info'] = {
             'domain':  getkeyvalue(expdetails, 'domain'),
@@ -184,6 +186,11 @@ def score(args):
     except Exception as e:
         # Dump error to file.
         error_file = getkeyvalue(expdetails, 'error-file')
+        if error_file is None:
+            d = getkeyvalue(expdetails, 'domain')
+            p = getkeyvalue(expdetails, 'problem')
+            error_file = os.path.join(os.path.dirname(args.experiment_file), '..', 'score-run-error', f'{d}-{p}')
+            os.makedirs(os.path.dirname(error_file), exist_ok=True)
         assert error_file is not None, "Error file is not provided."
         with open(error_file, 'w') as f:
             f.write(str(e))

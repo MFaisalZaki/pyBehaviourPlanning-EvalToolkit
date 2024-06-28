@@ -55,7 +55,7 @@
             //"--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
             //"--k", "5"
             
-            "--experiment-file", "/Users/mustafafaisal/Developer/dev-pybehaviour-planning-evaltoolkit/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2000-freecell-27-1.0-1000-symk-util-set.json",
+            "--experiment-file", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-1-1.0-1000-symk-util-value.json",
             "--k", "10"
 
             ],

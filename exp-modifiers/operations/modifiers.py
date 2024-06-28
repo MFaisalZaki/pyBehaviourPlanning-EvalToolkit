@@ -57,5 +57,6 @@ def update_symk_oversubscription_dims(args):
                 filename = filename.replace(f'{tag}', f"{tag}-{t}")
                 setkeyvalue(data_copy, 'tag', f"{tag}-{t}")
                 setkeyvalue(data_copy, 'dims', dim)
+                data_copy['is-oversubscription'] = True
                 with open(os.path.join(args.dump_dir, filename), "w") as f:
                     json.dump(data_copy, f, indent=4)
