@@ -183,7 +183,7 @@ def score(args):
         
     except Exception as e:
         # Dump error to file.
-        error_file = os.path.basename(args.experiment_file).replace('.json', f'-{args.k}-scores.error')
+        error_file = getkeyvalue(expdetails, 'error-file')
         assert error_file is not None, "Error file is not provided."
         with open(error_file, 'w') as f:
             f.write(str(e))
