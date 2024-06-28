@@ -22,7 +22,10 @@ def main(ARG_PARSER):
 
     profiling_dump_dir = os.path.join(os.path.dirname(__file__), '..', 'sandbox-runtime-profiling')
     os.makedirs(profiling_dump_dir, exist_ok=True)
-    profiling_file = os.path.basename(args.experiment_file) if args.experiment_file else 'Ignore'
+    try:
+        profiling_file = os.path.basename(args.experiment_file) if args.experiment_file else 'Ignore'
+    except AttributeError:
+        profiling_file = 'Ignore'
     profiling_file = os.path.join(profiling_dump_dir, f"{profiling_file}.prof")
     cProfile.runctx('args.func(args)', {'args':args}, {}, filename=profiling_file)
 
