@@ -48,12 +48,22 @@ def _create_arg_parser():
         subparser[cmd].add_argument( "--value", type=str, help="Value to replace with.", default="")
         subparser[cmd].add_argument( "--dims", nargs='+', type=str, help="List of dims values.", default=[])
         subparser[cmd].add_argument( "--dir", type=str, help="Directory to search for files.", default="")
+    
+    for cmd in ["update-symk"]:
+        subparser[cmd].add_argument( "--dir", type=str, help="Directory to search for files.", default="")
+        subparser[cmd].add_argument( "--dump-dir", type=str, help="Directory to dump files.", default="")
+        subparser[cmd].add_argument( "--cost-bound", type=float, help="Cost bound factor.", default=1.0)
+    
     return parser
 
 _COMMANDS = {
     "replace": {
         "fn": modifiers.replace,
         "desc": "replaces paramters in exp results."
+    },
+    "update-symk": {
+        "fn": modifiers.update_symk_oversubscription_dims,
+        "desc": "updates symk oversubscription dims."
     }
 }
 
