@@ -32,6 +32,7 @@ def generate_score_cmds(args, venv_dir):
             plans = getkeyvalue(results, 'plans')
             if plans is None: continue
             no_plans = len(plans)
+            k_Value = getkeyvalue(results, 'k')
             planner = getkeyvalue(results, 'planner')
             if planner in ['fi']:
                 basefilename = os.path.basename(results_file).replace('.json','')
@@ -43,6 +44,7 @@ def generate_score_cmds(args, venv_dir):
                     with open(selection_method_results_file, 'w') as f:
                         json.dump(cpy_results, f, indent=4)
                     for k in args.score_for_k:
+                        if k != k_Value: continue
                         if k > no_plans: break
                         cmd = construct_score_cmd(k, selection_method_results_file)
                         rundir = os.path.join(run_score_dir, f'score-{basefilename}-k-{k}')
