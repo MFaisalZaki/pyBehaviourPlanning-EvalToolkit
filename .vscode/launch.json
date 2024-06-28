@@ -87,6 +87,20 @@
                 "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/impl6-solve-run-dir",
             ],
             "justMyCode": false
+        },
+        {
+            "name": "replace domain/problem files",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-modifiers/main.py",
+            "console": "integratedTerminal",
+            "args": ["replace",
+            "--problem-files",
+            "--tag", "/home/ma342/oversubscription-all-run-1",
+            "--value", "/Users/mustafafaisal/Developer/dev-pybehaviour-planning-evaltoolkit",
+            "--dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results",
+            ],
+            "justMyCode": false
         }
     ]
 }
