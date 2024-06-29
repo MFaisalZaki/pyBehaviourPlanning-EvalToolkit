@@ -140,11 +140,12 @@ def analyze(args):
     os.makedirs(dump_common_instances_dir, exist_ok=True)
 
     dump_behaviour_count_results = os.path.join(args.output_dir, 'behaviour-count-results')
-    os.makedirs(dump_behaviour_count_results)
+    os.makedirs(dump_behaviour_count_results, exist_ok=True)
 
     klist = [5, 10, 100, 1000]
     q_values = set()
-    planners_list = ['symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k', 'fbi-seq']
+    # planners_list = ['symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k', 'fbi-seq']
+    planners_list = ['symk-util-value', 'symk-util-set', 'fbi-utility-value', 'fbi-utility-set']
     planners_results = defaultdict(dict)
     for planner_tag in planners_list:
         if not planner_tag in planners_results: planners_results[planner_tag] = defaultdict(dict)

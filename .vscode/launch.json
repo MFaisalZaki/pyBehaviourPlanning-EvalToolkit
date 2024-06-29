@@ -24,8 +24,8 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", 
-            "--exp-details-dir", "${workspaceFolder}/exps/oversubscription-diverse-planning/0.5", 
-            "--sandbox-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5", 
+            "--exp-details-dir", "${workspaceFolder}/exps/classical-behaviour-count", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp", 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part",
             "--for-score-exp",
@@ -55,8 +55,8 @@
             //"--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
             //"--k", "5"
             
-            "--experiment-file", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-1-1.0-1000-symk-util-value.json",
-            "--k", "10"
+            "--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/1998-gripper-2-2.0-1000-fbi-seq.json",
+            "--k", "100"
 
             ],
             "justMyCode": false
@@ -71,9 +71,13 @@
                 "analyze", 
                 "--compute-behaviour-count",
                 "--compute-coverage",
+
                 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
+                "--planner-results-dir", "/Users/mustafafaisal/Desktop/sandboxes/sandbox-oversubscription-behaviour-count-exp/0.5/score-dump-results",
+                "--output-dir", "/Users/mustafafaisal/Desktop/sandboxes/sandbox-oversubscription-behaviour-count-exp/0.5/analysis-score-dump-results"
+
+                // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
+                // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/no-validation",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/try-catch"
             ],
