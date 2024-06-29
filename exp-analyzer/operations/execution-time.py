@@ -17,11 +17,12 @@ def compute_function_times_per_file(files, function_name):
     
     return function_times
 
-def print_function_times(function_times):
-    sorted_files = sorted(function_times.items(), key=lambda x: x[1][0], reverse=True)
+def save_function_times(function_name, function_times):
+    sorted_files = sorted(function_times.items(), key=lambda x: x[1][1], reverse=True)
     
-    for file, (cum_time, time_per_call) in sorted_files:
-        print(f"{file}: {cum_time:.6f} seconds, {time_per_call:.6f} seconds per call")
+    with open(f"{function_name}.log", "w") as f:
+        for file, (cum_time, time_per_call) in sorted_files:
+            f.write(f"{file}: {cum_time:.6f} seconds, {time_per_call:.6f} seconds per call\n")
 
 def main():
     # Adjust the path to match where your .pstats files are located
@@ -32,15 +33,23 @@ def main():
         print("No pstats files found.")
         return
 
-    # Get the function name from the user
-    function_name = 'evaluate' #input("Enter the function name: ")
+    # Get the list of function names from the user
+    function_names = ['plan_behaviour', 
+                      'check', 
+                      'extract_plan', 
+                      'infer_behaviour',
+                      'is_true',
+                      'replace_action_instances',
+                      'SMTSequentialPlan']
 
-    function_times = compute_function_times_per_file(files, function_name)
-    if not function_times:
-        print(f"No data found for function: {function_name}")
-    else:
-        print(f"Cumulative times for function '{function_name}':")
-        print_function_times(function_times)
+    for function_name in function_names:
+        function_name = function_name.strip()
+        function_times = compute_function_times_per_file(files, function_name)
+        if not function_times:
+            print(f"No data found for function: {function_name}")
+        else:
+            save_function_times(function_name, function_times)
+            print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
 
 if __name__ == "__main__":
     main()
