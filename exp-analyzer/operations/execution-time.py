@@ -51,8 +51,9 @@ def main():
 
     # Get the list of function names from the user
     function_names = [
-        # 'cost_bound_makespan_optimal.py:10(__init__)',
-        # 'cost_bound_makespan_optimal.py:13(__encode__)',
+        'cost_bound_makespan_optimal.py:10(__init__)',
+        'cost_bound_makespan_optimal.py:13(__encode__)',
+        'smt_sequential_plan.py:49(cost)',
         'seq_encoder.py:110(extract_plan)',
         'basic.py:85(extract_plan)',
         'str',
