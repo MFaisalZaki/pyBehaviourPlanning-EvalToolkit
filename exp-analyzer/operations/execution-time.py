@@ -24,6 +24,22 @@ def save_function_times(function_name, function_times):
         for file, (cum_time, time_per_call) in sorted_files:
             f.write(f"{file}: {cum_time:.6f} seconds, {time_per_call:.6f} seconds per call\n")
 
+def sort_files_by_cumulative_time(files):
+    cumulative_times = {}
+
+    for file in files:
+        p = pstats.Stats(file)
+        p.strip_dirs().sort_stats('cumulative')
+        total_cumulative_time = sum(stat[3] for func, stat in p.stats.items())
+        cumulative_times[file] = total_cumulative_time
+
+    sorted_files = sorted(cumulative_times.keys(), key=lambda x: cumulative_times[x], reverse=True)
+    with open("sorted_files_by_cumulative_time.log", "w") as f:
+        for file in sorted_files:
+            f.write(f"{file}: {cumulative_times[file]:.6f} seconds\n")
+
+
+
 def main():
     # Adjust the path to match where your .pstats files are located
     filesdir = '/Users/mustafafaisal/Desktop/cpy-runtime/*.prof'
@@ -34,13 +50,17 @@ def main():
         return
 
     # Get the list of function names from the user
-    function_names = ['plan_behaviour', 
-                      'check', 
-                      'extract_plan', 
-                      'infer_behaviour',
-                      'is_true',
-                      'replace_action_instances',
-                      'SMTSequentialPlan']
+    function_names = [
+        # 'cost_bound_makespan_optimal.py:10(__init__)',
+        # 'cost_bound_makespan_optimal.py:13(__encode__)',
+        'seq_encoder.py:110(extract_plan)',
+        'basic.py:85(extract_plan)',
+        'str',
+        'plan_behaviour', 
+        'check', 
+        'extract_plan', 
+        'infer_behaviour',
+    ]
 
     for function_name in function_names:
         function_name = function_name.strip()
@@ -50,6 +70,9 @@ def main():
         else:
             save_function_times(function_name, function_times)
             print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
+
+    
+    # sort_files_by_cumulative_time(files)
 
 if __name__ == "__main__":
     main()
