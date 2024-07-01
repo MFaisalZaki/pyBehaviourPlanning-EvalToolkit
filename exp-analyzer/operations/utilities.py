@@ -101,7 +101,7 @@ def read_score_files(scoresdir, planner_tag, k):
                 if q is None or _k is None or bc is None: continue
                 if domain is None or problem is None or tag is None: continue
                 if tag != planner_tag.replace('-none', ''): continue
-                if len(plans) > _k: continue
+                # if len(plans) > _k: continue
 
                 assert k == _k, "The skipping conditions are not working as expected."
 
@@ -139,8 +139,9 @@ def extract_behaviour_count(scoresdir, commonlist, planner_tag, k, q):
                 if domain is None or problem is None or tag is None or plans is None: continue
                 if _q is None or _k is None or bc is None: continue
                 if len(commonlist) > 0 and not f'{domain}-{problem}' in commonlist: continue
-                if 'fi' in planner_tag and len(plans) > _k: continue
-                if f'{domain}-{problem}' in covered_domains: continue
+                
+                if f'{domain}-{problem}' in covered_domains: 
+                    continue
                 if not q in planner_results: planner_results[q] = defaultdict(dict)
                 if not k in planner_results[q]: 
                     planner_results[q][k] = defaultdict(dict)

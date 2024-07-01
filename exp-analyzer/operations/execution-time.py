@@ -8,6 +8,7 @@ def compute_function_times_per_file(files, function_name):
     for file in files:
         p = pstats.Stats(file)
         p.strip_dirs().sort_stats('cumulative')
+        history_calls = []
         for func, stat in p.stats.items():
             if function_name in pstats.func_std_string(func):
                 total_time = stat[3]  # Cumulative time spent in the given function
@@ -42,7 +43,7 @@ def sort_files_by_cumulative_time(files):
 
 def main():
     # Adjust the path to match where your .pstats files are located
-    filesdir = '/Users/mustafafaisal/Desktop/cpy-runtime/*.prof'
+    filesdir = '/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-runtime-profiling/*.prof'
     files = glob.glob(filesdir)
 
     if not files:
@@ -51,14 +52,14 @@ def main():
 
     # Get the list of function names from the user
     function_names = [
-        'cost_bound_makespan_optimal.py:10(__init__)',
-        'cost_bound_makespan_optimal.py:13(__encode__)',
-        'smt_sequential_plan.py:49(cost)',
-        'seq_encoder.py:110(extract_plan)',
-        'basic.py:85(extract_plan)',
-        'str',
+        # 'cost_bound_makespan_optimal.py:10(__init__)',
+        # 'cost_bound_makespan_optimal.py:13(__encode__)',
+        # 'smt_sequential_plan.py:49(cost)',
+        # 'seq_encoder.py:110(extract_plan)',
+        # 'basic.py:85(extract_plan)',
+        # 'str',
         'plan_behaviour', 
-        'check', 
+        # 'check', 
         'extract_plan', 
         'infer_behaviour',
     ]
@@ -72,8 +73,7 @@ def main():
             save_function_times(function_name, function_times)
             print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
 
-    
-    # sort_files_by_cumulative_time(files)
+    sort_files_by_cumulative_time(files)
 
 if __name__ == "__main__":
     main()

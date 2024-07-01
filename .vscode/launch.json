@@ -73,8 +73,8 @@
                 "--compute-coverage",
 
                 
-                "--planner-results-dir", "/Users/mustafafaisal/Desktop/sandboxes/sandbox-oversubscription-behaviour-count-exp/0.5/score-dump-results",
-                "--output-dir", "/Users/mustafafaisal/Desktop/sandboxes/sandbox-oversubscription-behaviour-count-exp/0.5/analysis-score-dump-results"
+                "--planner-results-dir", "/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-classical-behaviour-count-exp/score-dump-results",
+                "--output-dir", "/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-classical-behaviour-count-exp/dev-analysis-score-dump-results"
 
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
