@@ -40,7 +40,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-set.json"
+            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
             ],
             "justMyCode": false
@@ -73,8 +73,8 @@
                 "--compute-coverage",
 
                 
-                "--planner-results-dir", "/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-classical-behaviour-count-exp/score-dump-results",
-                "--output-dir", "/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-classical-behaviour-count-exp/dev-analysis-score-dump-results"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.25/score-dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.25/score-dump-results-analysis"
 
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
