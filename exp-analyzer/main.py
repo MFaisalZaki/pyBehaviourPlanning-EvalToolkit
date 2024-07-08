@@ -42,7 +42,7 @@ def _create_arg_parser():
         subparser[cmd] = subparsers.add_parser(cmd, description=cmd_attributes["desc"])
         subparser[cmd].set_defaults(func=cmd_attributes["fn"])
 
-    for cmd in ["analyze"]:
+    for cmd in ["analyze", "analyze-single"]:
         subparser[cmd].add_argument( "--planner-results-dir", type=str, help="Dump results directory.")
         subparser[cmd].add_argument( "--output-dir", type=str, help="Processed results directory.")
         subparser[cmd].add_argument( "--compute-behaviour-count", action="store_true", help="Compute the behaviour count.")
@@ -60,6 +60,10 @@ def _create_arg_parser():
 _COMMANDS = {
     "analyze": {
         "fn": analyzer.analyze,
+        "desc": "Analyze the experiments files."
+    },
+    "analyze-single": {
+        "fn": analyzer.analyze_single,
         "desc": "Analyze the experiments files."
     },
     "summarise-errors": {

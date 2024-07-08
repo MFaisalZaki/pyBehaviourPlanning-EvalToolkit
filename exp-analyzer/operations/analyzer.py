@@ -213,61 +213,6 @@ def analyze(args):
         with open(dump_json, 'w') as f:
             json.dump(planners_bc_results, f, indent=4)
 
-    pass
-
-
-    pass
-
-                
-    pass
-
-
-
-
-        # # read only the files with the planner_tag.
-        # domain_results, _ = read_files(args.planner_results_dir, planner_tag)
-        # planner_coverage = compute_coverage(domain_results, klist)
-        # dumped_json_file = dump_coverage_results(klist, planner_coverage, planner_tag, args.output_dir)
-        # planners_files[planner_tag] = dumped_json_file
-    
-
-    
-
-
-
-
-
-
-
-
-
-    # common_instaces_list = {}
-    # for planner1, planner2 in combinations(planners_list, 2):
-    #     print(f'Computing the common instances between {planner1}, {planner2}')
-    #     # shit we need to get the q values also.
-    #     # load the results for those two planners.
-    #     dumpfile = extract_common_instances(planner1, planner2, planners_files, klist, dump_common_instances_dir)
-    #     common_instaces_list[(planner1, planner2)] = dumpfile
-
-    # pass
-                
-                
-                
-                
-
-
-    # pass
-
-    # # now we want to compute the common solved instances between the planners.
-
-
-
-    # # compare_planners_results(args.planner_results_dir, args.output_dir, 'symk')
-
-    # # if args.compute_behaviour_count:
-    # #     compare_behaviour_count_coverage(args.planner_results_dir, args.output_dir)
-    # # if args.compute_coverage:
-    # #     compute_coverage(args.planner_results_dir, args.output_dir)
     return 0
 
 def summarise_error(args):
@@ -297,3 +242,41 @@ def pprint_stats_file(args):
     from pstats import SortKey
     statsfile = pstats.Stats(args.stats_file)
     statsfile.sort_stats(SortKey.CUMULATIVE).print_stats(100)
+
+
+def analyze_single(args):
+    # To have a good results, It will be better to read each planner results on its own
+    # then dump files for each planner, which will be used to compute the behaviour coverage based on planners.
+    os.makedirs(args.output_dir, exist_ok=True)
+    dump_common_instances_dir = os.path.join(args.output_dir, 'common-instances-details')
+    os.makedirs(dump_common_instances_dir, exist_ok=True)
+
+    dump_behaviour_count_results = os.path.join(args.output_dir, 'behaviour-count-results')
+    os.makedirs(dump_behaviour_count_results, exist_ok=True)
+
+    klist = [5, 10, 100, 1000]
+    q_values = set()
+    planners_results = defaultdict(dict)
+    planner_tag = 'fbi-seq-seq'
+    planner = 'fbi'
+    planner_bc_results = {}
+    if not planner_tag in planners_results: planners_results[planner_tag] = defaultdict(dict)
+    for k in klist:
+        print(f'Analyzing planner: {planner_tag} - k:{k}')
+        _k_planner_results = read_score_files(args.planner_results_dir, planner_tag, k)
+        # populate the results.
+        for q, qvalues in _k_planner_results.items():
+            q_values.add(q)
+    
+    for q in q_values:
+        planner_bc_results[q] = defaultdict(dict)
+        for k in klist:
+            planner_bc_results[q][k] = defaultdict(dict)  
+            coverage = extract_behaviour_count(args.planner_results_dir, [], planner_tag, k, str(q))
+            planner_bc_results[q][k][f'{planner}-bc'] = coverage[str(q)][k]['bc']
+            planner_bc_results[q][k][f'{planner}-coverage'] = len(coverage[str(q)][k]['samples'])
+    
+    dump_json = os.path.join(dump_behaviour_count_results, f'{planner}-behaviour-count.json')
+    with open(dump_json, 'w') as f:
+        json.dump(planner_bc_results, f, indent=4)
+    pass
