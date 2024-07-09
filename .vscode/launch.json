@@ -59,7 +59,8 @@
             "--experiment-file", 
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-fbi-utility-set.json",
-            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results-symk/2006-rovers-3-1.0-1000-symk-util-value.json",
+            // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results-symk/2006-rovers-3-1.0-1000-symk-util-value.json",
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2004-psr-small-2-1.0-5-fi-none.json",
             "--k", "100"
 
             ],

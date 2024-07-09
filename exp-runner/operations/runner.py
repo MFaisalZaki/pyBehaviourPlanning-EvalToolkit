@@ -169,6 +169,8 @@ def score(args):
                     case 'maxsum':
                         planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmp_dump_dir)
                         tag = 'fi-maxsum'
+                    case _:
+                        tag = 'fi-select-all'
             case 'symk' | 'fbi':
                 planlist = planlist[:args.k]
                 tag = getkeyvalue(expdetails, 'tag')
