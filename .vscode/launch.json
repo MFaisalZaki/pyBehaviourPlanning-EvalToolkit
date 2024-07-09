@@ -40,9 +40,12 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
+            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
+            
+            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-symk.json"
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-symk.json"
             ],
             "justMyCode": false
         },
@@ -53,10 +56,10 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["score", 
-            //"--experiment-file", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
-            //"--k", "5"
-            
-            "--experiment-file", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-fbi-utility-set.json",
+            "--experiment-file", 
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
+            // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-fbi-utility-set.json",
+            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results-symk/2006-rovers-3-1.0-1000-symk-util-value.json",
             "--k", "100"
 
             ],
@@ -144,9 +147,9 @@
             "program": "${workspaceFolder}/exp-modifiers/main.py",
             "console": "integratedTerminal",
             "args": ["update-symk",
-            "--cost-bound", "0.25",
-            "--dir", "/Users/mustafafaisal/Desktop/all-dump-results/0.25/dump-results",
-            "--dump-dir", "/Users/mustafafaisal/Desktop/all-dump-results/0.25/updated-dump-results"
+            "--cost-bound", "0.5",
+            "--dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results",
+            "--dump-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results-symk"
             ],
             "justMyCode": false
         },
