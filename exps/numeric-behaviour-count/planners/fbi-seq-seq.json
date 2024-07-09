@@ -4,10 +4,10 @@
     "planner-parameters": {
         "base-planner-cfg": {
             "planner-name": "SMTPlanner",
-            "encoder": "EncoderSequentialSMT", 
+            "encoder": "EncoderForall", 
             "upper-bound": 100, 
             "search-strategy": "SMTSearch", 
-            "configuration": "seq", 
+            "configuration": "forall", 
             "run-validation": false
           },
           "bspace-cfg": {

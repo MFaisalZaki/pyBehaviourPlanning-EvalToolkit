@@ -6,7 +6,9 @@ import importlib.util
 
 from unified_planning.io import PDDLWriter
 from unified_planning.model.metrics import Oversubscription
+from unified_planning.shortcuts import CompilationKind
 from behaviour_planning.over_domain_models.smt.shortcuts import *
+
 
 def parse_experiment_details(expdetailsdir:str):
     """
@@ -217,11 +219,12 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
             results['plans'] += [plan]
         else:
             actions = PDDLWriter(task).get_plan(plan)
-            cost    = len(actions.split('\n'))
+            cost    = len(plan.actions)
             results['plans'] += [actions + f'; {cost} cost (unit)']
 
     # Copy the dimensions.
     results['dims'] = getkeyvalue(expdetails, 'dims')
+    updatekeyvalue(results, 'compliation-list', [])
 
     # say whether this task is oversubscription or not.
     results['is-oversubscription'] = len(list(filter(lambda metric: isinstance(metric, Oversubscription), task.quality_metrics))) > 0
