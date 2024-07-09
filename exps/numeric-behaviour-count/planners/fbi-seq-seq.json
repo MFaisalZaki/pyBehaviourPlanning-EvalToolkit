@@ -19,6 +19,11 @@
               ["MakespanOptimalCost", {}],
               ["Functions", "TODO"]
             ],
+            "compliation-list": [
+              ["None", "QUANTIFIERS_REMOVING"],
+              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_grounder", "GROUNDING"]
+            ],
             "run-plan-validation": false,
             "disable-after-goal-state-actions": false
           }

@@ -254,9 +254,18 @@ def update_fbi_parameters(planner_params, expdetails):
 
         if updated_dim_details:
             updated_dims.append([eval(updated_dim_details[0]), updated_dim_details[1]])
-        # if is_oversubsscription
+    
+    updated_compilation_list = []
+    for idx, (compilationname, kind) in enumerate(getkeyvalue(planner_params, 'compliation-list')):
+        try:
+            namev = eval(compilationname)
+        except:
+            namev = compilationname
+        kindv = eval(f'CompilationKind.{kind}')
+        updated_compilation_list.append([namev, kindv])
     
     updatekeyvalue(updated_parameters, 'dims', updated_dims)
+    updatekeyvalue(updated_parameters, 'compliation-list', updated_compilation_list)
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
     updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value
     return updated_parameters

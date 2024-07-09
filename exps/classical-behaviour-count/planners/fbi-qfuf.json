@@ -15,6 +15,12 @@
               ["MakespanOptimalCost", {}],
               ["ResourceCount", "TODO"]
             ],
+            "compliation-list": [
+              ["None", "QUANTIFIERS_REMOVING"],
+              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["None", "NEGATIVE_CONDITIONS_REMOVING"],
+              ["pyperplan", "GROUNDING"]
+            ],
             "run-plan-validation": true,
             "disable-after-goal-state-actions": false
           }
