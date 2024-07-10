@@ -135,9 +135,23 @@
             "console": "integratedTerminal",
             "args": ["replace",
             "--problem-files",
-            "--tag", "/home/ma342/oversubscription-all-run-1",
-            "--value", "/Users/mustafafaisal/Developer/dev-pybehaviour-planning-evaltoolkit",
-            "--dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/dump-results",
+            
+            // "--tag", 
+            // "/data/ma342/behaviour-planning-paper/symk-fbi",
+            
+            // "--value", 
+            // "/home/ma342/classical-domains",
+            
+            "--dir", 
+            "/home/ma342/developer/fix-dump-results/sandbox-classical-exp/raw-dump",
+
+            "--sandbox-dir-tag",
+            "/data/ma342/behaviour-planning-paper/fi/sandbox-classical-behaviour-count-exp",
+
+            "--sandbox-dir-value",
+            "/data/ma342/behaviour-planning-paper/sandbox-classical-behaviour-count-exp"
+
+            //"${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/dump-results",
             ],
             "justMyCode": false
         },

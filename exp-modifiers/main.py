@@ -44,10 +44,12 @@ def _create_arg_parser():
 
     for cmd in ["replace"]:
         subparser[cmd].add_argument( "--problem-files", action="store_true", help="Problem files.")
-        subparser[cmd].add_argument( "--tag", type=str, help="Tag to replace.")
-        subparser[cmd].add_argument( "--value", type=str, help="Value to replace with.", default="")
-        subparser[cmd].add_argument( "--dims", nargs='+', type=str, help="List of dims values.", default=[])
+        # subparser[cmd].add_argument( "--tag", type=str, help="Tag to replace.")
+        # subparser[cmd].add_argument( "--value", type=str, help="Value to replace with.", default="")
+        # subparser[cmd].add_argument( "--dims", nargs='+', type=str, help="List of dims values.", default=[])
         subparser[cmd].add_argument( "--dir", type=str, help="Directory to search for files.", default="")
+        subparser[cmd].add_argument( "--sandbox-dir-tag", type=str, help="Directory to search for files.", default="")
+        subparser[cmd].add_argument( "--sandbox-dir-value", type=str, help="Directory to search for files.", default="")
     
     for cmd in ["update-symk"]:
         subparser[cmd].add_argument( "--dir", type=str, help="Directory to search for files.", default="")

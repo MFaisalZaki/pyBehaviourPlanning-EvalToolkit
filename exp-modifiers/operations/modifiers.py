@@ -15,16 +15,27 @@ def replace(args):
             with open(results_file, "r") as f:
                 data = json.load(f)
             
-            domainfile = getkeyvalue(data, "domainfile")
+            domainfile  = getkeyvalue(data, "domainfile")
             problemfile = getkeyvalue(data, "problemfile")
 
             assert domainfile is not None and problemfile is not None, f"Domain or problem file not found in {results_file}."
             
-            domainfile = domainfile.replace(args.tag, args.value)
-            problemfile = problemfile.replace(args.tag, args.value)
+            old_base_project_name = os.path.dirname(args.sandbox_dir_tag)
+            new_base_project_name = os.path.dirname(args.sandbox_dir_value)
+
+            domainfile  = domainfile.replace(old_base_project_name,  new_base_project_name)
+            problemfile = problemfile.replace(old_base_project_name, new_base_project_name)
+
+            dims = getkeyvalue(data, "dims")
+            new_dims = []
+            for idx, (dimname, additional_info) in enumerate(dims):
+                if "Resource" in dimname:
+                    additional_info = additional_info.replace(args.sandbox_dir_tag, args.sandbox_dir_value)
+                new_dims.append([dimname, additional_info])
 
             assert setkeyvalue(data, "domainfile", domainfile), f"Domain file not updated in {results_file}."
             assert setkeyvalue(data, "problemfile", problemfile), f"Problem file not updated in {results_file}."
+            assert setkeyvalue(data, "dims", new_dims), f"Dims not updated in {results_file}."
 
             with open(results_file, "w") as f:
                 json.dump(data, f, indent=4)
