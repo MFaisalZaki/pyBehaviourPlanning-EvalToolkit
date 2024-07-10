@@ -8,7 +8,12 @@
             "upper-bound": 100, 
             "search-strategy": "SMTSearch", 
             "configuration": "forall", 
-            "run-validation": false
+            "run-validation": false,
+            "compilationlist": [
+              ["None", "QUANTIFIERS_REMOVING"],
+              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_grounder", "GROUNDING"]
+            ]
           },
           "bspace-cfg": {
             "encoder": "seq",
