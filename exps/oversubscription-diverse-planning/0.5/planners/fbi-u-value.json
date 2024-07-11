@@ -10,7 +10,7 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["MakespanOptimalCost", {}],
+              ["MakespanOptimalCost", {"cost-bound-factor": 0.5}],
               ["UtilityValue", {}]
             ],
             "compliation-list": [

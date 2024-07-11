@@ -11,9 +11,12 @@
             "program": "${workspaceFolder}/exp-runner/main.py",
             "console": "integratedTerminal",
             "args": ["generate", "--partition", "sturm-part",
-            "--exp-details-dir", "${workspaceFolder}/exps/utility-diverse-planning",
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
-            "--sandbox-dir", "${workspaceFolder}/sandbox-diverse-utility-planning"
+            "--exp-details-dir", 
+            "${workspaceFolder}/exps/classical-behaviour-count",
+            "--planning-tasks-dir", 
+            "${workspaceFolder}/external-pkgs/classical-domains",
+            "--sandbox-dir", 
+            "${workspaceFolder}/sandbox-classical-test"
             ],
             "justMyCode": false
         },
@@ -40,7 +43,7 @@
             "console": "integratedTerminal",
             "args": ["solve", 
             "--experiment-file", 
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-satellite-4-2.0-1000-fbi-seq-seq.json"
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-satellite-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
@@ -144,13 +147,13 @@
             // "/home/ma342/classical-domains",
             
             "--dir", 
-            "/home/ma342/developer/fix-dump-results/sandbox-classical-exp/raw-dump",
+            "/home/ma342/developer/fix-dump-results/sandbox-oversubscription-behaviour-count-exp/0.25/dump-results",
 
             "--sandbox-dir-tag",
-            "/data/ma342/behaviour-planning-paper/fi/sandbox-classical-behaviour-count-exp",
+            "/data/ma342/oversubscription-exp/sandbox-oversubscription-behaviour-count-exp",
 
             "--sandbox-dir-value",
-            "/data/ma342/behaviour-planning-paper/sandbox-classical-behaviour-count-exp"
+            "/data/ma342/behaviour-planning-paper/sandbox-oversubscription-behaviour-count-exp"
 
             //"${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/dump-results",
             ],

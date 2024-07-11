@@ -19,8 +19,8 @@ def main(ARG_PARSER):
     Entry point function.
     """
     args = ARG_PARSER.parse_args()
-
-    profiling_dump_dir = os.path.join(os.path.dirname(__file__), '..', 'sandbox-runtime-profiling')
+    
+    profiling_dump_dir = os.path.join(os.path.dirname(__file__), '..', f'sandbox-runtime-profiling-{args.command}')
     os.makedirs(profiling_dump_dir, exist_ok=True)
     try:
         profiling_file = os.path.basename(args.experiment_file) if args.experiment_file else 'Ignore'
