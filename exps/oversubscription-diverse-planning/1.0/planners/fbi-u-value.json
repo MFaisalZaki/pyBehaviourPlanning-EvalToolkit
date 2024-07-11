@@ -10,7 +10,7 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["MakespanOptimalCost", {}],
+              ["MakespanOptimalCost", {"cost-bound-factor": 1.0}],
               ["UtilityValue", {}]
             ],
             "compliation-list": [
@@ -19,7 +19,6 @@
               ["None", "NEGATIVE_CONDITIONS_REMOVING"],
               ["pyperplan", "GROUNDING"]
             ],
-            "upper-bound": 50,
             "run-plan-validation": false,
             "disable-after-goal-state-actions": false
           }
