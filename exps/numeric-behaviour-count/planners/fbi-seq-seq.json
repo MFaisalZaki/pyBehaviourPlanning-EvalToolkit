@@ -10,8 +10,8 @@
             "configuration": "forall", 
             "run-validation": false,
             "compilationlist": [
-              ["None", "QUANTIFIERS_REMOVING"],
-              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
               ["up_grounder", "GROUNDING"]
             ]
           },
@@ -25,8 +25,8 @@
               ["Functions", "TODO"]
             ],
             "compliation-list": [
-              ["None", "QUANTIFIERS_REMOVING"],
-              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
               ["up_grounder", "GROUNDING"]
             ],
             "run-plan-validation": false,

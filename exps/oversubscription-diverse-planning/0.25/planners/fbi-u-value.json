@@ -14,9 +14,9 @@
               ["UtilityValue", {}]
             ],
             "compliation-list": [
-              ["None", "QUANTIFIERS_REMOVING"],
-              ["None", "DISJUNCTIVE_CONDITIONS_REMOVING"],
-              ["None", "NEGATIVE_CONDITIONS_REMOVING"],
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_negative_conditions_remover", "NEGATIVE_CONDITIONS_REMOVING"],
               ["pyperplan", "GROUNDING"]
             ],
             "run-plan-validation": false,
