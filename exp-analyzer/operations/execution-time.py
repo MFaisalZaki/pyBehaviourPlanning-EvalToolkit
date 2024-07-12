@@ -43,7 +43,7 @@ def sort_files_by_cumulative_time(files):
 
 def main():
     # Adjust the path to match where your .pstats files are located
-    filesdir = '/Users/mustafafaisal/Developer/classical-exp-results/fi/sandbox-runtime-profiling/*.prof'
+    filesdir = '/home/ma342/developer/dev-pybehaviour-planning-eval/sandbox-runtime-profiling-solve/*.prof'
     files = glob.glob(filesdir)
 
     if not files:
@@ -58,10 +58,11 @@ def main():
         # 'seq_encoder.py:110(extract_plan)',
         # 'basic.py:85(extract_plan)',
         # 'str',
-        'plan_behaviour', 
+        # 'plan_behaviour', 
         # 'check', 
-        'extract_plan', 
-        'infer_behaviour',
+        # 'extract_plan', 
+        # 'infer_behaviour',
+        'generate_summary_file'
     ]
 
     for function_name in function_names:

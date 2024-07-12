@@ -214,14 +214,9 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
         'duplicate-plans-found': not (len(planlist) == planlist_size)
     }
     results['plans'] = []
-    for plan in planlist:
-        if isinstance(plan, str):
-            results['plans'] += [plan]
-        else:
-            actions = PDDLWriter(task).get_plan(plan)
-            cost    = len(plan.actions)
-            results['plans'] += [actions + f'; {cost} cost (unit)']
 
+    results['plans'] = list(map(lambda p: p if isinstance(p, str) else f'{PDDLWriter(task).get_plan(p)}; {len(p.actions)} cost (unit)', planlist))
+    
     # Copy the dimensions.
     results['dims'] = getkeyvalue(expdetails, 'dims')
     updatekeyvalue(results, 'compliation-list', [])

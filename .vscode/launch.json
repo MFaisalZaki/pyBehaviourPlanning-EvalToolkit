@@ -46,10 +46,10 @@
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-satellite-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
             
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-symk.json"
-            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-symk.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-symk.json"
             ],
             "justMyCode": false
         },
@@ -63,9 +63,10 @@
             "--experiment-file", 
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-fbi-utility-set.json",
-            // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results-symk/2006-rovers-3-1.0-1000-symk-util-value.json",
+            //"${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-symk.json",
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-satellite-1-2.0-1000-fbi-seq-seq.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2004-psr-small-2-1.0-5-fi-none.json",
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json",
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json",
             "--k", "5"
 
             ],
