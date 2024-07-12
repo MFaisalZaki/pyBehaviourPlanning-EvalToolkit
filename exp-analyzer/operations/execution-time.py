@@ -1,8 +1,9 @@
 import pstats
 from pstats import Stats
 import glob
+import os
 
-def sort_functions_by_cumulative_time(pstat_file):
+def sort_functions_by_cumulative_time(pstat_file, threshold):
     """
     Sorts the function calls in the given .pstat file based on their cumulative time.
 
@@ -17,6 +18,7 @@ def sort_functions_by_cumulative_time(pstat_file):
     sorted_functions = [(func, stat[3]) for func, stat in stats.stats.items()]
     sorted_functions.sort(key=lambda x: x[1], reverse=True)
 
+    sorted_functions = list(filter(lambda x: x[1] > threshold, sorted_functions))
     # return them into a list
     return sorted_functions
 
@@ -79,7 +81,7 @@ def sort_and_save_pstat(pstat_file, output_file):
 
 def main():
     # Adjust the path to match where your .pstats files are located
-    filesdir = '/home/ma342/developer/dev-pybehaviour-planning-eval/sandbox-runtime-profiling-solve/*.prof'
+    filesdir = '/home/ma342/developer/dev-behaviour-planning-paper/sandbox-numeric-runtime-solve/*.prof'
     files = glob.glob(filesdir)
 
     if not files:
@@ -110,9 +112,14 @@ def main():
     #         save_function_times(function_name, function_times)
     #         print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
 
+    functions_execution_time = []
     for file in files:
-        sort_functions_by_cumulative_time(file)
+        values = sort_functions_by_cumulative_time(file, 100)
+        if len(values) == 0: continue
+        functions_execution_time.append((os.path.basename(file), values ))
+        # functions = sort_functions_by_cumulative_time(file)
 
+    pass
     # sort_files_by_cumulative_time(files)
 
 if __name__ == "__main__":
