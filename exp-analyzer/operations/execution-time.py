@@ -2,6 +2,25 @@ import pstats
 from pstats import Stats
 import glob
 
+def sort_functions_by_cumulative_time(pstat_file):
+    """
+    Sorts the function calls in the given .pstat file based on their cumulative time.
+
+    :param pstat_file: Path to the .pstat file
+    """
+    # Read the .pstat file
+    stats = pstats.Stats(pstat_file)
+    
+    # Sort the statistics by cumulative time
+    stats.sort_stats('cumulative')
+    
+    sorted_functions = [(func, stat[3]) for func, stat in stats.stats.items()]
+    sorted_functions.sort(key=lambda x: x[1], reverse=True)
+
+    # return them into a list
+    return sorted_functions
+
+
 def compute_function_times_per_file(files, function_name):
     function_times = {}
     
@@ -39,7 +58,24 @@ def sort_files_by_cumulative_time(files):
         for file in sorted_files:
             f.write(f"{file}: {cumulative_times[file]:.6f} seconds\n")
 
+def sort_and_save_pstat(pstat_file, output_file):
+    """
+    Sorts function calls based on their cumulative time and saves them to a file.
 
+    :param pstat_file: Path to the .pstat file
+    :param output_file: Path to the output file
+    """
+    # Read the .pstat file
+    stats = pstats.Stats(pstat_file)
+    
+    # Sort the statistics by cumulative time
+    stats.sort_stats('cumulative')
+    
+    # Open the output file in write mode
+    with open(output_file, 'w') as file:
+        # Redirect the stats output to the file
+        stats.stream = file
+        stats.print_stats()
 
 def main():
     # Adjust the path to match where your .pstats files are located
@@ -65,16 +101,19 @@ def main():
         'generate_summary_file'
     ]
 
-    for function_name in function_names:
-        function_name = function_name.strip()
-        function_times = compute_function_times_per_file(files, function_name)
-        if not function_times:
-            print(f"No data found for function: {function_name}")
-        else:
-            save_function_times(function_name, function_times)
-            print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
+    # for function_name in function_names:
+    #     function_name = function_name.strip()
+    #     function_times = compute_function_times_per_file(files, function_name)
+    #     if not function_times:
+    #         print(f"No data found for function: {function_name}")
+    #     else:
+    #         save_function_times(function_name, function_times)
+    #         print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
 
-    sort_files_by_cumulative_time(files)
+    for file in files:
+        sort_functions_by_cumulative_time(file)
+
+    # sort_files_by_cumulative_time(files)
 
 if __name__ == "__main__":
     main()
