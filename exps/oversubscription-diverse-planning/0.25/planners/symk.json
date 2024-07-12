@@ -4,7 +4,8 @@
     "planner-parameters": {
         
     },
-    "dims": [ 
+    "dims": [
+        ["MakespanOptimalCost", {"cost-bound-factor": 0.25}],
         ["UtilityValue", {}]
     ]
 }

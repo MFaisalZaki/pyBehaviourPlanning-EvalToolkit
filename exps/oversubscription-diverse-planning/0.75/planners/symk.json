@@ -5,6 +5,7 @@
         
     },
     "dims": [
+        ["MakespanOptimalCost", {"cost-bound-factor": 0.75}],
         ["UtilityValue", {}]
     ]
 }
