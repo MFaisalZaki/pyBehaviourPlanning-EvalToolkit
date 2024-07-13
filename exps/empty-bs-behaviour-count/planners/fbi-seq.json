@@ -1,0 +1,24 @@
+{
+    "tag": "fbi-seq",
+    "planner": "fbi",
+    "planner-parameters": {
+        "base-planner-cfg": {
+            "planner-name": "symk-opt",
+            "symk_search_time_limit": "900s"
+          },
+          "bspace-cfg": {
+            "encoder": "seq",
+            "solver-timeout-ms": 600000,
+            "solver-memorylimit-mb": 16000,
+            "dims": [],
+            "compliation-list": [
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_negative_conditions_remover", "NEGATIVE_CONDITIONS_REMOVING"],
+              ["pyperplan", "GROUNDING"]
+            ],
+            "run-plan-validation": false,
+            "disable-after-goal-state-actions": false
+          }
+    }
+}

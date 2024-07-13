@@ -18,6 +18,7 @@ def sort_functions_by_cumulative_time(pstat_file, threshold):
     sorted_functions = [(func, stat[3]) for func, stat in stats.stats.items()]
     sorted_functions.sort(key=lambda x: x[1], reverse=True)
 
+    # sorted_functions = sorted_functions[:5]
     sorted_functions = list(filter(lambda x: x[1] > threshold, sorted_functions))
     # return them into a list
     return sorted_functions
@@ -81,7 +82,7 @@ def sort_and_save_pstat(pstat_file, output_file):
 
 def main():
     # Adjust the path to match where your .pstats files are located
-    filesdir = '/home/ma342/developer/dev-behaviour-planning-paper/sandbox-numeric-runtime-solve/*.prof'
+    filesdir = '/home/ma342/developer/dev-behaviour-planning-paper/sandbox-runtime-profiling-solve/*.prof'
     files = glob.glob(filesdir)
 
     if not files:
@@ -100,21 +101,22 @@ def main():
         # 'check', 
         # 'extract_plan', 
         # 'infer_behaviour',
-        'generate_summary_file'
+        # 'generate_summary_file'
+        'planner.py:51(plan)'
     ]
 
-    # for function_name in function_names:
-    #     function_name = function_name.strip()
-    #     function_times = compute_function_times_per_file(files, function_name)
-    #     if not function_times:
-    #         print(f"No data found for function: {function_name}")
-    #     else:
-    #         save_function_times(function_name, function_times)
-    #         print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
+    for function_name in function_names:
+        function_name = function_name.strip()
+        function_times = compute_function_times_per_file(files, function_name)
+        if not function_times:
+            print(f"No data found for function: {function_name}")
+        else:
+            save_function_times(function_name, function_times)
+            print(f"Results for function '{function_name}' have been saved to '{function_name}.log'")
 
     functions_execution_time = []
     for file in files:
-        values = sort_functions_by_cumulative_time(file, 100)
+        values = sort_functions_by_cumulative_time(file, 10)
         if len(values) == 0: continue
         functions_execution_time.append((os.path.basename(file), values ))
         # functions = sort_functions_by_cumulative_time(file)
