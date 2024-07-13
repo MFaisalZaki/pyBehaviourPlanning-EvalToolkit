@@ -5,6 +5,7 @@ from datetime import datetime
 
 import unified_planning as up
 from unified_planning.shortcuts import get_environment
+from unified_planning.shortcuts import OperatorKind
 from unified_planning.io import PDDLReader
 import up_symk
 
@@ -49,10 +50,13 @@ def solve(args):
             goals = {}
             for i, goal in enumerate(task.goals):
                 i = i + 1
-                for j, g in enumerate(goal.args):
-                    j = j + 1
-                    goals[g] = i * j
-            if len(goals) == 1:
+                if OperatorKind.AND == goal.node_type:
+                    for j, g in enumerate(goal.args):
+                        j = j + 1
+                        goals[g] = i * j
+                else:
+                    goals[goal] = i * 2
+            if len(goals) < 2:
                 expdetails['planner'] = 'SKIP'
             task.add_quality_metric(up.model.metrics.Oversubscription(goals))
 
