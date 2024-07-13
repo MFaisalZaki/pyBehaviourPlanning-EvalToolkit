@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections import OrderedDict
 from copy import deepcopy
 import os
 import json
@@ -195,7 +196,7 @@ def read_planner_cfg(expfile):
 def generate_summary_file(task, expdetails, name, planner_params, planlist, logmsgs):
     
     planlist_size = len(planlist)
-    planlist = list(set(planlist)) # remove duplicates.
+    planlist = list(OrderedDict.fromkeys(planlist)) # remove duplicates.
     domain  = getkeyvalue(expdetails, 'domainfile')
     problem = getkeyvalue(expdetails, 'problemfile')
     
