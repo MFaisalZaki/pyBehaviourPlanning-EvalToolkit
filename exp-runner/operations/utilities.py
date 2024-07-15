@@ -8,6 +8,7 @@ import importlib.util
 from unified_planning.io import PDDLWriter
 from unified_planning.model.metrics import Oversubscription
 from unified_planning.shortcuts import CompilationKind
+from unified_planning.shortcuts import OperatorKind
 from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 
@@ -284,3 +285,17 @@ def dump_plan_set(planset, dumpdir):
     for i, plan in enumerate(planset):
         with open(os.path.join(dumpdir, f'sas_plan.{i+1}'), 'w') as f:
             f.write(f'{plan}')
+
+def update_task_utilities(task):
+    goals = {}
+    for i, goal in enumerate(task.goals):
+        i = i + 1
+        if OperatorKind.AND == goal.node_type:
+            for j, g in enumerate(goal.args):
+                j = j + 1
+                goals[g] = i * j
+        else:
+            goals[goal] = i * 2
+    task.add_quality_metric(up.model.metrics.Oversubscription(goals))
+    return goals
+    

@@ -5,7 +5,6 @@ from datetime import datetime
 
 import unified_planning as up
 from unified_planning.shortcuts import get_environment
-from unified_planning.shortcuts import OperatorKind
 from unified_planning.io import PDDLReader
 import up_symk
 
@@ -13,7 +12,7 @@ from behaviour_planning.over_domain_models.smt.shortcuts import *
 
 from .planners import FBIPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
-from .utilities import experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
+from .utilities import update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
 
 
@@ -47,18 +46,8 @@ def solve(args):
         up.shortcuts.get_environment().error_used_name = True
         task = PDDLReader().parse_problem(domain, problem)
         if getkeyvalue(expdetails, 'is-oversubscription-planning'):
-            goals = {}
-            for i, goal in enumerate(task.goals):
-                i = i + 1
-                if OperatorKind.AND == goal.node_type:
-                    for j, g in enumerate(goal.args):
-                        j = j + 1
-                        goals[g] = i * j
-                else:
-                    goals[goal] = i * 2
-            if len(goals) < 2:
-                expdetails['planner'] = 'SKIP'
-            task.add_quality_metric(up.model.metrics.Oversubscription(goals))
+            _goals = update_task_utilities(task)
+            if len(_goals) < 2: expdetails['planner'] = 'SKIP'
 
         match expdetails['planner']:
             case 'fbi':
@@ -147,6 +136,8 @@ def score(args):
             for dimname, additional_info in dims:
                 if dimname in ["UtilityDimension", "UtilitySet", "UtilityValue"]:
                     additional_info['cost-bound-factor'] = 1.0
+            
+            # assign the goal utilities.
             updatekeyvalue(expdetails, 'dims', dims)
 
         # It is better to construct the behaviour space from those dimensions.
@@ -181,10 +172,13 @@ def score(args):
             case _:
                 assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
 
-        # Based on the planner we need may want to apply a different selection strategy.
         diversity_scores_results['plans'] = planlist
-
-        bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
+        if len(planlist) > 0:
+            # Based on the planner we need may want to apply a different selection strategy.
+            bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
+            diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
+        else:
+            diversity_scores_results['diversity-scores'] = {'behaviour-count': 0}
 
         diversity_scores_results['info'] = {
             'domain':  getkeyvalue(expdetails, 'domain'),
@@ -195,8 +189,6 @@ def score(args):
             'q': getkeyvalue(expdetails, 'q')
         }
 
-        diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
-        
     except Exception as e:
         # Dump error to file.
         error_file = getkeyvalue(expdetails, 'error-file')
