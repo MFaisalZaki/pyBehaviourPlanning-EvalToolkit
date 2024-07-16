@@ -224,7 +224,7 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
     updatekeyvalue(results, 'compliation-list', [])
 
     # say whether this task is oversubscription or not.
-    results['is-oversubscription'] = len(list(filter(lambda metric: isinstance(metric, Oversubscription), task.quality_metrics))) > 0
+    results['is-oversubscription'] = getkeyvalue(expdetails, 'is-oversubscription-planning')
 
     results['logmsgs'] = logmsgs
     return results

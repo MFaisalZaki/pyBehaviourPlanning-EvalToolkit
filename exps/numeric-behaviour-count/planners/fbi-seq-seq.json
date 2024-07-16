@@ -16,7 +16,7 @@
             ]
           },
           "bspace-cfg": {
-            "encoder": "seq",
+            "encoder": "forall",
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
