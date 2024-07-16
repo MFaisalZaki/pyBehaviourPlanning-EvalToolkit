@@ -16,7 +16,9 @@
             ],
             "compliation-list": [
               ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
-              ["fast-downward-reachability-grounder", "GROUNDING"]
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_negative_conditions_remover", "NEGATIVE_CONDITIONS_REMOVING"],
+              ["pyperplan", "GROUNDING"]
             ],
             "run-plan-validation": false,
             "disable-after-goal-state-actions": false
