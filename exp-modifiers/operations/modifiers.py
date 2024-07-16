@@ -81,5 +81,10 @@ def add_oversubscription_flag(args):
 
             data['is-oversubscription'] = True
 
-            with open(results_file, "w") as f:
+            data['info']['tag'] = f"{data['info']['tag']}-seq"
+
+            filename = os.path.basename(results_file).replace('.json', '-seq.json')
+            filepath = os.path.join(os.path.dirname(results_file), filename)
+
+            with open(filepath, "w") as f:
                 json.dump(data, f, indent=4)
