@@ -64,7 +64,7 @@
             "console": "integratedTerminal",
             "args": ["score", 
             "--experiment-file",
-            "/Users/mustafafaisal/Desktop/dump-results/2006-rovers-5-1.0-1000-fbi-utility-value.json",
+            "/home/ma342/developer/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-2-1.0-1000-fbi-utility-value.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/experiment-tasks/1998-logistics-31-1.0-1000-symk.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-3-1.0-1000-fbi-utility-set.json",
@@ -89,8 +89,8 @@
                 "--compute-coverage",
 
                 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.25/score-dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.25/score-dump-results-analysis"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-oversub-results/sandbox-oversubscription-behaviour-count-exp/0.25",
+                "--output-dir", "${workspaceFolder}/sandbox-oversub-results/0.25-analysis"
 
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
