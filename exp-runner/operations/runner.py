@@ -173,6 +173,8 @@ def score(args):
                 assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
 
         diversity_scores_results['plans'] = planlist
+        up.shortcuts.get_environment().credits_stream = None
+        up.shortcuts.get_environment().error_used_name = True
         if len(planlist) > 0:
             # Based on the planner we need may want to apply a different selection strategy.
             bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
