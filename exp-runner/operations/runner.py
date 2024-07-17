@@ -43,7 +43,7 @@ def solve(args):
 
         # Update task with oversubscription metric if the planning problem is utility-planning.
         up.shortcuts.get_environment().credits_stream = None
-        up.shortcuts.get_environment().error_used_name = True
+        up.shortcuts.get_environment().error_used_name = False
         task = PDDLReader().parse_problem(domain, problem)
         if getkeyvalue(expdetails, 'is-oversubscription-planning'):
             _goals = update_task_utilities(task)
@@ -174,7 +174,7 @@ def score(args):
 
         diversity_scores_results['plans'] = planlist
         up.shortcuts.get_environment().credits_stream = None
-        up.shortcuts.get_environment().error_used_name = True
+        up.shortcuts.get_environment().error_used_name = False
         if len(planlist) > 0:
             # Based on the planner we need may want to apply a different selection strategy.
             bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
