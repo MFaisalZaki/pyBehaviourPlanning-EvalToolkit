@@ -7,3 +7,6 @@
 [submodule "external-pkgs/numeric-domains"]
 	path = external-pkgs/numeric-domains
 	url = https://github.com/pyPMT/numeric-domains.git
+[submodule "external-pkgs/up-behaviour-planning"]
+	path = external-pkgs/up-behaviour-planning
+	url = https://github.com/MFaisalZaki/up-behaviour-planning.git
