@@ -15,7 +15,7 @@ import unified_planning as up
 env = up.environment.get_environment()
 env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
-from .planners import FBISMTPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
+from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
 from .utilities import update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
@@ -53,6 +53,8 @@ def solve(args):
             if len(_goals) < 2: expdetails['planner'] = 'SKIP'
 
         match expdetails['planner']:
+            case 'fbippltl':
+                results = FBIPPLTLPlannerWrapper(args, task, expdetails)
             case 'fbismt':
                 results = FBISMTPlannerWrapper(args, task, expdetails)
             case 'fi':

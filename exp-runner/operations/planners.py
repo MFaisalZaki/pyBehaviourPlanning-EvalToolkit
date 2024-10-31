@@ -10,17 +10,37 @@ from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
 
 from behaviour_planning.over_domain_models.smt.shortcuts import *
+from behaviour_planning.over_domain_models.ppltl.shortcuts import *
+
 from .planset_selectors import selection_using_first_k, selection_maxsum, selection_bspace
 
 from .utilities import (
-    update_fbi_parameters, 
-    generate_summary_file, 
+    update_fbi_parameters,
+    update_fbippltl_parameters,
+    generate_summary_file,
+    generate_summary_file_ppltl,
     updatekeyvalue, 
     getkeyvalue, 
     read_planner_cfg,
     dump_plan_set,
     get_ibm_diversescore_binary
 )
+
+def FBIPPLTLPlannerWrapper(args, task, expdetails):
+    planner_params = read_planner_cfg(args.experiment_file)
+    dimensions_cpy = getkeyvalue(planner_params, 'dims')
+    planner_params = update_fbippltl_parameters(planner_params, expdetails)
+    with OneshotPlanner(name='FBIPlanner',  params=deepcopy(planner_params)) as planner:
+        result = planner.solve(task)
+    if len(result[0]) <= 1: 
+        return {'reason': 'No plans found by fbi'}
+    planlist = [r.plan for r in result[0]]
+    planlist = list(filter(lambda p: not p is None, planlist))
+    logmsgs  = result[1]
+    planner_params['bspace-cfg']['dims'] = dimensions_cpy
+    results = generate_summary_file_ppltl(task, expdetails, 'fbi-ppltl', planner_params, planlist, logmsgs)
+    return results
+    pass
 
 def FBISMTPlannerWrapper(args, task, expdetails):
     # Update the behaviour space with the resources file if exists.

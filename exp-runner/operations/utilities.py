@@ -10,6 +10,7 @@ from unified_planning.model.metrics import Oversubscription
 from unified_planning.shortcuts import CompilationKind
 from unified_planning.shortcuts import OperatorKind
 from behaviour_planning.over_domain_models.smt.shortcuts import *
+from behaviour_planning.over_domain_models.ppltl.shortcuts import *
 
 
 def parse_experiment_details(expdetailsdir:str):
@@ -265,6 +266,82 @@ def update_fbi_parameters(planner_params, expdetails):
     updated_parameters['base-planner-cfg']['k'] = getkeyvalue(expdetails, 'k')
     updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value
     return updated_parameters
+
+
+
+def generate_summary_file_ppltl(task, expdetails, name, planner_params, planlist, logmsgs):
+    
+    planlist_size = len(planlist)
+    planlist = list(OrderedDict.fromkeys(planlist)) # remove duplicates.
+    domain  = getkeyvalue(expdetails, 'domainfile')
+    problem = getkeyvalue(expdetails, 'problemfile')
+    
+    results = defaultdict(dict)
+    results['info'] = defaultdict(dict)
+    results['info']['planner'] = name
+    results['info']['tag'] = getkeyvalue(expdetails, 'tag')
+    results['info']['planner-params'] = planner_params
+    results['info']['task'] = {
+        'domain': f'{os.path.basename(os.path.dirname(domain))}/{os.path.basename(domain)}', 
+        'problem': os.path.basename(problem),
+        'domainfile': domain,
+        'problemfile': problem,
+        'k': getkeyvalue(expdetails, 'k'),
+        'q': getkeyvalue(expdetails, 'q'),
+        'duplicate-plans-found': not (len(planlist) == planlist_size)
+    }
+    results['plans'] = []
+
+    results['plans'] = list(map(lambda p: '\n'.join(map(str, p[0].actions)) + f'\n;{len(p[0].actions)} (unit cost)\n' + f';;->{p[1]}', planlist))
+    
+    # Copy the dimensions.
+    results['dims'] = getkeyvalue(expdetails, 'dims')
+    updatekeyvalue(results, 'compliation-list', [])
+    # say whether this task is oversubscription or not.
+    results['is-oversubscription'] = getkeyvalue(expdetails, 'is-oversubscription-planning')
+    results['logmsgs'] = logmsgs
+    return results
+
+
+def update_fbippltl_parameters(planner_params, expdetails):
+    updated_parameters = deepcopy(planner_params)
+    # Check if we have a resource dimension.
+    updated_dims = []
+    q_value = getkeyvalue(expdetails, 'q')
+    k_value = getkeyvalue(expdetails, 'k')
+    tmpdir = getkeyvalue(expdetails, 'tmp-dir')
+    for idx, (dimname, details) in enumerate(getkeyvalue(planner_params, 'dims')):
+        updated_dim_details = None
+        if any(x in dimname for x in ['Resource', 'Functions']):
+            resourcesfile = getkeyvalue(expdetails, 'resources')
+            if resourcesfile is not None:
+                updated_dim_details = [dimname, resourcesfile]
+        else:
+            updated_dim_details = [dimname, details]
+        if updated_dim_details:
+            updated_dims.append([eval(updated_dim_details[0]), updated_dim_details[1]])
+    
+    updated_compilation_list = []
+    for idx, (compilationname, kind) in enumerate(getkeyvalue(planner_params, 'compliation-list')):
+        try:
+            namev = eval(compilationname)
+        except:
+            namev = compilationname
+        kindv = eval(f'CompilationKind.{kind}')
+        updated_compilation_list.append([namev, kindv])
+    
+    updatekeyvalue(updated_parameters, 'dims', updated_dims)
+    updatekeyvalue(updated_parameters, 'compliation-list', updated_compilation_list)
+    updated_parameters['base-planner-cfg'] = {}
+    updated_parameters['base-planner-cfg']['k'] = k_value
+    updated_parameters['bspace-cfg']['quality-bound-factor'] = q_value
+    updated_parameters['bspace-cfg']['tmpdir'] = tmpdir
+    # Update the tmpdir
+
+    return updated_parameters
+
+
+
 
 def construct_behaviour_space(dims):
     updated_dims = []

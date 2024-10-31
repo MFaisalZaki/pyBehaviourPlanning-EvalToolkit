@@ -5,8 +5,8 @@
         "selection-method": "none"
     },
     "dims": [
-        ["GoalPredicatesOrdering", "None"],
-        ["MakespanOptimalCost", {"disable_action_check": false}],
-        ["ResourceCount", "TODO"]
+        ["GoalPredicatesOrderingSMT", "None"],
+        ["MakespanOptimalCostSMT", {"disable_action_check": false}],
+        ["ResourceCountSMT", "TODO"]
     ]
 }
