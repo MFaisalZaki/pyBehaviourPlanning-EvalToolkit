@@ -50,7 +50,7 @@ def generate_score_cmds(args, venv_dir):
                         rundir = os.path.join(run_score_dir, f'score-{basefilename}-k-{k}')
                         os.makedirs(rundir, exist_ok=True)
                         generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
-            elif planner in ['symk', 'fbi']:
+            elif planner in ['symk', 'fbi', 'fbismt', 'fbi-ppltl', 'fbi-smt']:
                 for k in args.score_for_k:
                     if k > no_plans: break
                     cmd = construct_score_cmd(k, results_file)

@@ -10,6 +10,8 @@ import up_symk
 
 
 from behaviour_planning.over_domain_models.smt.shortcuts import *
+from behaviour_planning.over_domain_models.ppltl.shortcuts import *
+
 from up_behaviour_planning.FBIPlannerUp import FBIPlanner
 import unified_planning as up
 env = up.environment.get_environment()
@@ -156,7 +158,9 @@ def score(args):
         # check if the planner is fi or symk|fbi
         planlist = getkeyvalue(expdetails, 'plans')
         selection_method = getkeyvalue(expdetails, 'selection-method')
-        match getkeyvalue(expdetails, 'planner'):
+        plannername = getkeyvalue(expdetails, 'planner')
+        
+        match plannername:
             case 'fi':
                 match selection_method:
                     case 'first-k':
@@ -171,7 +175,7 @@ def score(args):
                         tag = 'fi-maxsum'
                     case _:
                         tag = 'fi-select-all'
-            case 'symk' | 'fbi':
+            case 'symk' | 'fbi' | 'fbi-ppltl':
                 planlist = planlist[:args.k]
                 tag = getkeyvalue(expdetails, 'tag')
             case _:
@@ -180,13 +184,16 @@ def score(args):
         diversity_scores_results['plans'] = planlist
         up.shortcuts.get_environment().credits_stream = None
         up.shortcuts.get_environment().error_used_name = False
+
+        diversity_scores_results['diversity-scores'] = {'behaviour-count': 0}
         if len(planlist) > 0:
             # Based on the planner we need may want to apply a different selection strategy.
-            bspace = BehaviourCount(domain, problem, bspace_cfg, planlist, is_oversubscription)
+            if plannername in ['fbi-ppltl']:
+                bspace = BehaviourCountPPLTL(domain, problem, bspace_cfg, planlist, is_oversubscription)
+            else:
+                bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription)
             diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
-        else:
-            diversity_scores_results['diversity-scores'] = {'behaviour-count': 0}
-
+            
         diversity_scores_results['info'] = {
             'domain':  getkeyvalue(expdetails, 'domain'),
             'problem': getkeyvalue(expdetails, 'problem'),

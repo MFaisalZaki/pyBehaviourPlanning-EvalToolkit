@@ -9,6 +9,8 @@ python3.11 exp-runner/initenv.py
 ./scripts/generate-solve-exp.sh    $(pwd)/exps/empty-bs-behaviour-count $(pwd)/sandbox-empty-bs-behaviour-count-exp/ $(pwd)/external-pkgs/classical-domains
 ./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-empty-bs-behaviour-count-exp/slurm-solve-scripts $(pwd)/sandbox-empty-bs-behaviour-count-exp/empty-bs-cmds.txt
 
+./scripts/generate-solve-exp.sh $(pwd)/exps/ppltl-classical-behaviour-count $(pwd)/sandbox-ppltl-classical-behaviour-count $(pwd)/external-pkgs/classical-domains
+./scripts/collect-slurm-scripts.sh $(pwd)/sandbox-ppltl-classical-behaviour-count/slurm-solve-scripts $(pwd)/sandbox-ppltl-classical-behaviour-count/fbi-ppltl-cmds.txt
 
 mkdir -p sandbox-oversubscription-behaviour-count-exp
 ./scripts/generate-solve-exp.sh $(pwd)/exps/oversubscription-diverse-planning/0.5 $(pwd)/sandbox-oversubscription-behaviour-count-exp/0.5 $(pwd)/external-pkgs/classical-domains
