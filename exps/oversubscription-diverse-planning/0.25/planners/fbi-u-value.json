@@ -1,7 +1,8 @@
 {
     "tag": "fbi-utility-value",
-    "planner": "fbi",
+    "planner": "fbismt",
     "planner-parameters": {
+        "fbi-planner-type": "ForbidBehaviourIterativeSMT",
         "base-planner-cfg": {
           "planner-name": "symk-opt",
           "symk_search_time_limit": "900s"
@@ -11,8 +12,8 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["MakespanOptimalCost", {"cost-bound-factor": 0.25}],
-              ["UtilityValue", {}]
+              ["MakespanOptimalCostSMT", {"cost-bound-factor": 0.25}],
+              ["UtilityValueSMT", {}]
             ],
             "compliation-list": [
               ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],

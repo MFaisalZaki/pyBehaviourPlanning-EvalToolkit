@@ -1,7 +1,8 @@
 {
     "tag": "fbi-seq-fd",
-    "planner": "fbi",
+    "planner": "fbismt",
     "planner-parameters": {
+        "fbi-planner-type": "ForbidBehaviourIterativeSMTSMT",
         "base-planner-cfg": {
             "planner-name": "symk-opt",
             "symk_search_time_limit": "900s"
@@ -11,9 +12,9 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["GoalPredicatesOrdering", "None"],
-              ["MakespanOptimalCost", {"cost-bound-factor": 1.0}],
-              ["ResourceCount", "TODO"]
+              ["GoalPredicatesOrderingSMT", "None"],
+              ["MakespanOptimalCostSMT", {"cost-bound-factor": 1.0}],
+              ["ResourceCountSMT", "TODO"]
             ],
             "compliation-list": [
               ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],

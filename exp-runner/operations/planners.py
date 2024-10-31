@@ -22,7 +22,7 @@ from .utilities import (
     get_ibm_diversescore_binary
 )
 
-def FBIPlannerWrapper(args, task, expdetails):
+def FBISMTPlannerWrapper(args, task, expdetails):
     # Update the behaviour space with the resources file if exists.
     planner_params = read_planner_cfg(args.experiment_file)
     dimensions_cpy = getkeyvalue(planner_params, 'dims')

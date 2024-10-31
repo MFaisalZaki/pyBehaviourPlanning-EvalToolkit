@@ -1,6 +1,6 @@
 {
     "tag": "fbi-seq",
-    "planner": "fbi",
+    "planner": "fbismt",
     "planner-parameters": {
         "base-planner-cfg": {
             "planner-name": "symk-opt",

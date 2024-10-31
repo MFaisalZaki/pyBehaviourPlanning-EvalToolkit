@@ -1,7 +1,8 @@
 {
     "tag": "fbi-seq-seq",
-    "planner": "fbi",
+    "planner": "fbismt",
     "planner-parameters": {
+        "fbi-planner-type": "ForbidBehaviourIterativeSMT",
         "base-planner-cfg": {
             "planner-name": "SMTPlanner",
             "encoder": "EncoderForall", 
@@ -20,9 +21,9 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["GoalPredicatesOrdering", "None"],
-              ["MakespanOptimalCost", {"cost-bound-factor": 1.0}],
-              ["Functions", "TODO"]
+              ["GoalPredicatesOrderingSMT", "None"],
+              ["MakespanOptimalCostSMT", {"cost-bound-factor": 1.0}],
+              ["FunctionsSMT", "TODO"]
             ],
             "compliation-list": [
               ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
