@@ -50,9 +50,9 @@ def solve(args):
         results = {}
         with tempfile.TemporaryDirectory(dir=expdetails['tmp-dir']) as tmpdirname:
             # I hate this but I have no choice.
-            if expdetails['planner'] in ['fbippltl']:
-                domain = replace_hyphens_in_pddl(domain, tmpdirname)
-                problem = replace_hyphens_in_pddl(problem, tmpdirname)
+            # if expdetails['planner'] in ['fbippltl']:
+            #     domain = replace_hyphens_in_pddl(domain, tmpdirname)
+            #     problem = replace_hyphens_in_pddl(problem, tmpdirname)
 
 
 
