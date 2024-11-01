@@ -54,7 +54,9 @@
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
-            "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-ppltl.json"
+            // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-ppltl.json"
+            "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/experiment-tasks/2004-psr-small-20-1.0-10-fbi-ppltl.json"
+            
             
 
             //
@@ -131,8 +133,8 @@
             "console": "integratedTerminal",
             "args": [
                 "summarise-errors",
-                "--error-files-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/impl6-solve-run-dir",
-                "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/impl6-solve-run-dir",
+                "--error-files-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/solve-run-errors",
+                "--output-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/analysis-solve-run-errors",
             ],
             "justMyCode": false
         },

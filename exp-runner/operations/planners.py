@@ -7,7 +7,7 @@ import logging
 from subprocess import SubprocessError
 from copy import deepcopy
 from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
-from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner
+from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner, Compiler, CompilationKind
 
 from behaviour_planning.over_domain_models.smt.shortcuts import *
 from behaviour_planning.over_domain_models.ppltl.shortcuts import *

@@ -9,12 +9,12 @@
     "behaviour-count-k-list": [5, 10, 100, 1000],
     "behaviour-count-encoder": "seq",
     "skip-cfgs":[
-        [1.0, 5, "fbi"],
-        [2.0, 5, "fbi"],
-        [1.0, 10, "fbi"],
-        [2.0, 10, "fbi"],
-        [1.0, 100, "fbi"],
-        [2.0, 100, "fbi"]
+        [1.0, 5, "fbi-ppltl"],
+        [2.0, 5, "fbi-ppltl"],
+        [1.0, 10, "fbi-ppltl"],
+        [2.0, 10, "fbi-ppltl"],
+        [1.0, 100, "fbi-ppltl"],
+        [2.0, 100, "fbi-ppltl"]
     ],
     "selected-planning-instances": [
         "(2000, schedule, 9)",
