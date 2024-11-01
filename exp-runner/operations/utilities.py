@@ -12,6 +12,8 @@ from unified_planning.shortcuts import OperatorKind
 from behaviour_planning.over_domain_models.smt.shortcuts import *
 from behaviour_planning.over_domain_models.ppltl.shortcuts import *
 
+import unified_planning as up
+
 def replace_hyphens_in_pddl(file_path, dump_dir):
     # Step 2: Open the input file in read mode
     with open(file_path, 'r') as file:
