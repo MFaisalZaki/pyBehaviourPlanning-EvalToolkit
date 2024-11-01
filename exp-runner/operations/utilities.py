@@ -12,6 +12,27 @@ from unified_planning.shortcuts import OperatorKind
 from behaviour_planning.over_domain_models.smt.shortcuts import *
 from behaviour_planning.over_domain_models.ppltl.shortcuts import *
 
+def replace_hyphens_in_pddl(file_path, dump_dir):
+    # Step 2: Open the input file in read mode
+    with open(file_path, 'r') as file:
+        # Step 3: Read the content of the file
+        content = file.read()
+    
+    # Step 4: Replace all instances of '-' with '_'
+    modified_content = content.replace('-', '_')
+    
+    # Step 5: Create a new file path by appending '_modified' to the original file name
+    base_name = os.path.basename(file_path)
+    base, ext = os.path.splitext(base_name)
+    new_file_name = f"{base}_modified{ext}"
+    new_file_path = os.path.join(dump_dir, new_file_name)
+    
+    # Step 6: Write the modified content to the new file
+    with open(new_file_path, 'w') as new_file:
+        new_file.write(modified_content)
+    
+    # Step 7: Return the path of the new file
+    return new_file_path
 
 def parse_experiment_details(expdetailsdir:str):
     """

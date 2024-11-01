@@ -2,6 +2,7 @@ from collections import defaultdict
 import json
 import os
 from datetime import datetime
+import tempfile
 
 import unified_planning as up
 from unified_planning.shortcuts import get_environment
@@ -19,7 +20,7 @@ env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
 from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
-from .utilities import update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
+from .utilities import replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
 
 def solve(args):
@@ -46,60 +47,32 @@ def solve(args):
         problem = getkeyvalue(expdetails, 'problemfile')
         assert domain is not None and problem is not None, "Domain or problem file is not provided."
 
-        # Update task with oversubscription metric if the planning problem is utility-planning.
-        up.shortcuts.get_environment().credits_stream = None
-        up.shortcuts.get_environment().error_used_name = False
-        task = PDDLReader().parse_problem(domain, problem)
-        if getkeyvalue(expdetails, 'is-oversubscription-planning'):
-            _goals = update_task_utilities(task)
-            if len(_goals) < 2: expdetails['planner'] = 'SKIP'
+        results = {}
+        with tempfile.TemporaryDirectory(dir=expdetails['tmp-dir']) as tmpdirname:
+            # I hate this but I have no choice.
+            if expdetails['planner'] in ['fbippltl']:
+                domain = replace_hyphens_in_pddl(domain, tmpdirname)
+                problem = replace_hyphens_in_pddl(problem, tmpdirname)
 
-        match expdetails['planner']:
-            case 'fbippltl':
-                results = FBIPPLTLPlannerWrapper(args, task, expdetails)
-            case 'fbismt':
-                results = FBISMTPlannerWrapper(args, task, expdetails)
-            case 'fi':
-                results = FIPlannerWrapper(args, task, expdetails)
-            case 'symk':
-                results = SymKPlannerWrapper(args, task, expdetails)
-            case 'SKIP':
-                results = {}
 
-        # # check if the behaviour count is required to be compute.
-        # if expdetails['compute-behaviour-count'] and len(results['plans']) > 0:
-        #     k_list = expdetails['behaviour-count-k-list']
-        #     if len(k_list) == 0: k_list = [expdetails['k']]
 
-        #     planlist = [PDDLReader().parse_plan_string(task, p) for p in results['plans']]
+            # Update task with oversubscription metric if the planning problem is utility-planning.
+            up.shortcuts.get_environment().credits_stream = None
+            up.shortcuts.get_environment().error_used_name = False
+            task = PDDLReader().parse_problem(domain, problem)
+            if getkeyvalue(expdetails, 'is-oversubscription-planning'):
+                _goals = update_task_utilities(task)
+                if len(_goals) < 2: expdetails['planner'] = 'SKIP'
 
-        #     # compute upper bound.
-        #     upper_bound = max([len(p.actions) for p in planlist])
-        #     cfg = dict()
-        #     cfg['encoder']     = expdetails['behaviour-count-encoder'] #'qfuf' if len(task.all_objects) > 0  else 'seq'
-        #     cfg['upper-bound'] = upper_bound
-        #     cfg['run-plan-validation'] = False
-        #     cfg['disable-after-goal-state-actions'] = True
-        #     cfg['is-oversubscription-planning'] = False
-        #     cfg['dims'] = construct_behaviour_space(getkeyvalue(expdetails, 'dims'))
-
-        #     diversity_scores_results = {k: 0 for k in k_list}
-        #     bspace = BehaviourSpace(task, cfg)
-            
-        #     for k in k_list:
-        #         if k > len(planlist): break
-        #         match expdetails['planner']:
-        #             case 'fbi' | 'symk':
-        #                 top_k_plans = planlist[:k] 
-        #             case 'fi':
-        #                 top_k_plans = planlist
-        #         collected_behaviours = set()
-        #         for i, plan in enumerate(top_k_plans):
-        #             ret = bspace.plan_behaviour(plan, i)
-        #             collected_behaviours.add(ret.behaviour)
-        #         diversity_scores_results[k] = len(collected_behaviours)
-            
-        #     results['diversity-scores'] = {'behaviour-count': diversity_scores_results}
+            match expdetails['planner']:
+                case 'fbippltl':
+                    results = FBIPPLTLPlannerWrapper(args, task, expdetails)
+                case 'fbismt':
+                    results = FBISMTPlannerWrapper(args, task, expdetails)
+                case 'fi':
+                    results = FIPlannerWrapper(args, task, expdetails)
+                case 'symk':
+                    results = SymKPlannerWrapper(args, task, expdetails)
 
     except Exception as e:
         # Dump error to file.

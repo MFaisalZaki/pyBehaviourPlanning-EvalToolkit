@@ -6,7 +6,7 @@
           "bspace-cfg": {
             "base-planner-cfg": {
               "planner-name": "symk-opt",
-              "symk_search_time_limit": "900s"
+              "symk_search_time_limit": "240s"
             },
             "dims": [
               ["GoalPredicatesOrderingPPLTL", "{}"]
