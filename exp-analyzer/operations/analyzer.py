@@ -147,6 +147,7 @@ def analyze(args):
     planners_list = ['symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k', 'fbi-seq']
     planners_list = ['symk-util-value', 'symk-util-set', 'fbi-utility-value', 'fbi-utility-set']
     planners_list = ['symk', 'fbi-utility-value-seq']
+    planners_list = ['fbi-ppltl', 'symk', 'fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k']
     # planners_list = ['fi-none-bspace', 'fi-none-maxsum', 'fi-none-first-k']
     # planners_list = ['fi-none-bspace', 'fi-none-maxsum']
     planners_results = defaultdict(dict)

@@ -31,13 +31,13 @@
             // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp", 
             
             "--exp-details-dir", "${workspaceFolder}/exps/ppltl-classical-behaviour-count", 
-            "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count", 
 
 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
             "--partition", "sturm-part",
             "--for-score-exp",
-            "--score-for-k", "1", "5", "10", "100", "1000"],
+            "--score-for-k", "5", "10", "100", "1000"],
             "justMyCode": false
         },
         {
@@ -103,8 +103,8 @@
                 "--compute-coverage",
 
                 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-oversub-results/sandbox-oversubscription-behaviour-count-exp/0.25",
-                "--output-dir", "${workspaceFolder}/sandbox-oversub-results/0.25-analysis"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count/score-dump-results",
+                "--output-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count/analysis-score-dump-results"
 
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
