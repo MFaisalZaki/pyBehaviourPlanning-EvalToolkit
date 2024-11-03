@@ -12,9 +12,7 @@
             "solver-timeout-ms": 600000,
             "solver-memorylimit-mb": 16000,
             "dims": [
-              ["GoalPredicatesOrderingSMT", "None"],
-              ["MakespanOptimalCostSMT", {"cost-bound-factor": 1.0}],
-              ["ResourceCountSMT", "TODO"]
+              ["GoalPredicatesOrderingSMT", "None"]
             ],
             "compliation-list": [
               ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],

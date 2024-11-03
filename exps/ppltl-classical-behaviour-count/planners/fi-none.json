@@ -1,0 +1,10 @@
+{
+    "tag": "fi-none",
+    "planner": "fi",
+    "planner-parameters": {
+        "selection-method": "none"
+    },
+    "dims": [
+        ["GoalPredicatesOrderingSMT", "None"]
+    ]
+}

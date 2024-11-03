@@ -1,0 +1,10 @@
+{
+    "tag": "symk",
+    "planner": "symk",
+    "planner-parameters": {
+        
+    },
+    "dims": [
+        ["GoalPredicatesOrderingSMT", "None"]
+    ]
+}
