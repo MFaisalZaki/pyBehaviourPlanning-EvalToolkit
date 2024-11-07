@@ -9,9 +9,8 @@ from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
 import up_symk
 
-
-from behaviour_planning.over_domain_models.smt.shortcuts import *
-from behaviour_planning.over_domain_models.ppltl.shortcuts import *
+# from behaviour_planning.over_domain_models.smt.shortcuts import *
+# from behaviour_planning.over_domain_models.ppltl.shortcuts import *
 
 from up_behaviour_planning.FBIPlannerUp import FBIPlanner
 import unified_planning as up
@@ -49,13 +48,6 @@ def solve(args):
 
         results = {}
         with tempfile.TemporaryDirectory(dir=expdetails['tmp-dir']) as tmpdirname:
-            # I hate this but I have no choice.
-            # if expdetails['planner'] in ['fbippltl']:
-            #     domain = replace_hyphens_in_pddl(domain, tmpdirname)
-            #     problem = replace_hyphens_in_pddl(problem, tmpdirname)
-
-
-
             # Update task with oversubscription metric if the planning problem is utility-planning.
             up.shortcuts.get_environment().credits_stream = None
             up.shortcuts.get_environment().error_used_name = False
@@ -162,8 +154,10 @@ def score(args):
         if len(planlist) > 0:
             # Based on the planner we need may want to apply a different selection strategy.
             if plannername in ['fbi-ppltl']:
+                from behaviour_planning.over_domain_models.ppltl.bss.behaviour_count.behaviour_count import BehaviourCountPPLTL
                 bspace = BehaviourCountPPLTL(domain, problem, bspace_cfg, planlist, is_oversubscription)
             else:
+                from behaviour_planning.over_domain_models.smt.bss.behaviour_count.behaviour_count import BehaviourCountSMT
                 bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription)
             diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
             

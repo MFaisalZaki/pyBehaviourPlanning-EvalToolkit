@@ -5,7 +5,7 @@ import subprocess
 
 from unified_planning.io import PDDLReader
 
-from behaviour_planning.over_domain_models.smt.shortcuts import *
+from behaviour_planning.over_domain_models.smt.bss.behaviour_space.space_encoders.basic import BehaviourSpaceSMT
 from .utilities import getkeyvalue, update_fbi_parameters, dump_plan_set, get_ibm_diversescore_binary
 
 
@@ -77,7 +77,7 @@ def selection_bspace(_args, k, _planlist):
     cfg['is-oversubscription-planning'] = False
 
     # create the behaviour space.
-    bspace = BehaviourSpace(_task, cfg)
+    bspace = BehaviourSpaceSMT(_task, cfg)
 
     # now optimise on the behaviour count.
     covered_behaviours = set()
