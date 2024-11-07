@@ -115,10 +115,10 @@ def score(args):
         # It is better to construct the behaviour space from those dimensions.
         bspace_cfg = getkeyvalue(expdetails, 'bspace-cfg')
         if bspace_cfg is None: 
-            bspace_cfg = {'k': args.k, 'dims': construct_behaviour_space(getkeyvalue(expdetails, 'dims'))}
+            bspace_cfg = {'k': args.k, 'dims': construct_behaviour_space(getkeyvalue(expdetails, 'planner'), getkeyvalue(expdetails, 'dims'))}
         else:
             updatekeyvalue(bspace_cfg, 'k', args.k)
-            updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'dims')))
+            updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'planner'), getkeyvalue(expdetails, 'dims')))
         
         # check if the planner is fi or symk|fbi
         planlist = getkeyvalue(expdetails, 'plans')

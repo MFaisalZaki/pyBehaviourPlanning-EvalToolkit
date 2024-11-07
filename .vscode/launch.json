@@ -31,7 +31,7 @@
             // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp", 
             
             "--exp-details-dir", "${workspaceFolder}/exps/ppltl-classical-behaviour-count", 
-            "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp", 
 
 
             "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
@@ -83,7 +83,12 @@
             "console": "integratedTerminal",
             "args": ["score", 
             "--experiment-file",
-            "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-3-1.0-1000-fbi-ppltl.json",
+            // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-5-fi-none.json",
+            // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-symk.json",
+            // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-seq-fd.json"
+            "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-ppltl.json"
+
+
             // "/home/ma342/developer/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-2-1.0-1000-fbi-utility-value.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/experiment-tasks/1998-logistics-31-1.0-1000-symk.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-exp-files/1998-gripper-1-1.0-5-fi-none-bspace.json",
@@ -92,8 +97,8 @@
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-satellite-1-2.0-1000-fbi-seq-seq.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2004-psr-small-2-1.0-5-fi-none.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json",
-            // "--k", "5"
-            "--k", "1"
+            "--k", "5"
+            // "--k", "1"
 
             ],
             "justMyCode": false

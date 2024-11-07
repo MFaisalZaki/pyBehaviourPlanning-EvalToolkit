@@ -255,17 +255,14 @@ def generate_summary_file(task, expdetails, name, planner_params, planlist, logm
     return results
 
 def update_fbi_parameters(planner_params, expdetails):
-
-    fbi_type = getkeyvalue(planner_params, 'fbi-planner-type')
-    if fbi_type == 'ForbidBehaviourIterativeSMT':
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.base import DimensionConstructorSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.goal_predicate_ordering import GoalPredicatesOrderingSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_dims import CostBoundSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_makespan_optimal import MakespanOptimalCostSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.resource_count import ResourceCountSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.functions import FunctionsSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_value import UtilityValueSMT
-        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_set import UtilitySetSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.base import DimensionConstructorSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.goal_predicate_ordering import GoalPredicatesOrderingSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_dims import CostBoundSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_makespan_optimal import MakespanOptimalCostSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.resource_count import ResourceCountSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.functions import FunctionsSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_value import UtilityValueSMT
+    from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_set import UtilitySetSMT
 
     updated_parameters = deepcopy(planner_params)
     # Check if we have a resource dimension.
@@ -380,7 +377,21 @@ def update_fbippltl_parameters(planner_params, expdetails):
 
 
 
-def construct_behaviour_space(dims):
+def construct_behaviour_space(planner, dims):
+
+    if planner in ['ForbidBehaviourIterativePPLTL', 'fbi-ppltl']:
+        from behaviour_planning.over_domain_models.ppltl.bss.behaviour_features_library.base import DimensionConstructorPPLTL
+        from behaviour_planning.over_domain_models.ppltl.bss.behaviour_features_library.goal_predicate_ordering import GoalPredicatesOrderingPPLTL
+    else:
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.base import DimensionConstructorSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.goal_predicate_ordering import GoalPredicatesOrderingSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_dims import CostBoundSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.cost_bound_makespan_optimal import MakespanOptimalCostSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.resource_count import ResourceCountSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.functions import FunctionsSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_value import UtilityValueSMT
+        from behaviour_planning.over_domain_models.smt.bss.behaviour_features_library.utility_set import UtilitySetSMT
+
     updated_dims = []
     for idx, (dimname, details) in enumerate(dims):
         if 'Resource' in dimname:
