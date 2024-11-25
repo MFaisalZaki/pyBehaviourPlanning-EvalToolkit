@@ -1,0 +1,2 @@
+(:resource robin_hood 100 0 5)
+(:resource gilbert 100 0 5)

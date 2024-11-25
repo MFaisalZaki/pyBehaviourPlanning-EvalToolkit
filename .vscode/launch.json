@@ -215,6 +215,15 @@
             "--dir", "/home/ma342/developer/fix-results/sandbox-oversubscription-behaviour-count-exp/0.25-dump-results",
             ],
             "justMyCode": false
+        },
+        {
+            "name": "app: story telling (robin-hood)",
+            "type": "debugpy", 
+            "request": "launch",
+            "program": "${workspaceFolder}/apps/story-telling/main.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "justMyCode": false
         }
     ]
 }
