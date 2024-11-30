@@ -1,0 +1,79 @@
+(define (problem Book_1) (:domain Iliad)
+(:objects
+	Apollo - god
+	Athene - god
+	Zeus - god
+	Thetis - nymph
+	Achilleus - hero
+	Agamemnon - hero
+	Odysseus - hero
+	Chryses - priest
+	Kalchas - priest
+	Chryseis - slave
+	Briseis - slave
+
+	good - moods
+	bad - moods
+	worried - moods
+	neutral - moods
+	resigned - moods
+	trust - moods
+	loyal - moods
+	envy - moods
+	request_release - moods
+	desire_to_punish - moods
+	accept_release - moods
+	accept_punish - moods
+
+	desire_cease_disaster - types_of_interaction
+	request_release - types_of_interaction
+	refuse_release - types_of_interaction
+	accept_release - types_of_interaction
+	request_punish - types_of_interaction
+	accept_punish - types_of_interaction
+	desire_capture - types_of_interaction
+	block_the_attempt_to_kill - types_of_interaction
+	attempt_to_kill - types_of_interaction
+	meet - types_of_interaction
+
+	plague - disasters
+
+	Apollo_temple - location
+	Greeks_camp - location
+	Olympus - location
+)
+(:init
+	(mood Agamemnon Chryses neutral)
+	(mood Agamemnon Kalchas trust)
+	(mood Agamemnon Odysseus loyal)
+	(mood Agamemnon Achilleus envy)
+	(mood Apollo Chryses good)
+	(mood Apollo Agamemnon neutral)
+	(mood Athene Achilleus good)
+	(mood Athene Agamemnon good)
+	(mood Thetis Achilleus good)
+
+	(captured Briseis Achilleus)
+	(captured Chryseis Agamemnon)
+
+	(related Chryses Chryseis)
+	(related Thetis Achilleus)
+	(related Zeus Thetis)
+
+	(at Achilleus Greeks_camp)
+	(at Agamemnon Greeks_camp)
+	(at Odysseus Greeks_camp)
+	(at Chryses Apollo_temple)
+	(at Kalchas Greeks_camp)
+	(at Chryseis Greeks_camp)
+	(at Briseis Greeks_camp)
+	(at Apollo Apollo_temple)
+	(at Thetis Greeks_camp)
+	(at Athene Greeks_camp)
+	(at Zeus Olympus)
+
+)
+(:goal 
+	(and (mood Achilleus Agamemnon bad) (mood Zeus Agamemnon accept_punish) (mood Chryses Agamemnon good))
+)	
+)
