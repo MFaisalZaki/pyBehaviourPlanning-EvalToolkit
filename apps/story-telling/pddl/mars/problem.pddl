@@ -16,15 +16,20 @@
     (operational soil_sampler_1)
     (operational soil_sampler_2)
 
-    (containment base_station soil)
-    (containment mountain1 soil)
-    (containment mountain3 soil)
+    (can_sample_soil soil_sampler_1)
+    (can_sample_soil soil_sampler_2)
+
+    (contaminated base_station soil)
+    (contaminated mountain1 soil)
+    (contaminated mountain2 soil)
+    (contaminated mountain3 soil)
 )
 
-(:goal (and
+(:goal (or
     ; (sample_collected alex soil mountain2)
     ; (at alex mountain2)
     (valid_samples_found soil)
+    (mission_failed)
 ))
 
 )

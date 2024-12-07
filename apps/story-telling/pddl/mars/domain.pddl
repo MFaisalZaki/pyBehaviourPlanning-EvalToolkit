@@ -23,7 +23,12 @@
     (sample_collected ?c - scientist ?t - sample_type ?l - location ?e - equipment)
     (traversable ?from - location ?to - location)
     (valid_samples_found ?t - sample_type)
-    (containment ?l - location ?t - sample_type)
+    (contaminated ?l - location ?t - sample_type)
+    (is_storm_at ?l - location)
+    (mission_failed)
+    (scanned_location ?l - location)
+    (can_sample_soil ?e - equipment)
+    (can_sample_air ?e - equipment)
 )
 
 (:action navigate
@@ -38,11 +43,13 @@
     )
 )
 
-
 (:action sample
     :parameters (?c - scientist ?e - equipment ?l - location ?t - sample_type)
-    :precondition (and (at ?c ?l))
-    :effect (and 
+    :precondition (and (at ?c ?l)
+        (or (and (can_sample_soil ?e) (= ?t soil)) (and (can_sample_air ?e)  (= ?t air)))
+    )
+    :effect (and
+        (scanned_location ?l) 
         (when (and (at ?c ?l) (= ?t soil)) (sample_collected ?c soil ?l ?e))
         (when (and (at ?c ?l) (= ?t air))  (sample_collected ?c air  ?l ?e))
     )
@@ -53,10 +60,11 @@
     :precondition (and 
         (sample_collected ?c ?t ?l ?e) 
         (at ?c base_station)
+        (or (and (can_sample_soil ?e) (= ?t soil)) (and (can_sample_air ?e)  (= ?t air)))
     )
     :effect (and 
-        (when (and (operational ?e) (not (containment ?l ?t))) (is_valid_sample ?t ?l))
-        (when (or  (not (operational ?e)) (containment ?l ?t)) (not (is_valid_sample ?t ?l)))
+        (when (and (operational ?e) (not (contaminated ?l ?t))) (is_valid_sample ?t ?l))
+        (when (or  (not (operational ?e)) (contaminated ?l ?t)) (not (is_valid_sample ?t ?l)))
     )
 )
 
@@ -65,6 +73,37 @@
     :precondition (and (is_valid_sample ?t ?l))
     :effect (and 
         (valid_samples_found ?t)
+        (not (mission_failed))
+    )
+)
+
+(:action abort_mission
+    :parameters ()
+    :precondition (and 
+        (forall (?l - location ?t - sample_type) (and (scanned_location ?l) (not (is_valid_sample ?t ?l))))
+    )
+    :effect (and (mission_failed))
+)
+
+
+; What possibly could be the preconditions for a storm.
+(:action storm_started
+    :parameters (?l - location ?h - human)
+    :precondition (and )
+    :effect (and 
+        (forall (?from - location) (not (traversable ?from ?l)))
+        (forall (?to - location)  (not (traversable ?l ?to)))
+        (is_storm_at ?l)
+    )
+)
+
+(:action storm_ended
+    :parameters (?l - location)
+    :precondition (and (is_storm_at ?l))
+    :effect (and 
+        (forall (?from - location)  (traversable ?from ?l))
+        (forall (?to - location)   (traversable ?l ?to))
+        (not (is_storm_at ?l))
     )
 )
 
