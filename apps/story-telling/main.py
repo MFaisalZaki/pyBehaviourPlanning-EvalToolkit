@@ -37,6 +37,7 @@ planner_params = {
     "solver-memorylimit-mb": 16000,
     "dims": dims,
     "compliation-list": [
+        # ["up_conditional_effects_remover", "CONDITIONAL_EFFECTS_REMOVING"],
         ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
         ["fast-downward-reachability-grounder", "GROUNDING"]
     ],

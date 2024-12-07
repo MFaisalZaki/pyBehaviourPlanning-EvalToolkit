@@ -106,7 +106,13 @@
 ;****************
 (:action punish
 :parameters (?g - god ?loc - location ?dis - disasters) 
-:precondition (and (not (disaster ?loc ?dis ?g)) (exists (?h - hero) (and (mood ?g ?h accept_punish) (at ?h ?loc))))
+:precondition (and (not (disaster ?loc ?dis ?g)))
+:effect (disaster ?loc ?dis ?g)
+)
+
+(:action punish_hero
+:parameters (?g - god ?h - hero ?loc - location ?dis - disasters) 
+:precondition (and (not (disaster ?loc ?dis ?g)) (and (mood ?g ?h accept_punish) (at ?h ?loc)))
 :effect (disaster ?loc ?dis ?g)
 )
 
@@ -116,7 +122,13 @@
 ;****************
 (:action cease_disaster
 :parameters (?g - god ?loc - location ?dis - disasters) 
-:precondition (and (disaster ?loc ?dis ?g) (exists (?h - hero) (and (mood ?g ?h good) (at ?h ?loc))))
+:precondition (and (disaster ?loc ?dis ?g) )
+:effect (not (disaster ?loc ?dis ?g))
+)
+
+(:action cease_disaster_hero
+:parameters (?g - god ?h - hero ?loc - location ?dis - disasters) 
+:precondition (and (disaster ?loc ?dis ?g)  (and (mood ?g ?h good) (at ?h ?loc)))
 :effect (not (disaster ?loc ?dis ?g))
 )
 
@@ -135,7 +147,13 @@
 ;****************
 (:action capture
 :parameters (?h - hero ?sl - slave ?loc - location)  
-:precondition (and (at ?h ?loc) (at ?sl ?loc) (exists (?h1 - hero) (and (captured ?sl ?h1) (mood ?h ?h1 bad))))
+:precondition (and (at ?h ?loc) (at ?sl ?loc))
+:effect (and (forall (?h1 - hero) (not (captured ?sl ?h1))) (captured ?sl ?h))
+)
+
+(:action capture_hero
+:parameters (?h - hero ?h1 - hero ?sl - slave ?loc - location)  
+:precondition (and (at ?h ?loc) (at ?sl ?loc) (and (captured ?sl ?h1) (mood ?h ?h1 bad)))
 :effect (and (forall (?h1 - hero) (not (captured ?sl ?h1))) (captured ?sl ?h))
 )
 
