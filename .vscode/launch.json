@@ -224,6 +224,15 @@
             "console": "integratedTerminal",
             "args": [],
             "justMyCode": false
+        },
+        {
+            "name": "app: story telling (mars)",
+            "type": "debugpy", 
+            "request": "launch",
+            "program": "${workspaceFolder}/apps/story-telling/model-dev.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "justMyCode": false
         }
     ]
 }
