@@ -149,11 +149,11 @@ def generate_solve_cmds(args, venv_dir):
                         _dims = getkeyvalue(plannercfg_data, 'dims')
                         if _dims:
                             for dimname, dimopts in _dims:
-                                if dimname in ['ResourceCount', 'Functions']:
+                                if dimname in ['Resource', 'Functions']:
                                     if not task['resources'] is None:
                                         task['dims'].append([dimname, task['resources']])
-                                elif dimname in ['UtilityDimension', 'UtilitySet', 'UtilityValue']:
-                                    task['dims'].append([dimname, {'cost-bound-factor': cost_bound_factor}])
+                                # elif dimname in ['UtilityDimension', 'UtilitySet', 'UtilityValue']:
+                                #     task['dims'].append([dimname, {'cost-bound-factor': cost_bound_factor}])
                                 else:
                                     task['dims'].append([dimname, dimopts])               
 

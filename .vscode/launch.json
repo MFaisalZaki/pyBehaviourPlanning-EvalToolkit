@@ -30,11 +30,13 @@
             // "--exp-details-dir", "${workspaceFolder}/exps/classical-behaviour-count", 
             // "--sandbox-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp", 
             
-            "--exp-details-dir", "${workspaceFolder}/exps/ppltl-classical-behaviour-count", 
-            "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp", 
+            // "--exp-details-dir", "${workspaceFolder}/exps/ppltl-classical-behaviour-count", 
+            // "--sandbox-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp", 
 
+            "--exp-details-dir", "${workspaceFolder}/exps/numeric-behaviour-count", 
+            "--sandbox-dir", "${workspaceFolder}/sandbox-numeric-behaviour-count-exp", 
 
-            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/classical-domains",
+            "--planning-tasks-dir", "${workspaceFolder}/external-pkgs/numeric-domains",
             "--partition", "sturm-part",
             "--for-score-exp",
             "--score-for-k", "5", "10", "100", "1000"],
@@ -55,12 +57,14 @@
             // 
             // 
 
-            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json",
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/experiment-tasks/1998-logistics-31-1.0-1000-symk.json"
             // "${workspaceFolder}/sandbox-empty-bs-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
+            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-3-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-5-fi-none.json"
             //"${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-ppltl.json"
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/experiment-tasks/2004-psr-small-19-2.0-100-fbi-ppltl.json"
             
@@ -69,7 +73,7 @@
             
 
             //
-            "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-1-1.0-1000-fbi-utility-value.json"
+            // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/2006-rovers-1-1.0-1000-fbi-utility-value.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-symk.json"
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/0.5/experiment-tasks/1998-mprime-21-1.0-1000-fbi-utility-value.json",
             ],
@@ -86,7 +90,10 @@
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-5-fi-none.json",
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-symk.json",
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-seq-fd.json"
-            "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-ppltl.json"
+            // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-ppltl.json"
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json"
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json"
+            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-2.0-1000-fbi-seq-seq.json"
 
 
             // "/home/ma342/developer/sandbox-oversubscription-behaviour-count-exp/0.5/dump-results/2006-rovers-2-1.0-1000-fbi-utility-value.json",

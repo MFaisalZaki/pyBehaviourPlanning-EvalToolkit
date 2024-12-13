@@ -394,7 +394,7 @@ def construct_behaviour_space(planner, dims):
 
     updated_dims = []
     for idx, (dimname, details) in enumerate(dims):
-        if 'Resource' in dimname:
+        if any(x in dimname for x in ['Resource', 'Functions']):
             resourcesfile = details
             assert os.path.exists(resourcesfile), f"Resource file does not exist: {resourcesfile}"
             updated_dims.append([eval(dimname), resourcesfile])

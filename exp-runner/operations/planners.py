@@ -40,18 +40,21 @@ def FBIPPLTLPlannerWrapper(args, task, expdetails):
     pass
 
 def FBISMTPlannerWrapper(args, task, expdetails):
+    # expdetails['k'] = 5 # For dev only
     # Update the behaviour space with the resources file if exists.
     planner_params = read_planner_cfg(args.experiment_file)
-    dimensions_cpy = getkeyvalue(planner_params, 'dims')
     planner_params = update_fbi_parameters(planner_params, expdetails)
-    with OneshotPlanner(name='FBIPlanner',  params=deepcopy(planner_params)) as planner:
+    updatekeyvalue(expdetails, 'dims', [[x[0].__name__, x[1]] for x in planner_params['bspace-cfg']['dims']])
+    planner_params_deepcopy = deepcopy(planner_params)
+    if getkeyvalue(planner_params, 'ignore-dims'): planner_params_deepcopy['bspace-cfg']['dims'] = []
+    with OneshotPlanner(name='FBIPlanner',  params=planner_params_deepcopy) as planner:
         result = planner.solve(task)
     if len(result[0]) <= 1: 
         return {'reason': 'No plans found by fbi'}
     planlist = [r.plan for r in result[0]]
     planlist = list(filter(lambda p: not p is None, planlist))
     logmsgs  = result[1]
-    planner_params['bspace-cfg']['dims'] = dimensions_cpy
+    planner_params['bspace-cfg']['dims'] = getkeyvalue(expdetails, 'dims')
     results = generate_summary_file(task, expdetails, 'fbi', planner_params, planlist, logmsgs)
     return results
 

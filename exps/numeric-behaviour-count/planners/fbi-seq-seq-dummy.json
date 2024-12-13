@@ -1,0 +1,38 @@
+{
+    "tag": "fbi-seq-seq-dummy",
+    "planner": "fbismt",
+    "planner-parameters": {
+        "ignore-dims" : true,
+        "fbi-planner-type": "ForbidBehaviourIterativeSMT",
+        "base-planner-cfg": {
+            "planner-name": "SMTPlanner",
+            "encoder": "EncoderForall", 
+            "upper-bound": 100, 
+            "search-strategy": "SMTSearch", 
+            "configuration": "forall", 
+            "run-validation": false,
+            "compilationlist": [
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_grounder", "GROUNDING"]
+            ]
+          },
+          "bspace-cfg": {
+            "encoder": "forall",
+            "solver-timeout-ms": 600000,
+            "solver-memorylimit-mb": 16000,
+            "dims": [
+              ["GoalPredicatesOrderingSMT", "None"],
+              ["MakespanOptimalCostSMT", {"cost-bound-factor": 1.0}],
+              ["FunctionsSMT", "TODO"]
+            ],
+            "compliation-list": [
+              ["up_quantifiers_remover", "QUANTIFIERS_REMOVING"],
+              ["up_disjunctive_conditions_remover", "DISJUNCTIVE_CONDITIONS_REMOVING"],
+              ["up_grounder", "GROUNDING"]
+            ],
+            "run-plan-validation": false,
+            "disable-after-goal-state-actions": false
+          }
+    }
+}
