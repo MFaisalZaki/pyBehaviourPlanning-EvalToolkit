@@ -9,13 +9,10 @@ def createVEnv(basedir, requirements_file):
     ## start a venv and install the required packages.
     os.system(f'python3.10 -m venv {venv_dir}')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install -r {requirements_file}')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/pyBehaviourPlanningSMT.git')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/up-behaviour-planning.git')
     return venv_dir
 
-def install_bplanning(currentdir, pkgsdir, venvdir):
-    for pkg in pkgsdir:
-        os.chdir(pkg)
-        os.system(f'{venvdir}/bin/python -m pip install .')
-    
 def clone_and_compile_ibm_diversescore():
     IBM_DIVERSESCORE_NAME = 'ibm-diversescore'
     CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -39,11 +36,4 @@ def clone_and_compile_ibm_diversescore():
 current_prj_dir = os.path.join(os.path.dirname(__file__), '..')
 # Create a venv for to install the required packages.
 venv_dir = createVEnv(current_prj_dir, os.path.join(os.path.dirname(__file__), 'operations', 'exts', 'requirements.txt'))
-# Install behaviour space and forbid behaviour iterative packages.
-external_packages_dir = os.path.join(os.path.dirname(__file__), '..', 'external-pkgs')
-pkgs_dir = [os.path.join(external_packages_dir, pkg) for pkg in ['pyBehaviourPlanning']]
-install_bplanning(current_prj_dir, pkgs_dir, venv_dir)
 clone_and_compile_ibm_diversescore()
-
-pkgs_dir = [os.path.join(external_packages_dir, pkg) for pkg in ['up-behaviour-planning']]
-install_bplanning(current_prj_dir, pkgs_dir, venv_dir)
