@@ -57,7 +57,7 @@
             // 
             // 
 
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq.json",
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-1.0-1000-fbi-seq-seq.json",
             // "${workspaceFolder}/sandbox-oversubscription-behaviour-count-exp/1.0/experiment-tasks/1998-logistics-31-1.0-1000-symk.json"
             // "${workspaceFolder}/sandbox-empty-bs-behaviour-count-exp/experiment-tasks/2006-rovers-3-2.0-1000-fbi-seq.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json"
@@ -87,11 +87,13 @@
             "console": "integratedTerminal",
             "args": ["score", 
             "--experiment-file",
+            // "${workspaceFolder}/sandbox-classical-test/dump-results/2006-rovers-1-1.0-5-fbi-seq.json",
+            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-1.0-1000-fbi-seq-seq.json",
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-5-fi-none.json",
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-symk.json",
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-seq-fd.json"
             // "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fbi-ppltl.json"
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json"
+            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-2.0-1000-fbi-seq-seq-dummy.json"
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-2.0-1000-fbi-seq-seq.json"
 

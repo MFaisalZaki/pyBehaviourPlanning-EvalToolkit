@@ -12,7 +12,7 @@ from unified_planning.shortcuts import OperatorKind
 
 # from behaviour_planning.over_domain_models.smt.shortcuts import *
 # from behaviour_planning.over_domain_models.ppltl.shortcuts import *
-
+from itertools import combinations
 import unified_planning as up
 
 def replace_hyphens_in_pddl(file_path, dump_dir):
@@ -423,4 +423,11 @@ def update_task_utilities(task):
             goals[goal] = i * 2
     task.add_quality_metric(up.model.metrics.Oversubscription(goals))
     return goals
-    
+
+def compute_maxsum_stability(planlist) -> float:
+    plist = list(map(lambda p:p.split('\n')[:-1], planlist))
+    pairs = []
+    for i, pi in enumerate(plist):
+        for j, pj in enumerate(plist[i+1:]):
+            pairs.append((set(pi), set(pj)))
+    return round(sum(map(lambda pair: round(len(set.intersection(pair[0], pair[1])) / len(set.union(pair[0],pair[1])),2), pairs))/len(pairs), 2)

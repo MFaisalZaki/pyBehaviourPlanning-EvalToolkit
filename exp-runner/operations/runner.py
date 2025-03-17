@@ -8,6 +8,7 @@ import unified_planning as up
 from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
 import up_symk
+from unified_planning.shortcuts import Compiler, CompilationKind, OperatorKind
 
 # from behaviour_planning.over_domain_models.smt.shortcuts import *
 # from behaviour_planning.over_domain_models.ppltl.shortcuts import *
@@ -19,7 +20,7 @@ env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
 from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
-from .utilities import replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
+from .utilities import compute_maxsum_stability, replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
 
 def solve(args):
@@ -160,7 +161,17 @@ def score(args):
                 bspace = BehaviourCountPPLTL(domain, problem, bspace_cfg, planlist, is_oversubscription)
             else:
                 from behaviour_planning.over_domain_models.smt.bss.behaviour_count.behaviour_count import BehaviourCountSMT
-                bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription)
+                # check if the planning problem is numeric then we need a different compilation list.
+                # compilationlist=[['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['up_grounder', CompilationKind.GROUNDING]]
+                
+                # I hate this way but I have no other way to fix this.
+                compilationlist = []
+                if 'numeric' in result_file:
+                    compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['up_grounder', CompilationKind.GROUNDING]]
+                else:
+                    compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['fast-downward-reachability-grounder', CompilationKind.GROUNDING]]
+                
+                bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription, compilationlist)
             diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
             
         diversity_scores_results['info'] = {
@@ -171,6 +182,10 @@ def score(args):
             'k': args.k,
             'q': getkeyvalue(expdetails, 'q')
         }
+
+        diversity_scores_results['maxsum'] = compute_maxsum_stability(planlist)
+
+        pass
 
     except Exception as e:
         # Dump error to file.
