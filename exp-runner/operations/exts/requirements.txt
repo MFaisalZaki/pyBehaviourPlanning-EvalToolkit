@@ -1,7 +1,0 @@
-unified-planning
-z3-solver
-up-symk
-up-pyperplan
-networkx
-pytest
-git+https://github.com/MFaisalZaki/forbiditerative.git

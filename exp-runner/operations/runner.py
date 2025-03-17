@@ -130,19 +130,8 @@ def score(args):
         
         match plannername:
             case 'fi':
-                match selection_method:
-                    case 'first-k':
-                        planlist = selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
-                        tag = 'fi-first-k'
-                    case 'bspace':
-                        # use behaviour count to select the plans.
-                        bspace_cfg['select-k'] = args.k
-                        tag = 'fi-bspace'
-                    case 'maxsum':
-                        planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmp_dump_dir)
-                        tag = 'fi-maxsum'
-                    case _:
-                        tag = 'fi-select-all'
+                bspace_cfg['select-k'] = args.k
+                tag = 'fi-bspace'
             case 'symk' | 'fbi' | 'fbi-ppltl':
                 planlist = planlist[:args.k]
                 tag = getkeyvalue(expdetails, 'tag')
@@ -183,6 +172,7 @@ def score(args):
             'q': getkeyvalue(expdetails, 'q')
         }
 
+        compute_maxsum_stability(['\n'.join(map(str, plan.actions)) for plan in list(bspace.selected_plans)])
         diversity_scores_results['maxsum'] = compute_maxsum_stability(planlist)
 
         pass

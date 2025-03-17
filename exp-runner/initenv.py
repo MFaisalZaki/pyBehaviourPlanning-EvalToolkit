@@ -8,9 +8,12 @@ def createVEnv(basedir, requirements_file):
     os.makedirs(venv_dir, exist_ok=True)
     ## start a venv and install the required packages.
     os.system(f'python3.10 -m venv {venv_dir}')
-    os.system(f'{venv_dir}/bin/python3.10 -m pip install -r {requirements_file}')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install unified-planning z3-solver up-symk up-pyperplan networkx pytest')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/forbiditerative.git')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/pyBehaviourPlanningSMT.git')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/up-behaviour-planning.git')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip uninstall pypmt')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/pyPMT/pyPMT.git@d44efb71746b3a91e7fb1926b4405bd14f9df33b')
     return venv_dir
 
 def clone_and_compile_ibm_diversescore():

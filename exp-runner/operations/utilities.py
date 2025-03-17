@@ -425,7 +425,7 @@ def update_task_utilities(task):
     return goals
 
 def compute_maxsum_stability(planlist) -> float:
-    plist = list(map(lambda p:p.split('\n')[:-1], planlist))
+    plist = list(map(lambda p: list(filter(lambda a: not ';' in a, p.split('\n'))), planlist))
     pairs = []
     for i, pi in enumerate(plist):
         for j, pj in enumerate(plist[i+1:]):
