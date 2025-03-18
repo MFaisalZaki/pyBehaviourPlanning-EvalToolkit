@@ -1,0 +1,12 @@
+{
+    "tag": "kstar",
+    "planner": "kstar",
+    "planner-parameters": {
+        "selection-method": "none"
+    },
+    "dims": [
+        ["GoalPredicatesOrderingSMT", "None"],
+        ["MakespanOptimalCostSMT", {"disable_action_check": false}],
+        ["ResourceCountSMT", "TODO"]
+    ]
+}

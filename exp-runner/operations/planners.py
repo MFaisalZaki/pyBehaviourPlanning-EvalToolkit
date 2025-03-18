@@ -9,6 +9,10 @@ from copy import deepcopy
 from unified_planning.engines import PlanGenerationResultStatus as ResultsStatus
 from unified_planning.shortcuts import OneshotPlanner, AnytimePlanner, Compiler, CompilationKind
 
+from kstar_planner import planners
+from pathlib import Path
+
+
 from .planset_selectors import selection_using_first_k, selection_maxsum, selection_bspace
 
 from .utilities import (
@@ -58,6 +62,27 @@ def FBISMTPlannerWrapper(args, task, expdetails):
     results = generate_summary_file(task, expdetails, 'fbi', planner_params, planlist, logmsgs)
     return results
 
+
+def KstarPlannerWrapper(args, task, expdetails):
+    for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
+        if dim[0] in ['ResourceCountSMT'] and 'resources' in expdetails:
+            if os.path.isfile(expdetails['resources']):
+                expdetails['dims'][idx][1] = expdetails['resources']
+                pass
+
+    plans = planners.plan_unordered_topq(domain_file=Path(expdetails['domainfile']), 
+                                         problem_file=Path(expdetails['problemfile']), 
+                                         quality_bound=getkeyvalue(expdetails, 'q'),
+                                         number_of_plans_bound=getkeyvalue(expdetails, 'k')*2, 
+                                         timeout=300, 
+                                         search_heuristic="ipdb(transform=undo_to_origin())")
+    
+    planlist = list(map(lambda plan: '\n'.join(map(lambda a: f'({a})', plan)), (map(lambda p: p['actions'], plans['plans']))))
+    planner_params = read_planner_cfg(args.experiment_file)
+    results = generate_summary_file(task, expdetails, 'kstar', planner_params, planlist, [])
+    return results
+
+
 def FIPlannerWrapper(args, task, expdetails):
     cmd  = [sys.executable]
     cmd += ["-m"]
@@ -69,7 +94,7 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += ["--problem"]
     cmd += [getkeyvalue(expdetails, 'problemfile')]
     cmd += ["--number-of-plans"]
-    cmd += [str(getkeyvalue(expdetails, 'k'))]
+    cmd += [str(getkeyvalue(expdetails, 'k')*2)]
     cmd += ["--quality-bound"]
     cmd += [str(getkeyvalue(expdetails, 'q'))]
     cmd += ["--symmetries"]
@@ -127,7 +152,7 @@ def FIPlannerWrapper(args, task, expdetails):
 def SymKPlannerWrapper(args, task, expdetails):
 
     planlist = []
-    k = getkeyvalue(expdetails, 'k')
+    k = getkeyvalue(expdetails, 'k') * 2
     q = getkeyvalue(expdetails, 'q')
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
 

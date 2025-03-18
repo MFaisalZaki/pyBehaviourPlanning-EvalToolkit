@@ -8,7 +8,7 @@ def createVEnv(basedir, requirements_file):
     os.makedirs(venv_dir, exist_ok=True)
     ## start a venv and install the required packages.
     os.system(f'python3.10 -m venv {venv_dir}')
-    os.system(f'{venv_dir}/bin/python3.10 -m pip install unified-planning z3-solver up-symk up-pyperplan networkx pytest')
+    os.system(f'{venv_dir}/bin/python3.10 -m pip install unified-planning z3-solver up-symk up-pyperplan networkx pytest kstar-planner')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/forbiditerative.git')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/pyBehaviourPlanningSMT.git')
     os.system(f'{venv_dir}/bin/python3.10 -m pip install git+https://github.com/MFaisalZaki/up-behaviour-planning.git')

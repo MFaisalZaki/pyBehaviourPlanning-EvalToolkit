@@ -18,7 +18,7 @@ import unified_planning as up
 env = up.environment.get_environment()
 env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
-from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
+from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper, KstarPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
 from .utilities import compute_maxsum_stability, compute_maxsum_states, replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
@@ -68,6 +68,8 @@ def solve(args):
                     results = FIPlannerWrapper(args, task, expdetails)
                 case 'symk':
                     results = SymKPlannerWrapper(args, task, expdetails)
+                case 'kstar':
+                    results = KstarPlannerWrapper(args, task, expdetails)
             end_time = time.time()
             results['time'] = end_time - start_time
 
@@ -131,9 +133,9 @@ def score(args):
         plannername = getkeyvalue(expdetails, 'planner')
         
         match plannername:
-            case 'fi':
+            case 'fi'|'kstar':
                 bspace_cfg['select-k'] = args.k
-                tag = 'fi-bspace'
+                tag = f'{plannername}-bspace'
             case 'symk' | 'fbi' | 'fbi-ppltl':
                 planlist = planlist[:args.k]
                 tag = getkeyvalue(expdetails, 'tag')
