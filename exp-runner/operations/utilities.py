@@ -9,6 +9,7 @@ from unified_planning.io import PDDLWriter
 from unified_planning.model.metrics import Oversubscription
 from unified_planning.shortcuts import CompilationKind
 from unified_planning.shortcuts import OperatorKind
+from unified_planning.shortcuts import SequentialSimulator
 
 # from behaviour_planning.over_domain_models.smt.shortcuts import *
 # from behaviour_planning.over_domain_models.ppltl.shortcuts import *
@@ -425,9 +426,40 @@ def update_task_utilities(task):
     return goals
 
 def compute_maxsum_stability(planlist) -> float:
-    plist = list(map(lambda p: list(filter(lambda a: not ';' in a, p.split('\n'))), planlist))
-    pairs = []
-    for i, pi in enumerate(plist):
-        for j, pj in enumerate(plist[i+1:]):
-            pairs.append((set(pi), set(pj)))
-    return round(sum(map(lambda pair: round(len(set.intersection(pair[0], pair[1])) / len(set.union(pair[0],pair[1])),2), pairs))/len(pairs), 2)
+    plist = [set(map(str, plan.actions)) for plan in planlist]
+    pairs = [1 - round(len(set.intersection(p1, p2)) / len(set.union(p1, p2)),2) for p1, p2 in combinations(plist, 2)]
+    return round(sum(pairs) / len(pairs), 2)
+
+def compute_maxsum_states(task, planlist) -> float:
+    plan_states = [_get_fluents_values(_simulate_plan(task, plan)) for plan in planlist]
+    plans_similarity = [sum([1 - round(len(set.intersection(p1states[i], p2states[i]))/len(set.union(p1states[i], p2states[i])),2) for i in range(0, min(len(p1states), len(p2states)))])/min(len(p1states), len(p2states)) for p1states, p2states in combinations(plan_states, 2)]
+    return round(sum(plans_similarity) / len(plans_similarity), 2)
+    
+def _simulate_plan(task, plan):
+    states = []
+    with SequentialSimulator(problem=task) as simulator:
+        initial_state = simulator.get_initial_state()
+        current_state = initial_state
+        states += [current_state]
+        for action_instance in plan.actions:
+            current_state = simulator.apply(current_state, action_instance)
+            if current_state is None:
+                assert False, "No cost available since the plan is invalid."
+            states.append(current_state)
+    return states
+
+def _get_fluents_values(stateslist):
+    """Returns a list of states in fluents-values string format."""
+    _state_vars = set()
+    for var in stateslist[0]._values:
+        value = stateslist[0].get_value(var)
+        _state_vars.add(var)
+
+    fluents = []
+    for state in stateslist[1:]:
+        _state_vars_values = set()
+        for _state_var in _state_vars:
+            value = state.get_value(_state_var)
+            _state_vars_values.add("{}-{}".format(str(_state_var), str(value)))
+        fluents.append(_state_vars_values)
+    return fluents

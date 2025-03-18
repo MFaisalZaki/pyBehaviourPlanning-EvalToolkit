@@ -20,7 +20,7 @@ env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
 from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
-from .utilities import compute_maxsum_stability, replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
+from .utilities import compute_maxsum_stability, compute_maxsum_states, replace_hyphens_in_pddl, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
 
 def solve(args):
@@ -171,9 +171,14 @@ def score(args):
             'k': args.k,
             'q': getkeyvalue(expdetails, 'q')
         }
+        selected_planslist = bspace.selected_plans(args.k)
 
-        compute_maxsum_stability(['\n'.join(map(str, plan.actions)) for plan in list(bspace.selected_plans)])
-        diversity_scores_results['maxsum'] = compute_maxsum_stability(planlist)
+        maxsum_stability = compute_maxsum_stability(selected_planslist)
+        maxsum_states = compute_maxsum_states(bspace.task, selected_planslist)
+        # compute_maxsum_stability(['\n'.join(map(str, plan.actions)) for plan in list(bspace.selected_plans)])
+        diversity_scores_results['maxsum'] = (maxsum_stability + maxsum_states)/2
+        diversity_scores_results['maxsum-stability'] = maxsum_stability
+        diversity_scores_results['maxsum-states'] = maxsum_states
 
         pass
 
