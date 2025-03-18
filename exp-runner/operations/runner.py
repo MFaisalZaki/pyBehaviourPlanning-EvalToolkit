@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime
 import tempfile
-
+import time
 import unified_planning as up
 from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader
@@ -58,7 +58,7 @@ def solve(args):
                 if len(_goals) < 2: expdetails['planner'] = 'SKIP'
             
             # Update behaviour space additional informaiton here.
-
+            start_time = time.time()
             match expdetails['planner']:
                 case 'fbippltl':
                     results = FBIPPLTLPlannerWrapper(args, task, expdetails)
@@ -68,6 +68,8 @@ def solve(args):
                     results = FIPlannerWrapper(args, task, expdetails)
                 case 'symk':
                     results = SymKPlannerWrapper(args, task, expdetails)
+            end_time = time.time()
+            results['time'] = end_time - start_time
 
     except Exception as e:
         # Dump error to file.

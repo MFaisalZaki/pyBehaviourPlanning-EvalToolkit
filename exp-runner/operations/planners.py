@@ -77,6 +77,12 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += ["--clean-local-folder"]
     cmd += ["--suppress-planners-output"]
     
+    # update the resource dimensions if used.
+    for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
+        if dim[0] in ['ResourceCountSMT'] and 'resources' in expdetails:
+            if os.path.isfile(expdetails['resources']):
+                expdetails['dims'][idx][1] = expdetails['resources']
+                pass
 
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
     tmprun = os.path.join(tmpdir, 'tmp-run-dir')
