@@ -49,7 +49,7 @@
             "args": ["solve", 
             "--experiment-file", 
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-1.0-5-fbi-seq-seq-dummy.json"
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-1.0-5-fbi-seq-seq.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/1998-gripper-1-1.0-1000-fi-none.json"
 
 
             // 

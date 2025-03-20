@@ -65,6 +65,7 @@ def FBISMTPlannerWrapper(args, task, expdetails):
 
 def KstarPlannerWrapper(args, task, expdetails):
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
+        if expdetails['resources'] is None: break
         if dim[0] in ['ResourceCountSMT'] and 'resources' in expdetails:
             if os.path.isfile(expdetails['resources']):
                 expdetails['dims'][idx][1] = expdetails['resources']
@@ -104,6 +105,7 @@ def FIPlannerWrapper(args, task, expdetails):
     
     # update the resource dimensions if used.
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
+        if expdetails['resources'] is None: break
         if dim[0] in ['ResourceCountSMT'] and 'resources' in expdetails:
             if os.path.isfile(expdetails['resources']):
                 expdetails['dims'][idx][1] = expdetails['resources']
@@ -150,7 +152,13 @@ def FIPlannerWrapper(args, task, expdetails):
         return results
 
 def SymKPlannerWrapper(args, task, expdetails):
-
+    for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
+        if expdetails['resources'] is None: break
+        if dim[0] in ['ResourceCountSMT'] and 'resources' in expdetails:
+            if os.path.isfile(expdetails['resources']):
+                expdetails['dims'][idx][1] = expdetails['resources']
+                pass
+            
     planlist = []
     k = getkeyvalue(expdetails, 'k') * 2
     q = getkeyvalue(expdetails, 'q')
