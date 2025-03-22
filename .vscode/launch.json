@@ -49,7 +49,7 @@
             "args": ["solve", 
             "--experiment-file", 
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-1-1.0-5-fbi-seq-seq-dummy.json"
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/1998-gripper-1-1.0-1000-fi-none.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-seq-fd.json"
 
 
             // 
@@ -87,7 +87,7 @@
             "args": ["score", 
             "--experiment-file",
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-1.0-5-fbi-seq-seq-dummy.json",
-            "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-1-1.0-5-fbi-seq-seq.json",
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/None-tsp-17-2.0-1000-fi-none.json",
 
 
             // "${workspaceFolder}/sandbox-classical-test/dump-results/2006-rovers-1-1.0-1000-kstar.json",
@@ -112,8 +112,12 @@
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-satellite-1-2.0-1000-fbi-seq-seq.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2004-psr-small-2-1.0-5-fi-none.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-3-2.0-1000-fbi-seq.json",
-            "--k", "5"
+            // "--k", "5"
             // "--k", "1"
+
+            "/Users/mustafafaisal/Developer/motivating-example/2006-rovers-3-1.0-1000-fbi-seq-fd-mod.json",
+            "--k", "3"
+
 
             ],
             "justMyCode": false
