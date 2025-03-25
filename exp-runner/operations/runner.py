@@ -159,7 +159,7 @@ def score(args):
                 
                 # I hate this way but I have no other way to fix this.
                 compilationlist = []
-                if 'numeric' in result_file:
+                if 'numeric' in result_file or (plannername in ['kstar']):
                     compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['up_grounder', CompilationKind.GROUNDING]]
                 else:
                     compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['fast-downward-reachability-grounder', CompilationKind.GROUNDING]]
@@ -175,14 +175,14 @@ def score(args):
             'k': args.k,
             'q': getkeyvalue(expdetails, 'q')
         }
-        selected_planslist = bspace.selected_plans(args.k)
+        # selected_planslist = bspace.selected_plans(args.k)
 
-        maxsum_stability = compute_maxsum_stability(selected_planslist)
-        maxsum_states = compute_maxsum_states(bspace.task, selected_planslist)
-        # compute_maxsum_stability(['\n'.join(map(str, plan.actions)) for plan in list(bspace.selected_plans)])
-        diversity_scores_results['maxsum'] = (maxsum_stability + maxsum_states)/2
-        diversity_scores_results['maxsum-stability'] = maxsum_stability
-        diversity_scores_results['maxsum-states'] = maxsum_states
+        # maxsum_stability = compute_maxsum_stability(selected_planslist)
+        # maxsum_states = compute_maxsum_states(bspace.task, selected_planslist)
+        # # compute_maxsum_stability(['\n'.join(map(str, plan.actions)) for plan in list(bspace.selected_plans)])
+        # diversity_scores_results['maxsum'] = (maxsum_stability + maxsum_states)/2
+        # diversity_scores_results['maxsum-stability'] = maxsum_stability
+        # diversity_scores_results['maxsum-states'] = maxsum_states
 
         pass
 

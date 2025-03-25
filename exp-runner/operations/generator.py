@@ -34,7 +34,8 @@ def generate_score_cmds(args, venv_dir):
             no_plans = len(plans)
             k_Value = getkeyvalue(results, 'k')
             planner = getkeyvalue(results, 'planner')
-            if planner in ['fi']:
+            # if planner in ['fi']:
+            if False:
                 basefilename = os.path.basename(results_file).replace('.json','')
                 selection_methods = ['first-k', 'bspace', 'maxsum']
                 for selection_method in selection_methods:
@@ -50,7 +51,7 @@ def generate_score_cmds(args, venv_dir):
                         rundir = os.path.join(run_score_dir, f'score-{basefilename}-k-{k}')
                         os.makedirs(rundir, exist_ok=True)
                         generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
-            elif planner in ['symk', 'fbi', 'fbismt', 'fbi-ppltl', 'fbi-smt']:
+            elif planner in ['fi', 'kstar', 'symk', 'fbi', 'fbismt', 'fbi-ppltl', 'fbi-smt']:
                 for k in args.score_for_k:
                     if k > no_plans: break
                     cmd = construct_score_cmd(k, results_file)
@@ -73,7 +74,8 @@ def generate_score_cmds(args, venv_dir):
     slurm_cmds = os.path.join(args.sandbox_dir, SLURM_SCORE_SCRIPTS)
     os.makedirs(slurm_cmds, exist_ok=True)
     for i, cmd in enumerate(generated_cmds):
-        slurmcmd = warpCommand(cmd, getkeyvalue(expdetails, 'timelimit'), getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
+        # increase the timelimit for the score commands.
+        slurmcmd = warpCommand(cmd, "00:40:00", getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
         with open(os.path.join(slurm_cmds, f'slurm_batch_task_{i}.txt'), 'w') as f:
             f.write(slurmcmd)
     
