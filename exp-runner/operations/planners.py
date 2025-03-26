@@ -27,6 +27,8 @@ from .utilities import (
     get_ibm_diversescore_binary
 )
 
+INCREASE_PLAN_FACTOR = 1.2
+
 def FBIPPLTLPlannerWrapper(args, task, expdetails):
     planner_params = read_planner_cfg(args.experiment_file)
     dimensions_cpy = getkeyvalue(planner_params, 'dims')
@@ -74,7 +76,7 @@ def KstarPlannerWrapper(args, task, expdetails):
     plans = planners.plan_unordered_topq(domain_file=Path(expdetails['domainfile']), 
                                          problem_file=Path(expdetails['problemfile']), 
                                          quality_bound=getkeyvalue(expdetails, 'q'),
-                                         number_of_plans_bound=getkeyvalue(expdetails, 'k')*2, 
+                                         number_of_plans_bound=int(getkeyvalue(expdetails, 'k')*INCREASE_PLAN_FACTOR), 
                                          timeout=300, 
                                          search_heuristic="ipdb(transform=undo_to_origin())")
     
@@ -95,7 +97,7 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += ["--problem"]
     cmd += [getkeyvalue(expdetails, 'problemfile')]
     cmd += ["--number-of-plans"]
-    cmd += [str(getkeyvalue(expdetails, 'k')*2)]
+    cmd += [str(int(getkeyvalue(expdetails, 'k')*INCREASE_PLAN_FACTOR))]
     cmd += ["--quality-bound"]
     cmd += [str(getkeyvalue(expdetails, 'q'))]
     cmd += ["--symmetries"]
@@ -160,7 +162,7 @@ def SymKPlannerWrapper(args, task, expdetails):
                 pass
             
     planlist = []
-    k = getkeyvalue(expdetails, 'k') * 2
+    k = int(getkeyvalue(expdetails, 'k') * INCREASE_PLAN_FACTOR)
     q = getkeyvalue(expdetails, 'q')
     tmpdir = getkeyvalue(expdetails, 'tmp-dir')
 

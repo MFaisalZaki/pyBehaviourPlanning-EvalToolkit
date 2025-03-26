@@ -16,6 +16,30 @@ from unified_planning.shortcuts import SequentialSimulator
 from itertools import combinations
 import unified_planning as up
 
+def replace_hyphens_in_task(planningtask):
+    cloned_task = planningtask.clone()
+    cloned_task.clear_actions()
+    cloned_task.clear_quality_metrics()
+    _old_action_new_action_map = {}
+    for action in planningtask.actions:
+        # _old_action_new_action_map[action] = 
+        new_action = action.clone()
+        new_action.name = new_action.name.replace('-', '_')
+        cloned_task.add_action(new_action)
+        _old_action_new_action_map[action] = new_action
+    # check for quality metrics:
+    for metric in planningtask.quality_metrics:
+        new_cost = {}
+        if 'costs' in dir(metric):
+            for action, cost in metric.costs.items():
+                new_cost[_old_action_new_action_map[action]] = cost    
+            cloned_task.add_quality_metric(up.model.metrics.MinimizeActionCosts(new_cost, default=metric.default, environment=cloned_task.environment))
+        else:
+            pass
+            cloned_task.add_quality_metric(up.model.MinimizeSequentialPlanLength())
+    return cloned_task
+
+
 def replace_hyphens_in_pddl(file_path, dump_dir):
     # Step 2: Open the input file in read mode
     with open(file_path, 'r') as file:
