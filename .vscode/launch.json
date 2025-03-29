@@ -256,6 +256,14 @@
             "console": "integratedTerminal",
             "args": [],
             "justMyCode": false
+        },
+        {
+            "name": "new_analyzer",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/exp-analyzer/operations/new_analyzer.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }
