@@ -46,6 +46,8 @@ def FBIPPLTLPlannerWrapper(args, task, expdetails):
     pass
 
 def FBISMTPlannerWrapper(args, task, expdetails):
+    # I hate this but no time for proper refactoring.
+    if 'fbi-seq-seq-dummy' == getkeyvalue(expdetails, 'tag'): expdetails['k'] = int(expdetails['k'] * INCREASE_PLAN_FACTOR)
     # expdetails['k'] = 5 # For dev only
     # Update the behaviour space with the resources file if exists.
     planner_params = read_planner_cfg(args.experiment_file)

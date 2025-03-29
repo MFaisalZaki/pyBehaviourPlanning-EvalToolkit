@@ -9,6 +9,7 @@ from unified_planning.shortcuts import get_environment
 from unified_planning.io import PDDLReader, PDDLWriter
 import up_symk
 from unified_planning.shortcuts import Compiler, CompilationKind, OperatorKind
+import math
 
 # from behaviour_planning.over_domain_models.smt.shortcuts import *
 # from behaviour_planning.over_domain_models.ppltl.shortcuts import *
@@ -18,7 +19,7 @@ import unified_planning as up
 env = up.environment.get_environment()
 env.factory.add_engine('FBIPlanner', __name__, 'FBIPlanner')
 
-from .planners import FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper, KstarPlannerWrapper
+from .planners import INCREASE_PLAN_FACTOR, FBISMTPlannerWrapper, FBIPPLTLPlannerWrapper, FIPlannerWrapper, SymKPlannerWrapper, KstarPlannerWrapper
 from .planset_selectors import selection_using_first_k, selection_bspace, selection_maxsum
 from .utilities import compute_maxsum_stability, compute_maxsum_states, replace_hyphens_in_task, update_task_utilities, experiment_reader, getkeyvalue, updatekeyvalue, construct_behaviour_space, updatekeyvalue
 from .constants import *
@@ -163,11 +164,23 @@ def score(args):
             plannername = getkeyvalue(expdetails, 'planner')
             
             match plannername:
-                case 'fi'|'kstar':
+                case 'fi'|'kstar' | 'symk':
                     bspace_cfg['select-k'] = args.k
+                    # pick the top unique 1.2*k plans
+                    selected_plans_count = math.ceil(args.k * INCREASE_PLAN_FACTOR)
+                    selected_plans = list(dict.fromkeys(planlist))
+                    # could this be a bug?
+                    planlist = planlist if len(planlist) < selected_plans_count else selected_plans[:selected_plans_count]
                     tag = f'{plannername}-bspace'
-                case 'symk' | 'fbi' | 'fbi-ppltl':
-                    planlist = planlist[:args.k]
+                case 'fbi' | 'fbi-ppltl':
+                    # handle the fbi-dummy case here.
+                    if 'dummy' in getkeyvalue(expdetails, 'tag'):
+                        selected_plans_count = math.ceil(args.k * INCREASE_PLAN_FACTOR)
+                        selected_plans = list(dict.fromkeys(planlist))
+                        if len(planlist) > selected_plans_count:
+                            planlist = planlist[:selected_plans_count]
+                    else:
+                        planlist = planlist[:args.k]
                     tag = getkeyvalue(expdetails, 'tag')
                 case _:
                     assert False, f"Unknown planner: {getkeyvalue(expdetails, 'planner')}"
