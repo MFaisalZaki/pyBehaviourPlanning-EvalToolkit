@@ -157,6 +157,7 @@ def score(args):
             else:
                 updatekeyvalue(bspace_cfg, 'k', args.k)
                 updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'planner'), getkeyvalue(expdetails, 'dims')))
+            bspace_cfg['encoder'] = 'forall'
             
             # check if the planner is fi or symk|fbi
             planlist = getkeyvalue(expdetails, 'plans')
@@ -170,7 +171,7 @@ def score(args):
                     selected_plans_count = math.ceil(args.k * INCREASE_PLAN_FACTOR)
                     selected_plans = list(dict.fromkeys(planlist))
                     # could this be a bug?
-                    planlist = planlist if len(planlist) < selected_plans_count else selected_plans[:selected_plans_count]
+                    planlist = selected_plans[:selected_plans_count]
                     tag = f'{plannername}-bspace'
                 case 'fbi' | 'fbi-ppltl':
                     # handle the fbi-dummy case here.
@@ -203,8 +204,11 @@ def score(args):
                 else:
                     compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['fast-downward-reachability-grounder', CompilationKind.GROUNDING]]
                 
+                start_time = time.time()
                 bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription, compilationlist)
                 diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}
+                end_time = time.time()
+                print(f"counting time: {end_time - start_time}")
                 
             diversity_scores_results['info'] = {
                 'domain':  getkeyvalue(expdetails, 'domain'),
