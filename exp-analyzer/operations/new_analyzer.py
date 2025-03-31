@@ -6,6 +6,7 @@ from scipy import stats
 from itertools import combinations 
 from collections import defaultdict
 
+import os
 
 def read_results(directory):
     # list files in the directory
@@ -21,7 +22,9 @@ def read_results(directory):
         instances.add((data['info']['q'], data['info']['k'], f"{data['info']['domain']}-{data['info']['problem']}", data['info']['tag'], data['diversity-scores']['behaviour-count']))        
     return instances
 
-instances = read_results('/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-classical-behaviour-count-exp/score-dump-results')
+instancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/score-dump-results')
+
+instances = read_results(instancesdir)
 
 q_values = set(map(lambda x: x[0], instances))
 k_values = set(map(lambda x: x[1], instances))
@@ -76,5 +79,10 @@ for q in sorted(q_values):
             planners_results_rows[q][k][planners_key]['p-value'] = round(stats.ttest_rel(*[planner1_samples, planner2_samples]).pvalue, 3)
             planners_results_rows[q][k][planners_key]['common-instances-count'] = len(common_instances)
             
+
+dumpdir = os.path.join(instancesdir, '..', 'analysis-run')
+os.makedirs(dumpdir, exist_ok=True)
+with open(os.path.join(dumpdir, 'results.json'), 'w') as f:
+    json.dump(planners_results_rows, f, indent=4)
 
 pass
