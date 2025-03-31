@@ -51,7 +51,7 @@ for q in sorted(q_values):
             planners_results_rows[q][k][planners_key] = defaultdict(dict)
             
             # get common instances for the planners
-            common_instances = set.intersection(planner1[1], planner2[1])
+            common_instances = list(set.intersection(planner1[1], planner2[1]))
             # filter instances for this q, k, and planner
             filtered_instances_planner_1 = list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner1[0] and x[2] in common_instances, instances))
             filtered_instances_planner_2 = list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner2[0] and x[2] in common_instances, instances))
@@ -78,6 +78,7 @@ for q in sorted(q_values):
 
             planners_results_rows[q][k][planners_key]['p-value'] = round(stats.ttest_rel(*[planner1_samples, planner2_samples]).pvalue, 3)
             planners_results_rows[q][k][planners_key]['common-instances-count'] = len(common_instances)
+            planners_results_rows[q][k][planners_key]['common-instances'] = common_instances
             
 
 dumpdir = os.path.join(instancesdir, '..', 'analysis-run')
