@@ -54,8 +54,8 @@ for q in sorted(q_values):
             common_instances = list(set.intersection(planner1[1], planner2[1]))
             if len(common_instances) < 2: continue
             # filter instances for this q, k, and planner
-            filtered_instances_planner_1 = list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner1[0] and x[2] in common_instances, instances))
-            filtered_instances_planner_2 = list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner2[0] and x[2] in common_instances, instances))
+            filtered_instances_planner_1 =  list(sorted(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner1[0] and x[2] in common_instances, instances), key=lambda k:k[2]))
+            filtered_instances_planner_2 =  list(sorted(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner2[0] and x[2] in common_instances, instances), key=lambda k:k[2]))
 
             planner1_samples = list(map(lambda e:e[-1], filtered_instances_planner_1))
             planner2_samples = list(map(lambda e:e[-1], filtered_instances_planner_2))
