@@ -157,7 +157,7 @@ def score(args):
             else:
                 updatekeyvalue(bspace_cfg, 'k', args.k)
                 updatekeyvalue(bspace_cfg, 'dims', construct_behaviour_space(getkeyvalue(expdetails, 'planner'), getkeyvalue(expdetails, 'dims')))
-            bspace_cfg['encoder'] = 'forall'
+            bspace_cfg['encoder'] = 'qfuf'
             
             # check if the planner is fi or symk|fbi
             planlist = getkeyvalue(expdetails, 'plans')
@@ -204,6 +204,7 @@ def score(args):
                 else:
                     compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING], ['fast-downward-reachability-grounder', CompilationKind.GROUNDING]]
                 
+                compilationlist = [['up_quantifiers_remover', CompilationKind.QUANTIFIERS_REMOVING]]
                 start_time = time.time()
                 bspace = BehaviourCountSMT(domain, problem, bspace_cfg, planlist, is_oversubscription, compilationlist)
                 diversity_scores_results['diversity-scores'] = {'behaviour-count': bspace.count()}

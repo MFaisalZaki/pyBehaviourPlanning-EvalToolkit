@@ -119,7 +119,8 @@
 
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2008-openstacks-19-1.0-1000-kstar.json",
             // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/None-tsp-17-2.0-1000-fi-none.json",
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/barman-error/2011-barman-1-2.0-1000-symk.json",
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/dump-results/2006-rovers-1-1.0-1000-fi-none.json",
+            // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/dump-results/None-rover-linear-1-1.0-1000-fbi-seq-seq-dummy.json"
             "--k", "3"
 
 

@@ -82,7 +82,7 @@ def sort_and_save_pstat(pstat_file, output_file):
 
 def main():
     # Adjust the path to match where your .pstats files are located
-    filesdir = '/home/ma342/developer/dev-behaviour-planning-paper/sandbox-runtime-profiling-solve/*.prof'
+    filesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-runtime-profiling-score/*.prof'
     files = glob.glob(filesdir)
 
     if not files:
@@ -102,7 +102,8 @@ def main():
         # 'extract_plan', 
         # 'infer_behaviour',
         # 'generate_summary_file'
-        'planner.py:51(plan)'
+        # 'planner.py:51(plan)'
+        'BehaviourCountSMT'
     ]
 
     for function_name in function_names:
