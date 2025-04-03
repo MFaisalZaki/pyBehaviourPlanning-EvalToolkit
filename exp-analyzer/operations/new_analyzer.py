@@ -22,9 +22,31 @@ def read_results(directory):
         instances.add((data['info']['q'], data['info']['k'], f"{data['info']['domain']}-{data['info']['problem']}", data['info']['tag'], data['diversity-scores']['behaviour-count']))        
     return instances
 
+def read_coverage_results(directory):
+    # list files in the directory
+    instances = set()
+    for file in map(lambda x: os.path.join(directory, x), os.listdir(directory)):
+        if not file.endswith('.json'): continue
+        with open(file, 'r') as f:
+            data = json.load(f)
+        if len(data) == 0: continue
+        pass
+        plannername = data['info']['tag']
+        match plannername:
+            case 'symk': plannername = 'symk-bspace'
+            case 'kstar': plannername = 'kstar-bspace'
+            case 'fi-none': plannername = 'fi-bspace'
+            case 'fbi-seq-fd': plannername = 'fbi-seq-fd'
+            case _: raise ValueError(f"Unknown planner name: {plannername}")
+        
+        instances.add((data['info']['task']['q'], f"{data['info']['task']['domain']}-{data['info']['task']['problem']}", plannername, len(data['plans'])))
+    return instances
+
 instancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/score-dump-results')
+solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/dump-results')
 
 instances = read_results(instancesdir)
+solvedinstance = read_coverage_results(solvedinstancesdir)
 
 q_values = set(map(lambda x: x[0], instances))
 k_values = set(map(lambda x: x[1], instances))
@@ -74,8 +96,8 @@ for q in sorted(q_values):
             planners_results_rows[q][k][planners_key][f'{planner1[0]}-std'] = round(statistics.stdev(planner1_samples),2)
             planners_results_rows[q][k][planners_key][f'{planner2[0]}-std'] = round(statistics.stdev(planner2_samples),2)
 
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-coverage'] = len(list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner1[0], instances)))
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-coverage'] = len(list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner2[0], instances)))
+            planners_results_rows[q][k][planners_key][f'{planner1[0]}-coverage'] = len(list(filter(lambda e: q == e[0] and e[2]==planner1[0] and k < e[3], solvedinstance)))
+            planners_results_rows[q][k][planners_key][f'{planner2[0]}-coverage'] = len(list(filter(lambda e: q == e[0] and e[2]==planner2[0] and k < e[3], solvedinstance)))
 
             planners_results_rows[q][k][planners_key]['p-value'] = round(stats.ttest_rel(*[planner1_samples, planner2_samples]).pvalue, 3)
             planners_results_rows[q][k][planners_key]['common-instances-count'] = len(common_instances)

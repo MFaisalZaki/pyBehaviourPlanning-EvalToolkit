@@ -66,7 +66,6 @@ def FBISMTPlannerWrapper(args, task, expdetails):
     results = generate_summary_file(task, expdetails, 'fbi', planner_params, planlist, logmsgs)
     return results
 
-
 def KstarPlannerWrapper(args, task, expdetails):
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
         if expdetails['resources'] is None: break
@@ -86,7 +85,6 @@ def KstarPlannerWrapper(args, task, expdetails):
     planner_params = read_planner_cfg(args.experiment_file)
     results = generate_summary_file(task, expdetails, 'kstar', planner_params, planlist, [])
     return results
-
 
 def FIPlannerWrapper(args, task, expdetails):
     cmd  = [sys.executable]
@@ -121,39 +119,36 @@ def FIPlannerWrapper(args, task, expdetails):
 
     fienv = os.environ.copy()
     fienv['FI_PLANNER_RUNS'] = tmprun
-    try:
-        output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
-    except SubprocessError as e:
-        pass
-    finally:
-        planlist = []
-        found_plans = os.path.join(tmpdir, 'found_plans', 'done')
-        if not os.path.exists(found_plans): return {'reason': 'No plans found by fi'}
-        for plan in os.listdir(found_plans):
-            with open(os.path.join(found_plans, plan), 'r') as f:
-                planlist.append(f.read())
-        
-        # select plans based on the selection criteria.
-        with open(getkeyvalue(expdetails, 'planner-cfg'), 'r') as f:
-            planner_cfg = json.load(f)
-        selection_method = getkeyvalue(planner_cfg, 'selection-method')
+    output = subprocess.check_output(cmd, env=fienv, cwd=tmpdir)
+    
+    planlist = []
+    found_plans = os.path.join(tmpdir, 'found_plans', 'done')
+    if not os.path.exists(found_plans): return {'reason': 'No plans found by fi'}
+    for plan in os.listdir(found_plans):
+        with open(os.path.join(found_plans, plan), 'r') as f:
+            planlist.append(f.read())
+    
+    # # select plans based on the selection criteria.
+    # with open(getkeyvalue(expdetails, 'planner-cfg'), 'r') as f:
+    #     planner_cfg = json.load(f)
+    # selection_method = getkeyvalue(planner_cfg, 'selection-method')
 
-        match selection_method:
-            case 'first-k':
-                planlist = selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
-            case 'bspace':
-                planlist = selection_bspace(args, task, getkeyvalue(expdetails, 'k'), planlist)
-            case 'maxsum':
-                planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmprun)
-            case 'none':
-                planlist = planlist
-            case _:
-                assert False, f"Unknown selection method: {selection_method}"
+    # match selection_method:
+    #     case 'first-k':
+    #         planlist = selection_using_first_k(getkeyvalue(expdetails, 'k'), planlist)
+    #     case 'bspace':
+    #         planlist = selection_bspace(args, task, getkeyvalue(expdetails, 'k'), planlist)
+    #     case 'maxsum':
+    #         planlist = selection_maxsum(args, getkeyvalue(expdetails, 'k'), planlist, tmprun)
+    #     case 'none':
+    #         planlist = planlist
+    #     case _:
+    #         assert False, f"Unknown selection method: {selection_method}"
 
-        planner_params = read_planner_cfg(args.experiment_file)
-        results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
+    planner_params = read_planner_cfg(args.experiment_file)
+    results = generate_summary_file(task, expdetails, 'fi', planner_params, planlist, [])
 
-        return results
+    return results
 
 def SymKPlannerWrapper(args, task, expdetails):
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
