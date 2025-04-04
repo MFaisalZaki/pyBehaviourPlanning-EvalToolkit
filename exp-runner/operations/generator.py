@@ -101,6 +101,7 @@ def generate_solve_cmds(args, venv_dir):
     selected_planning_tasks = getkeyvalue(expdetails, 'selected-planning-instances')
     planning_tasks = parse_planning_tasks(args.planning_tasks_dir, getkeyvalue(expdetails, 'resources-file-dir'), resources_dump_dir, selected_planning_tasks)
     generated_cmds = set()
+    generated_cmds_list = []
     # Read the planners list.
     plannerslist = []
     for plannername, plannercfg in getkeyvalue(expdetails, 'planners').items():
@@ -115,10 +116,10 @@ def generate_solve_cmds(args, venv_dir):
     compute_behaviour_count = getkeyvalue(expdetails, 'compute-behaviour-count')
     behaviour_count_k_list  = getkeyvalue(expdetails, 'behaviour-count-k-list')
     behaviour_count_encoder = getkeyvalue(expdetails, 'behaviour-count-encoder')
-    for taskidx, planning_task in enumerate(planning_tasks):
-        for q in qlist:
-            for k in klist:
-                for plannername, tag, plannercfg in plannerslist:
+    for q in qlist:
+        for k in klist:
+            for plannername, tag, plannercfg in plannerslist:
+                for taskidx, planning_task in enumerate(planning_tasks):
                     if (q, k , plannername) in skip_cfgs: 
                         continue
                     print(f"Generating tasks for q={q}, k={k}, planner={tag}: {taskidx}/{len(planning_tasks)}")
@@ -134,7 +135,7 @@ def generate_solve_cmds(args, venv_dir):
                     task['behaviour-count-k-list'] = behaviour_count_k_list
                     task['behaviour-count-encoder'] = behaviour_count_encoder
 
-                    filename = f"{task['ipc_year']}-{task['domainname']}-{task['instanceno']}-{q}-{k}-{tag}"
+                    filename = f"{task['ipc_year']}-{task['domainname']}-{os.path.basename(task['problemfile'])}-{task['instanceno']}-{q}-{k}-{plannername}-{tag}"
                     task['dump-result-file'] = os.path.join(dump_results_dir, f'{filename}.json')
                     task['error-file']       = os.path.join(error_dir, f'{filename}.error')
                     task['tmp-dir']          = os.path.join(tmp_dir, filename)
@@ -165,7 +166,10 @@ def generate_solve_cmds(args, venv_dir):
                         json.dump(task, f, indent=4)
 
                     cmd = construct_solve_cmd(task_jsonfile)
+                    if f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate' in generated_cmds:
+                        pass
                     generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
+                    generated_cmds_list.append(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate')
 
     # Dump those commands to a file.
     with open(os.path.join(generated_cmds_dir, 'solve-cmds.sh'), 'w') as f:

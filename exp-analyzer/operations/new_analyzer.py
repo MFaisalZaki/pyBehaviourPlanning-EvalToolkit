@@ -48,6 +48,9 @@ solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbo
 instances = read_results(instancesdir)
 solvedinstance = read_coverage_results(solvedinstancesdir)
 
+print(f'fi-instance-count-1.0: {len(list(filter(lambda e:e[0]==1.0 and e[2]=="fi-bspace", solvedinstance)))}')
+print(f'fi-instance-count-2.0: {len(list(filter(lambda e:e[0]==2.0 and e[2]=="fi-bspace", solvedinstance)))}')
+
 q_values = set(map(lambda x: x[0], instances))
 k_values = set(map(lambda x: x[1], instances))
 planners = set(map(lambda x: x[3], instances))

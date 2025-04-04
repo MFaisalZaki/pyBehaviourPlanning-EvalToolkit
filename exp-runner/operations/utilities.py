@@ -144,6 +144,8 @@ def parse_planning_tasks(planningtasksdir:str, resourcesfiledir:str, resourcesdu
                 # Ignore if the domain or problem file does not exist.
                 if not (os.path.exists(planning_problem['domainfile']) and os.path.exists(planning_problem['problemfile'])): 
                     continue
+                if planning_problem in planning_problems: 
+                    continue
                 planning_problems.append(planning_problem)
                 covered_domains.add(os.path.basename(domainsroot))
     return planning_problems
