@@ -49,9 +49,9 @@
             "args": ["solve", 
             "--experiment-file", 
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-linear-1-1.0-1000-fbi-seq-seq-dummy.json"
-            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-seq-fd.json"
+            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fbi-seq-fd.json"
             // "${workspaceFolder}/sandbox-numeric-behaviour-count-exp/experiment-tasks/None-rover-linear-3-1.0-1000-fbi-seq-seq.json"
-            // "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/None-tsp-17-1.0-1000-fi-none.json"
+            "${workspaceFolder}/sandbox-classical-behaviour-count-exp/experiment-tasks/2006-rovers-3-1.0-1000-fi-none.json"
 
 
             // 

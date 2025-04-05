@@ -105,7 +105,7 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += ["--clean-local-folder"]
     cmd += ["--suppress-planners-output"]
     cmd += ["--overall-time-limit"]
-    cmd += ["30m"]
+    cmd += ["1800"]
     
     # update the resource dimensions if used.
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
