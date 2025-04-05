@@ -75,7 +75,7 @@ def generate_score_cmds(args, venv_dir):
     os.makedirs(slurm_cmds, exist_ok=True)
     for i, cmd in enumerate(generated_cmds):
         # increase the timelimit for the score commands.
-        slurmcmd = warpCommand(cmd, "00:40:00", getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
+        slurmcmd = warpCommand(cmd, "00:30:00", getkeyvalue(expdetails, 'memorylimit'), slurm_dump_logs, args.partition)
         with open(os.path.join(slurm_cmds, f'slurm_batch_task_{i}.txt'), 'w') as f:
             f.write(slurmcmd)
     

@@ -78,7 +78,7 @@ def KstarPlannerWrapper(args, task, expdetails):
                                          problem_file=Path(expdetails['problemfile']), 
                                          quality_bound=getkeyvalue(expdetails, 'q'),
                                          number_of_plans_bound=int(getkeyvalue(expdetails, 'k')*INCREASE_PLAN_FACTOR), 
-                                         timeout=300, 
+                                         timeout=1800, # timeout after 30 minutes.
                                          search_heuristic="ipdb(transform=undo_to_origin())")
     
     planlist = list(map(lambda plan: '\n'.join(map(lambda a: f'({a})', plan)), (map(lambda p: p['actions'], plans['plans']))))
@@ -104,6 +104,8 @@ def FIPlannerWrapper(args, task, expdetails):
     cmd += ["--use-local-folder"]
     cmd += ["--clean-local-folder"]
     cmd += ["--suppress-planners-output"]
+    cmd += ["--overall-time-limit"]
+    cmd += ["30m"]
     
     # update the resource dimensions if used.
     for idx, dim in enumerate(getkeyvalue(expdetails, 'dims')):
@@ -190,7 +192,8 @@ def SymKPlannerWrapper(args, task, expdetails):
     else:
         search_config = f"symq-bd(plan_selection=top_k(num_plans={k},dump_plans=true),quality={q})"
         with tempfile.TemporaryDirectory(dir=tmpdir) as tmpdirname:        
-            with AnytimePlanner(name='symk-opt', params={"symk_anytime_search_config": search_config}) as planner:
+            # timeout after 30 minutes.
+            with AnytimePlanner(name='symk-opt', params={"symk_anytime_search_config": search_config, "symk_search_time_limit": "1800s"}) as planner:
                 for i, result in enumerate(planner.get_solutions(task)):
                     if result.status == ResultsStatus.INTERMEDIATE:
                         planlist.append(result.plan) if i < k else None
