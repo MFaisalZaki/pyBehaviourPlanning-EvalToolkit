@@ -220,7 +220,6 @@ def updatekeyvalue(data, target_key, newvalue):
 def warpCommand(cmd, timelimt, memorylimit, slurmdumpdir, parition):
     return f"""#!/bin/bash
 #SBATCH --job-name=task-%x-%j
-#SBATCH --partition={parition}
 #SBATCH -e {slurmdumpdir}/task-%x-%j.error
 #SBATCH -o {slurmdumpdir}/task-%x-%j.output
 #SBATCH --cpus-per-task=1
