@@ -57,7 +57,7 @@ def generate_score_cmds(args, venv_dir):
                     cmd = construct_score_cmd(k, results_file)
                     rundir = os.path.join(run_score_dir, f'score-{os.path.basename(results_file)}-k-{k}')
                     os.makedirs(rundir, exist_ok=True)
-                    generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate && cd .. && rm -fr {rundir}')
+                    generated_cmds.add(f'source {venv_dir}/bin/activate && mkdir -p {rundir} && cd {rundir} && {cmd} && deactivate')
             else:
                 assert False, f"Unknown planner: {planner}"
 
@@ -168,8 +168,8 @@ def generate_solve_cmds(args, venv_dir):
                     cmd = construct_solve_cmd(task_jsonfile)
                     if f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate' in generated_cmds:
                         pass
-                    generated_cmds.add(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate && cd .. && rm -fr {rundir}')
-                    generated_cmds_list.append(f'source {venv_dir}/bin/activate && cd {rundir} && {cmd} && deactivate && cd .. && rm -fr {rundir}')
+                    generated_cmds.add(f'source {venv_dir}/bin/activate && mkdir -p {rundir} && cd {rundir} && {cmd} && deactivate')
+                    generated_cmds_list.append(f'source {venv_dir}/bin/activate && mkdir -p {rundir} && cd {rundir} && {cmd} && deactivate')
 
     # Dump those commands to a file.
     with open(os.path.join(generated_cmds_dir, 'solve-cmds.sh'), 'w') as f:
