@@ -218,6 +218,8 @@ def updatekeyvalue(data, target_key, newvalue):
     return False
 
 def warpCommand(cmd, timelimt, memorylimit, slurmdumpdir, parition):
+    # set timelimit for fbi to 30 minutes.
+    if 'fbi' in cmd: timelimt = '00:30:00'
     return f"""#!/bin/bash
 #SBATCH --job-name=task-%x-%j
 #SBATCH -e {slurmdumpdir}/task-%x-%j.error
