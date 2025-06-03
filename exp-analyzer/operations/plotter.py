@@ -6,6 +6,16 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+from collections import defaultdict
+from scipy.stats import norm
+import json
+
+mapplanner = {
+    'fi-bspace': 'FI',
+    'fbi-seq-fd': 'FBI_SMT',
+    'kstar-bspace': 'K*',
+    'symk-bspace': 'SymK',
+}
 
 def read_results(directory):
     results = []
@@ -15,7 +25,7 @@ def read_results(directory):
                 data = json.load(f)
                 if not 'info' in data: continue
                 domain_instance = f"{data['info']['domain']}_{data['info']['problem']}"
-                results.append((data['info']['q'], data['info']['k'], data['info']['tag'], domain_instance, data['diversity-scores']['behaviour-count']))
+                results.append((data['info']['q'], data['info']['k'], mapplanner[data['info']['tag']], domain_instance, data['diversity-scores']['behaviour-count']))
     return results
 
 def plot_planners(q, kvalues, planners, dumpfig):
@@ -47,105 +57,151 @@ def plot_planners(q, kvalues, planners, dumpfig):
         planner_2_mean.append(planner2['mean'])
         planner_2_std.append(planner2['std'])
 
-    df = pd.DataFrame(data, columns=["X", "Planner", "Value"])
-    # # Create the plot
-    # plt.figure(figsize=(10, 6))
+    df = pd.DataFrame(data, columns=["k", "Planner", "Behaviour Count"])
 
-    # # Error bar plot
-    # plt.errorbar(k_v_sorted, planner_1_mean, yerr=planner_1_std, fmt='-o', label=planner_1_name, capsize=5)
-    # plt.errorbar(k_v_sorted, planner_2_mean, yerr=planner_2_std, fmt='-s', label=planner_2_name, capsize=5)
+    # we need to do statistical
 
-    # # Labels and title
-    # # plt.title("Error Bar Plot of Planner Performance")
-    # plt.xlabel("K Values")
-    # plt.ylabel("Behaviour Count")
-    # plt.legend()
-    # plt.grid(True)
 
-    # # Save high-res figure
-    # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_error_bar_plot.png"), dpi=300, bbox_inches='tight')
+    # for idx, k in enumerate(k_v_sorted):
+    #     means = [planner_1_mean[idx], planner_2_mean[idx]]
+    #     stds   = [planner_1_std[idx], planner_2_std[idx]]
+    #     x = np.arange(len(means))
+    #     # Create a figure
+    #     labels = [planner_1_name, planner_2_name]  # Custom names
 
-    # ------------
+    #     # Set up the figure
+    #     # Define the range of x-axis starting from zero to max(mean + 4*std)
+    #     # x_min = 0
+    #     # x_max = max(mean + 4*std for mean, std in zip(means, stds))
+    #     # x = np.linspace(x_min, x_max, 500)
+
+    #     # Set up the figure
+    #     plt.figure(figsize=(10, 6))
+
+    #     # Plot each bell curve
+    #     for mean, std, label in zip(means, stds, labels):
+    #         x = np.linspace(mean - 4*std, mean + 4*std, 200)
+    #         y = norm.pdf(x, mean, std)
+    #         line, = plt.plot(x, y, label=label)
+    #         plt.fill_between(x, y, alpha=0.2, color=line.get_color())
+
+    #     # Styling
+    #     plt.title('Gaussian Distributions of Behaviour Count Planners')
+    #     plt.xlabel(f'k = {k} plans')
+    #     plt.ylabel('Behaviour Count Probability Density')
+    #     plt.legend()
+    #     plt.grid(True)
+    #     plt.tight_layout()
+    #     plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_{k}_dist.png"), dpi=300, bbox_inches='tight')
+    #     # plt.show()
+
+    #     pass
+
+
+
+
+    # pass
+    
+    # # # Create the plot
+    # # plt.figure(figsize=(10, 6))
+
+    # # # Error bar plot
+    # # plt.errorbar(k_v_sorted, planner_1_mean, yerr=planner_1_std, fmt='-o', label=planner_1_name, capsize=5)
+    # # plt.errorbar(k_v_sorted, planner_2_mean, yerr=planner_2_std, fmt='-s', label=planner_2_name, capsize=5)
+
+    # # # Labels and title
+    # # # plt.title("Error Bar Plot of Planner Performance")
+    # # plt.xlabel("K Values")
+    # # plt.ylabel("Behaviour Count")
+    # # plt.legend()
+    # # plt.grid(True)
+
+    # # # Save high-res figure
+    # # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_error_bar_plot.png"), dpi=300, bbox_inches='tight')
+
+    # # ------------
     
 
-    # plt.figure(figsize=(10, 6))
-    # sns.violinplot(data=df, x="X", y="Value", hue="Planner", split=True, inner="quartile")
-    # # plt.title("Violin Plot of Planner's Behaviour Count at Different K Values")
-    # plt.ylabel("Behaviour Count")
-    # plt.xlabel("K Values")
-    # plt.grid(True)
-    # plt.tight_layout()
-    # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_violin_plot.png"), dpi=300, bbox_inches='tight')  # High resolution PNG
-    # -------------
+    # # plt.figure(figsize=(10, 6))
+    # # sns.violinplot(data=df, x="X", y="Value", hue="Planner", split=True, inner="quartile")
+    # # # plt.title("Violin Plot of Planner's Behaviour Count at Different K Values")
+    # # plt.ylabel("Behaviour Count")
+    # # plt.xlabel("K Values")
+    # # plt.grid(True)
+    # # plt.tight_layout()
+    # # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_violin_plot.png"), dpi=300, bbox_inches='tight')  # High resolution PNG
+    # # -------------
 
 
-    # # Plot: KDE for each planner at each X value
-    # g = sns.FacetGrid(df, col="X", hue="Planner", sharex=True, sharey=True, col_wrap=2, height=4)
-    # g.map(sns.kdeplot, "Value", fill=True, common_norm=False, alpha=0.5)
-    # g.add_legend()
+    # # # Plot: KDE for each planner at each X value
+    # # g = sns.FacetGrid(df, col="X", hue="Planner", sharex=True, sharey=True, col_wrap=2, height=4)
+    # # g.map(sns.kdeplot, "Value", fill=True, common_norm=False, alpha=0.5)
+    # # g.add_legend()
 
-    # # Title and layout
-    # plt.subplots_adjust(top=0.9)
-    # g.fig.suptitle("Density Plot (KDE) of Planner Performance Across X Values")
+    # # # Title and layout
+    # # plt.subplots_adjust(top=0.9)
+    # # g.fig.suptitle("Density Plot (KDE) of Planner Performance Across X Values")
 
-    # # Save the plot
-    # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_density_plot.png"), dpi=300, bbox_inches='tight')
+    # # # Save the plot
+    # # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_density_plot.png"), dpi=300, bbox_inches='tight')
 
-    # --------------------
-    # # Plot box plot
-    # plt.figure(figsize=(10, 6))
-    # sns.boxplot(data=df, x="X", y="Value", hue="Planner")
-    # plt.yscale("log")
-    # plt.xlabel("K Values")
-    # plt.ylabel("Behaviour Count")
-    # plt.grid(True)
+    # # --------------------
+    # # # Plot box plot
+    # # plt.figure(figsize=(10, 6))
+    # # sns.boxplot(data=df, x="X", y="Value", hue="Planner")
+    # # plt.yscale("log")
+    # # plt.xlabel("K Values")
+    # # plt.ylabel("Behaviour Count")
+    # # plt.grid(True)
 
-    # # Save plot in high resolution
+    # # # Save plot in high resolution
+    # # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_box_plot.png"), dpi=300, bbox_inches='tight')
+    # # -------------------
+
+    # # Convert X to string and sort numerically
+    # df["X"] = df["X"].astype(str)
+    # x_order = sorted(df["X"].unique(), key=lambda x: int(x))
+
+    # # Create the facet grid with all plots in one row
+    # g = sns.catplot(
+    #     data=df,
+    #     x="Planner",
+    #     y="Value",
+    #     col="X",
+    #     kind="box",
+    #     col_order=x_order,
+    #     height=4,
+    #     aspect=0.8,
+    #     sharey=False,
+    #     palette="Set2"
+    # )
+
+    # # Remove individual subplot x-labels and add one shared x-label
+    # for ax in g.axes.flat:
+    #     ax.set_xlabel("")
+
+    # # Add global x-axis label (centered below)
+    # g.set_axis_labels("Planner", "Performance")
+
+    # # Adjust layout and add a title
+    # g.fig.subplots_adjust(top=0.85)
+    # g.fig.suptitle("Box Plots of Planner Performance by X Value (Sorted & in One Row)")
+
     # plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_box_plot.png"), dpi=300, bbox_inches='tight')
-    # -------------------
 
-    # Convert X to string and sort numerically
-    df["X"] = df["X"].astype(str)
-    x_order = sorted(df["X"].unique(), key=lambda x: int(x))
-
-    # Create the facet grid with all plots in one row
-    g = sns.catplot(
-        data=df,
-        x="Planner",
-        y="Value",
-        col="X",
-        kind="box",
-        col_order=x_order,
-        height=4,
-        aspect=0.8,
-        sharey=False,
-        palette="Set2"
-    )
-
-    # Remove individual subplot x-labels and add one shared x-label
-    for ax in g.axes.flat:
-        ax.set_xlabel("")
-
-    # Add global x-axis label (centered below)
-    g.set_axis_labels("Planner", "Performance")
-
-    # Adjust layout and add a title
-    g.fig.subplots_adjust(top=0.85)
-    g.fig.suptitle("Box Plots of Planner Performance by X Value (Sorted & in One Row)")
-
-    plt.savefig(os.path.join(dumpfig, f"{q}_{planners_names}_box_plot.png"), dpi=300, bbox_inches='tight')
-
-    # plt.show()
-    pass
+    # # plt.show()
+    # pass
 
 
     pass
 
 
-resultsdir = "/Users/mustafafaisal/Downloads/paper-results/classical-score-dump-results"
-dumpfigs = "/Users/mustafafaisal/Downloads/paper-results/dump-figs"
+resultsdir = "/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-results/classical-dump-results/all-results"
+dumpfigs = "/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-results/classical-dump-results/dump-figs"
+dump_analysis_dir = "/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-results/classical-dump-results/dump-analysis"
 
 os.makedirs(dumpfigs, exist_ok=True)
+os.makedirs(dump_analysis_dir, exist_ok=True)
 
 raw_results = read_results(resultsdir)
 
@@ -154,10 +210,13 @@ q_values = set(map(lambda x: x[0], raw_results))
 k_values = set(map(lambda x: x[1], raw_results))
 planners = set(map(lambda x: x[2], raw_results))
 
-for (planner1, planner2) in combinations(planners, 2):
-    for q in q_values:
-        k_planners_values = {}
+pass
 
+
+
+for q in q_values:
+    k_planners_values = defaultdict(dict)
+    for (planner1, planner2) in combinations(planners, 2):
         for k in k_values:
             planner1_results = list(filter(lambda x: x[0] == q and x[1] == k and x[2] == planner1, raw_results))
             planner2_results = list(filter(lambda x: x[0] == q and x[1] == k and x[2] == planner2, raw_results))
@@ -174,27 +233,32 @@ for (planner1, planner2) in combinations(planners, 2):
             planner1_std = (sum(map(lambda x: (x[4] - planner1_mean) ** 2, filtered_planner1_results)) / len(filtered_planner1_results)) ** 0.5
             planner2_std = (sum(map(lambda x: (x[4] - planner2_mean) ** 2, filtered_planner2_results)) / len(filtered_planner2_results)) ** 0.5
 
-            k_planners_values[k] = {
+            if not k in k_planners_values: k_planners_values[k] = defaultdict(dict)
+
+            k_planners_values[k][f'{planner1}-{planner2}'] = {
                 'planner1': {
                     'name': planner1,
                     'mean': round(planner1_mean,3),
                     'std': round(planner1_std,3),
                     'count': len(filtered_planner1_results),
-                    'samples': list(map(lambda x: x[4], filtered_planner1_results))
+                    'samples': list(map(lambda x: x[4], filtered_planner1_results)),
+                    'coverage': len(planner1_results)
                 },
                 'planner2': {
                     'name': planner2,
                     'mean': round(planner2_mean,3),
                     'std': round(planner2_std,3),
                     'count': len(filtered_planner2_results),
-                    'samples': list(map(lambda x: x[4], filtered_planner2_results))
+                    'samples': list(map(lambda x: x[4], filtered_planner2_results)),
+                    'coverage': len(planner2_results)
                 }
             }
 
 
-
-        plot_planners(q, k_values, k_planners_values, dumpfigs)
-    pass
+    with open(os.path.join(dump_analysis_dir, f'{q}_k_values.json'), 'w') as f:
+        json.dump(k_planners_values, f, indent=4)
+        # plot_planners(q, k_values, k_planners_values, dumpfigs)
+#     pass
 
 
 

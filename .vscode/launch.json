@@ -143,8 +143,8 @@
                 "--compute-coverage",
 
                 
-                "--planner-results-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count/score-dump-results",
-                "--output-dir", "${workspaceFolder}/sandbox-ppltl-classical-behaviour-count/analysis-score-dump-results"
+                "--planner-results-dir", "${workspaceFolder}/sandbox-results/classical-dump-results/all-results",
+                "--output-dir", "${workspaceFolder}/sandbox-results/classical-dump-results/analysis-all-results"
 
                 // "--planner-results-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/score-dump-results",
                 // "--output-dir", "${workspaceFolder}/sandbox-classical-behaviour-count-exp/analysis-score-dump-results"
