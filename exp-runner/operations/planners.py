@@ -27,7 +27,7 @@ from .utilities import (
     get_ibm_diversescore_binary
 )
 
-INCREASE_PLAN_FACTOR = 1.2
+INCREASE_PLAN_FACTOR = 1.0
 
 def FBIPPLTLPlannerWrapper(args, task, expdetails):
     planner_params = read_planner_cfg(args.experiment_file)
