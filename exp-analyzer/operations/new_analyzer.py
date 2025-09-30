@@ -61,6 +61,9 @@ def read_coverage_results(directory):
 instancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/score-dump-results')
 solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/dump-results')
 
+instancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-score-dump-results'
+solvedinstancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-dump-results'
+
 solvedinstance = read_coverage_results(solvedinstancesdir)
 
 # this is simple, we need to contruct a summary of those results.
