@@ -64,6 +64,7 @@ solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbo
 instancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-score-dump-results'
 solvedinstancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-dump-results'
 
+c_values = [2, 3]  # we only consider pairs and triplets of planners for comparison
 solvedinstance = read_coverage_results(solvedinstancesdir)
 
 # this is simple, we need to contruct a summary of those results.
@@ -93,7 +94,7 @@ with open(os.path.join(dumpdir, 'coverage.json'), 'w') as f:
 instances = read_bc_results(instancesdir)
 all_planners = set(e['planner'] for e in instances)
 
-for c in [2, 3]:
+for c in c_values:
     for q in sorted(q_values):
         for k in sorted(k_values):
             for planners in combinations(all_planners, c):
