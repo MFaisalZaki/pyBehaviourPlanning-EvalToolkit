@@ -6,110 +6,115 @@ from scipy import stats
 from itertools import combinations 
 from collections import defaultdict
 
+from utilities import getkeyvalue
+
 import os
 
-def read_results(directory):
+def read_bc_results(directory):
     # list files in the directory
-    instances = set()
+    instances = list()
     for file in map(lambda x: os.path.join(directory, x), os.listdir(directory)):
         if not file.endswith('.json'): continue
         with open(file, 'r') as f:
             data = json.load(f)
-        if len(data) == 0: continue
-        if not 'info' in data: continue
-        if data['info']['tag'] == 'symk':
-            data['info']['tag'] = 'symk-bspace' # I don't now why this bug happens
-        instances.add((data['info']['q'], data['info']['k'], f"{data['info']['domain']}-{data['info']['problem']}", data['info']['tag'], data['diversity-scores']['behaviour-count']))        
+        plannername = getkeyvalue(data, 'tag')
+        if plannername is None: continue
+        q_value = getkeyvalue(data, 'q')
+        k_value = getkeyvalue(data, 'k')
+        domain_problem = f"{getkeyvalue(data, 'domain')}-{getkeyvalue(data, 'problem')}"
+        planner_tag = getkeyvalue(data, 'tag')
+        behaviour_count = getkeyvalue(data, 'behaviour-count')
+        instances.append(
+            {
+                'q': q_value,
+                'k': k_value,
+                'domain-problem': domain_problem,
+                'planner': planner_tag,
+                'behaviour-count': behaviour_count
+            }
+        )
     return instances
 
 def read_coverage_results(directory):
     # list files in the directory
-    instances = set()
+    instances = list()
     for file in map(lambda x: os.path.join(directory, x), os.listdir(directory)):
         if not file.endswith('.json'): continue
         with open(file, 'r') as f:
             data = json.load(f)
-        if len(data) == 0: continue
-        pass
-        plannername = data['info']['tag']
-        match plannername:
-            case 'symk': plannername = 'symk-bspace'
-            case 'kstar': plannername = 'kstar-bspace'
-            case 'fi-none': plannername = 'fi-bspace'
-            case 'fbi-seq-fd': plannername = 'fbi-seq-fd'
-            case _: raise ValueError(f"Unknown planner name: {plannername}")
-        
-        instances.add((data['info']['task']['q'], f"{data['info']['task']['domain']}-{data['info']['task']['problem']}", plannername, len(data['plans'])))
+        plannername = getkeyvalue(data, 'tag')
+        if plannername is None: continue
+        q_value = getkeyvalue(data, 'q')
+        k_value = getkeyvalue(data, 'k')
+        domain_problem = f"{getkeyvalue(data, 'domain')}-{getkeyvalue(data, 'problem')}"
+        planner_tag = getkeyvalue(data, 'tag')
+        plan_len = len(getkeyvalue(data, 'plans'))
+        instances.append({
+            'q': q_value,
+            'k': k_value,
+            'domain-problem': domain_problem,
+            'planner': planner_tag,
+            'plan-len': plan_len
+        })
     return instances
 
 instancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/score-dump-results')
 solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/dump-results')
 
-instances = read_results(instancesdir)
 solvedinstance = read_coverage_results(solvedinstancesdir)
 
-print(f'fi-instance-count-1.0: {len(list(filter(lambda e:e[0]==1.0 and e[2]=="fi-bspace", solvedinstance)))}')
-print(f'fi-instance-count-2.0: {len(list(filter(lambda e:e[0]==2.0 and e[2]=="fi-bspace", solvedinstance)))}')
+# this is simple, we need to contruct a summary of those results.
+q_values = set(e['q'] for e in solvedinstance)
+k_values = set(e['k'] for e in solvedinstance)
+planners = set(e['planner'] for e in solvedinstance)
 
-q_values = set(map(lambda x: x[0], instances))
-k_values = set(map(lambda x: x[1], instances))
-planners = set(map(lambda x: x[3], instances))
-
-planners_results_rows = defaultdict(dict)
+coverage_results = defaultdict(dict)
 for q in sorted(q_values):
-    planners_results_rows[q] = defaultdict(dict)
+    coverage_results[q] = defaultdict(dict)
     for k in sorted(k_values):
-        planners_results_rows[q][k] = defaultdict(dict)
-        planners_results = []
-        
+        coverage_results[q][k] = defaultdict(dict)
         for planner in planners:
-            # filter instances for this q, k, and planner
-            filtered_instances = list(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner, instances))
-            if len(filtered_instances) == 0: continue
-            # get the domain-problem pairs
-            planners_results.append((planner, set(map(lambda x: x[2], filtered_instances))))
-            
-        for planner1, planner2 in combinations(planners_results, 2):
-            if not (('fbi' in planner1[0]) or ('fbi' in planner2[0])): continue
-            
-            planners_key = f'{planner1[0]}-{planner2[0]}'
-            planners_results_rows[q][k][planners_key] = defaultdict(dict)
-            
-            # get common instances for the planners
-            common_instances = list(set.intersection(planner1[1], planner2[1]))
-            if len(common_instances) < 2: continue
-            # filter instances for this q, k, and planner
-            filtered_instances_planner_1 =  list(sorted(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner1[0] and x[2] in common_instances, instances), key=lambda k:k[2]))
-            filtered_instances_planner_2 =  list(sorted(filter(lambda x: x[0] == q and x[1] == k and x[3] == planner2[0] and x[2] in common_instances, instances), key=lambda k:k[2]))
+            if planner in ['fi-none']:
+                coverage = len(list(filter(lambda e: e['q'] == q and e['k'] == k and e['planner'] == planner and k <= e['plan-len'], solvedinstance)))
+            else:
+                coverage = len(list(filter(lambda e: e['q'] == q and e['planner'] == planner and k <= e['plan-len'], solvedinstance)))
+            coverage_results[q][k][planner] = coverage
 
-            planner1_samples = list(map(lambda e:e[-1], filtered_instances_planner_1))
-            planner2_samples = list(map(lambda e:e[-1], filtered_instances_planner_2))
-
-            assert len(planner1_samples) == len(planner2_samples), f"Samples length mismatch: {len(planner1_samples)} != {len(planner2_samples)}"
-
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-samples'] = planner1_samples
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-samples'] = planner2_samples
-            
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-bc'] = sum(planner1_samples)
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-bc'] = sum(planner2_samples)
-
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-mean'] = round(statistics.mean(planner1_samples),2)
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-mean'] = round(statistics.mean(planner2_samples),2)
-
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-std'] = round(statistics.stdev(planner1_samples),2)
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-std'] = round(statistics.stdev(planner2_samples),2)
-
-            planners_results_rows[q][k][planners_key][f'{planner1[0]}-coverage'] = len(list(filter(lambda e: q == e[0] and e[2]==planner1[0] and k < e[3], solvedinstance)))
-            planners_results_rows[q][k][planners_key][f'{planner2[0]}-coverage'] = len(list(filter(lambda e: q == e[0] and e[2]==planner2[0] and k < e[3], solvedinstance)))
-
-            planners_results_rows[q][k][planners_key]['p-value'] = round(stats.ttest_rel(*[planner1_samples, planner2_samples]).pvalue, 3)
-            planners_results_rows[q][k][planners_key]['common-instances-count'] = len(common_instances)
-            planners_results_rows[q][k][planners_key]['common-instances'] = common_instances
-            
-
-dumpdir = os.path.join(instancesdir, '..', 'analysis-run')
+# save this coverage result
+dumpdir = os.path.join(solvedinstancesdir, '..', 'analysis-run')
 os.makedirs(dumpdir, exist_ok=True)
-with open(os.path.join(dumpdir, 'results.json'), 'w') as f:
-    json.dump(planners_results_rows, f, indent=4)
+with open(os.path.join(dumpdir, 'coverage.json'), 'w') as f:
+    json.dump(coverage_results, f, indent=4)
 
+# now we need to compute the behaviour count statistics.
+instances = read_bc_results(instancesdir)
+all_planners = set(e['planner'] for e in instances)
+
+for c in [2, 3]:
+    for q in sorted(q_values):
+        for k in sorted(k_values):
+            for planners in combinations(all_planners, c):
+                if len(planners) < 2: continue
+                planners_instances = [list(filter(lambda x: x['q'] == q and x['k'] == k and x['planner'] == planner, instances)) for planner in planners]
+                if any(len(p_instances) < 2 for p_instances in planners_instances): continue
+                common_instances = set.intersection(*[set(map(lambda e: e['domain-problem'], p_instances)) for p_instances in planners_instances])
+                if len(common_instances) < 2: continue
+                filtered_instances_per_planner = [list(sorted(filter(lambda x: x['q'] == q and x['k'] == k and x['planner'] == planner and x['domain-problem'] in common_instances, instances), key=lambda k:k['domain-problem'])) for planner in planners]
+                assert all(len(f_instances) == len(filtered_instances_per_planner[0]) for f_instances in filtered_instances_per_planner)
+                samples_per_planner = [list(map(lambda e:e['behaviour-count'], f_instances)) for f_instances in filtered_instances_per_planner]
+                results_dict = {f'{planner}-samples': samples for planner, samples in zip(planners, samples_per_planner)}
+                for planner, samples in zip(planners, samples_per_planner):
+                    results_dict[f'{planner}-bc'] = sum(samples)
+                if c == 2:
+                    results_dict['p-value'] = round(stats.ttest_rel(*samples_per_planner).pvalue, 3)
+                elif c == 3:
+                    results_dict['p-value'] = round(stats.f_oneway(*samples_per_planner).pvalue, 3)
+                results_dict['common-instances-count'] = len(common_instances)
+                results_dict['common-instances'] = list(common_instances)
+
+                # dump this to file
+                dumpdir = os.path.join(instancesdir, '..', 'analysis-run', f"{c}-{q}-{k}-{'-'.join(planners)}.json")
+                os.makedirs(os.path.dirname(dumpdir), exist_ok=True)
+                with open(dumpdir, 'w') as f:
+                    json.dump(results_dict, f, indent=4)
 pass
