@@ -61,16 +61,19 @@ def read_coverage_results(directory):
 instancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/score-dump-results')
 solvedinstancesdir = os.path.join(os.path.dirname(__file__), '..', '..', 'sandbox-classical-behaviour-count-exp/dump-results')
 
-instancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-score-dump-results'
-solvedinstancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric-dump-results'
+instancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-numeric-behaviour-count-exp/score-dump-results'
+solvedinstancesdir = '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-numeric-behaviour-count-exp/dump-results'
 
 c_values = [2, 3]  # we only consider pairs and triplets of planners for comparison
 solvedinstance = read_coverage_results(solvedinstancesdir)
+instances      = read_bc_results(instancesdir)
 
-# this is simple, we need to contruct a summary of those results.
-q_values = set(e['q'] for e in solvedinstance)
-k_values = set(e['k'] for e in solvedinstance)
+# # this is simple, we need to contruct a summary of those results.
+# # Uncomment for classical only.
+q_values = set(e['q'] for e in instances)
+k_values = set(e['k'] for e in instances)
 planners = set(e['planner'] for e in solvedinstance)
+
 
 coverage_results = defaultdict(dict)
 for q in sorted(q_values):
@@ -91,8 +94,11 @@ with open(os.path.join(dumpdir, 'coverage.json'), 'w') as f:
     json.dump(coverage_results, f, indent=4)
 
 # now we need to compute the behaviour count statistics.
-instances = read_bc_results(instancesdir)
 all_planners = set(e['planner'] for e in instances)
+q_values = set(e['q'] for e in instances)
+k_values = set(e['k'] for e in instances)
+planners = set(e['planner'] for e in instances)
+
 
 for c in c_values:
     for q in sorted(q_values):
