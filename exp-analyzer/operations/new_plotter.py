@@ -88,7 +88,7 @@ def do_violin_plot(result, savetofile, sorted_order):
         ax.set_xlabel('')
         ax.grid(True)
         # Adjust x-axis labels to prevent overlapping
-        ax.tick_params(axis='x', labelsize=25)
+        ax.tick_params(axis='x', labelsize=20)
         plt.setp(ax.get_xticklabels(), ha='center')
 
     # Styling
@@ -111,6 +111,7 @@ def plot_classical_experiments(raw_results, dumpdir):
     pass
 
 # classical - exp.
+__sorted_planners_order = [r'$\mathrm{FI_{bc}}$', r'$\mathrm{FBI_{SMT}^{naive}}$', r'$\mathrm{FBI_{SMT}}$']
 q_1_0_files = [
     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/classical/analysis-classic/3-1.0-5-fbi-seq-fd-fbi-seq-fd-naive-fi-bspace.json',
     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/classical/analysis-classic/3-1.0-10-fbi-seq-fd-fbi-seq-fd-naive-fi-bspace.json',
@@ -125,54 +126,56 @@ q_2_0_files = [
     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/classical/analysis-classic/3-2.0-1000-fbi-seq-fd-fbi-seq-fd-naive-fi-bspace.json'
 ]
 
-# numeric - exp.
-q_1_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-5-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-10-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-100-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-1000-fbi-seq-seq-naive-fbi-seq-seq.json'
-]
+# # numeric - exp.
+# __sorted_planners_order = [r'$\mathrm{FBI_{SMT}^{naive}}$', r'$\mathrm{FBI_{SMT}}$']
+# q_1_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-5-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-10-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-100-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-1.0-1000-fbi-seq-seq-naive-fbi-seq-seq.json'
+# ]
 
-q_2_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-5-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-10-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-100-fbi-seq-seq-naive-fbi-seq-seq.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-1000-fbi-seq-seq-naive-fbi-seq-seq.json'
-]
+# q_2_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-5-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-10-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-100-fbi-seq-seq-naive-fbi-seq-seq.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/numeric/analysis-run/2-2.0-1000-fbi-seq-seq-naive-fbi-seq-seq.json'
+# ]
 
-# osp - 0.25 - exp
-q_1_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-5-symk-fbi-utility-value-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-10-symk-fbi-utility-value-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-100-symk-fbi-utility-value-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-1000-symk-fbi-utility-value-fbi-utility-value-naive.json'
-]
+# __sorted_planners_order = [r'$\mathrm{SymK}$', r'$\mathrm{FBI_{SMT}^{naive}}$', r'$\mathrm{FBI_{SMT}}$']
+# # osp - 0.25 - exp
+# q_1_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-5-symk-fbi-utility-value-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-10-symk-fbi-utility-value-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-100-symk-fbi-utility-value-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.25/analysis-run/3-1.0-1000-symk-fbi-utility-value-fbi-utility-value-naive.json'
+# ]
 
-# osp - 0.5 - exp
-q_1_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-5-symk-fbi-utility-value-naive-fbi-utility-value.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-10-symk-fbi-utility-value-naive-fbi-utility-value.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-100-symk-fbi-utility-value-naive-fbi-utility-value.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-1000-symk-fbi-utility-value-naive-fbi-utility-value.json'
-]
+# # # osp - 0.5 - exp
+# q_1_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-5-symk-fbi-utility-value-naive-fbi-utility-value.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-10-symk-fbi-utility-value-naive-fbi-utility-value.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-100-symk-fbi-utility-value-naive-fbi-utility-value.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.5/analysis-run/3-1.0-1000-symk-fbi-utility-value-naive-fbi-utility-value.json'
+# ]
 
-# osp - 0.75 - exp
-q_1_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-5-fbi-utility-value-naive-fbi-utility-value-symk.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-10-fbi-utility-value-naive-fbi-utility-value-symk.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-100-fbi-utility-value-naive-fbi-utility-value-symk.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-1000-fbi-utility-value-naive-fbi-utility-value-symk.json'
-]
+# # # osp - 0.75 - exp
+# q_1_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-5-fbi-utility-value-naive-fbi-utility-value-symk.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-10-fbi-utility-value-naive-fbi-utility-value-symk.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-100-fbi-utility-value-naive-fbi-utility-value-symk.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/0.75/analysis-run/3-1.0-1000-fbi-utility-value-naive-fbi-utility-value-symk.json'
+# ]
 
-# osp - 1.0 - exp
-q_1_0_files = [
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-5-fbi-utility-value-symk-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-10-fbi-utility-value-symk-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-100-fbi-utility-value-symk-fbi-utility-value-naive.json',
-    '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-1000-fbi-utility-value-symk-fbi-utility-value-naive.json'
-]
+# # # osp - 1.0 - exp
+# q_1_0_files = [
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-5-fbi-utility-value-symk-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-10-fbi-utility-value-symk-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-100-fbi-utility-value-symk-fbi-utility-value-naive.json',
+#     '/Users/mustafafaisal/Developer/pyBehaviourPlanning-EvalToolkit/sandbox-all-results/paper-results/osp/1.0/analysis-run/3-1.0-1000-fbi-utility-value-symk-fbi-utility-value-naive.json'
+# ]
 
-q_2_0_files = []
+# q_2_0_files = []
 
 
 
@@ -182,7 +185,7 @@ for q, files in [(1.0, q_1_0_files), (2.0, q_2_0_files)]:
         with open(file, 'r') as f:
             data = json.load(f)
             results[k] = data
-    do_violin_plot(results, os.path.join(os.path.dirname(file), f'violin-{q}-{os.path.basename(file).replace(".json", ".pdf")}'), [r'$\mathrm{FI_{bc}}$', r'$\mathrm{FBI_{SMT}^{naive}}$', r'$\mathrm{FBI_{SMT}}$'])
+    do_violin_plot(results, os.path.join(os.path.dirname(file), f'violin-{q}-{os.path.basename(file).replace(".json", ".pdf")}'), __sorted_planners_order)
 
 
 
